@@ -1,0 +1,321 @@
+[gd_scene load_steps=4 format=3 uid="uid://dhf0yu2i6obb0"]
+
+[ext_resource type="Script" path="res://script/menu.gd" id="1_svnde"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_a8r7b"]
+font_size = 100
+shadow_size = 15
+shadow_color = Color(0, 0, 0, 0.666667)
+shadow_offset = Vector2(3, 3)
+
+[sub_resource type="LabelSettings" id="LabelSettings_wgg0m"]
+
+[node name="Menu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_svnde")
+
+[node name="MainVBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TitleMarginContainer" type="MarginContainer" parent="MainVBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 10
+
+[node name="TitleLabel" type="Label" parent="MainVBoxContainer/TitleMarginContainer"]
+layout_mode = 2
+text = "GAME TITLE"
+label_settings = SubResource("LabelSettings_a8r7b")
+horizontal_alignment = 1
+
+[node name="MainPanelContainer" type="PanelContainer" parent="MainVBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 2
+
+[node name="MainVBoxContainer" type="VBoxContainer" parent="MainVBoxContainer/MainPanelContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="StartButton" type="Button" parent="MainVBoxContainer/MainPanelContainer/MainVBoxContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 20
+text = "start"
+
+[node name="OptionsButton" type="Button" parent="MainVBoxContainer/MainPanelContainer/MainVBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 20
+toggle_mode = true
+text = "options"
+
+[node name="ResolutionHBoxContainer" type="HBoxContainer" parent="MainVBoxContainer/MainPanelContainer/MainVBoxContainer" groups=["options"]]
+visible = false
+layout_mode = 2
+alignment = 1
+
+[node name="ResolutionLabel" type="Label" parent="MainVBoxContainer/MainPanelContainer/MainVBoxContainer/ResolutionHBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "resolution"
+
+[node name="ResolutionMenuBar" type="OptionButton" parent="MainVBoxContainer/MainPanelContainer/MainVBoxContainer/ResolutionHBoxContainer"]
+layout_mode = 2
+
+[node name="FullscreenHBoxContainer" type="HBoxContainer" parent="MainVBoxContainer/MainPanelContainer/MainVBoxContainer" groups=["options"]]
+visible = false
+layout_mode = 2
+alignment = 1
+
+[node name="FullscreenLabel" type="Label" parent="MainVBoxContainer/MainPanelContainer/MainVBoxContainer/FullscreenHBoxContainer"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "fullscreen"
+label_settings = SubResource("LabelSettings_wgg0m")
+
+[node name="FullscreenCheckBox" type="CheckBox" parent="MainVBoxContainer/MainPanelContainer/MainVBoxContainer/FullscreenHBoxContainer"]
+layout_mode = 2
+
+[node name="MasterVolumeHBoxContainer" type="HBoxContainer" parent="MainVBoxContainer/MainPanelContainer/MainVBoxContainer" groups=["options"]]
+visible = false
+layout_mode = 2
+
+[node name="MasterVolumeLabel" type="Label" parent="MainVBoxContainer/MainPanelContainer/MainVBoxContainer/MasterVolumeHBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "master volume"
+
+[node name="MasterVolumeHSlider" type="HSlider" parent="MainVBoxContainer/MainPanelContainer/MainVBoxContainer/MasterVolumeHBoxContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_vertical = 4
+value = 100.0
+
+[node name="MusicVolumeHBoxContainer" type="HBoxContainer" parent="MainVBoxContainer/MainPanelContainer/MainVBoxContainer" groups=["options"]]
+visible = false
+layout_mode = 2
+
+[node name="MusicVolumeLabel" type="Label" parent="MainVBoxContainer/MainPanelContainer/MainVBoxContainer/MusicVolumeHBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "music volume"
+
+[node name="MusicVolumeHSlider" type="HSlider" parent="MainVBoxContainer/MainPanelContainer/MainVBoxContainer/MusicVolumeHBoxContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_vertical = 4
+value = 100.0
+
+[node name="SFXVolumeHBoxContainer" type="HBoxContainer" parent="MainVBoxContainer/MainPanelContainer/MainVBoxContainer" groups=["options"]]
+visible = false
+layout_mode = 2
+
+[node name="SFXVolumeLabel" type="Label" parent="MainVBoxContainer/MainPanelContainer/MainVBoxContainer/SFXVolumeHBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "sfx volume"
+
+[node name="SFXVolumeHSlider" type="HSlider" parent="MainVBoxContainer/MainPanelContainer/MainVBoxContainer/SFXVolumeHBoxContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_vertical = 4
+value = 100.0
+
+[node name="SensitivityHBoxContainer" type="HBoxContainer" parent="MainVBoxContainer/MainPanelContainer/MainVBoxContainer" groups=["options"]]
+visible = false
+layout_mode = 2
+
+[node name="SensitivityLabel" type="Label" parent="MainVBoxContainer/MainPanelContainer/MainVBoxContainer/SensitivityHBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "mouse sensitivity"
+
+[node name="SensitivityHSlider" type="HSlider" parent="MainVBoxContainer/MainPanelContainer/MainVBoxContainer/SensitivityHBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_vertical = 4
+min_value = 0.01
+max_value = 0.3
+step = 0.01
+value = 0.15
+
+[node name="ControlsButton" type="Button" parent="MainVBoxContainer/MainPanelContainer/MainVBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 20
+toggle_mode = true
+text = "controls"
+
+[node name="ForwardHBoxContainer" type="HBoxContainer" parent="MainVBoxContainer/MainPanelContainer/MainVBoxContainer" groups=["controls"]]
+visible = false
+layout_mode = 2
+alignment = 1
+
+[node name="ForwardLabel" type="Label" parent="MainVBoxContainer/MainPanelContainer/MainVBoxContainer/ForwardHBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "forward"
+
+[node name="ForwardButton" type="Button" parent="MainVBoxContainer/MainPanelContainer/MainVBoxContainer/ForwardHBoxContainer"]
+custom_minimum_size = Vector2(60, 0)
+layout_mode = 2
+text = "w"
+
+[node name="BackwardHBoxContainer" type="HBoxContainer" parent="MainVBoxContainer/MainPanelContainer/MainVBoxContainer" groups=["controls"]]
+visible = false
+layout_mode = 2
+alignment = 1
+
+[node name="BackwardLabel" type="Label" parent="MainVBoxContainer/MainPanelContainer/MainVBoxContainer/BackwardHBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "backward"
+
+[node name="BackwardButton" type="Button" parent="MainVBoxContainer/MainPanelContainer/MainVBoxContainer/BackwardHBoxContainer"]
+custom_minimum_size = Vector2(60, 0)
+layout_mode = 2
+text = "s"
+
+[node name="LeftHBoxContainer" type="HBoxContainer" parent="MainVBoxContainer/MainPanelContainer/MainVBoxContainer" groups=["controls"]]
+visible = false
+layout_mode = 2
+alignment = 1
+
+[node name="LeftLabel" type="Label" parent="MainVBoxContainer/MainPanelContainer/MainVBoxContainer/LeftHBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "left"
+
+[node name="LeftButton" type="Button" parent="MainVBoxContainer/MainPanelContainer/MainVBoxContainer/LeftHBoxContainer"]
+custom_minimum_size = Vector2(60, 0)
+layout_mode = 2
+text = "a"
+
+[node name="RightHBoxContainer" type="HBoxContainer" parent="MainVBoxContainer/MainPanelContainer/MainVBoxContainer" groups=["controls"]]
+visible = false
+layout_mode = 2
+alignment = 1
+
+[node name="RightLabel" type="Label" parent="MainVBoxContainer/MainPanelContainer/MainVBoxContainer/RightHBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "right"
+
+[node name="RightButton" type="Button" parent="MainVBoxContainer/MainPanelContainer/MainVBoxContainer/RightHBoxContainer"]
+custom_minimum_size = Vector2(60, 0)
+layout_mode = 2
+text = "d"
+
+[node name="JumpHBoxContainer" type="HBoxContainer" parent="MainVBoxContainer/MainPanelContainer/MainVBoxContainer" groups=["controls"]]
+visible = false
+layout_mode = 2
+alignment = 1
+
+[node name="JumpLabel" type="Label" parent="MainVBoxContainer/MainPanelContainer/MainVBoxContainer/JumpHBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "jump"
+
+[node name="JumpButton" type="Button" parent="MainVBoxContainer/MainPanelContainer/MainVBoxContainer/JumpHBoxContainer"]
+custom_minimum_size = Vector2(60, 0)
+layout_mode = 2
+text = "space"
+
+[node name="InteractHBoxContainer" type="HBoxContainer" parent="MainVBoxContainer/MainPanelContainer/MainVBoxContainer" groups=["controls"]]
+visible = false
+layout_mode = 2
+alignment = 1
+
+[node name="InteractLabel" type="Label" parent="MainVBoxContainer/MainPanelContainer/MainVBoxContainer/InteractHBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "interact"
+
+[node name="InteractButton" type="Button" parent="MainVBoxContainer/MainPanelContainer/MainVBoxContainer/InteractHBoxContainer"]
+custom_minimum_size = Vector2(60, 0)
+layout_mode = 2
+text = "f"
+
+[node name="CrouchHBoxContainer" type="HBoxContainer" parent="MainVBoxContainer/MainPanelContainer/MainVBoxContainer" groups=["controls"]]
+visible = false
+layout_mode = 2
+alignment = 1
+
+[node name="CrouchLabel" type="Label" parent="MainVBoxContainer/MainPanelContainer/MainVBoxContainer/CrouchHBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "crouch"
+
+[node name="CrouchButton" type="Button" parent="MainVBoxContainer/MainPanelContainer/MainVBoxContainer/CrouchHBoxContainer"]
+custom_minimum_size = Vector2(60, 0)
+layout_mode = 2
+text = "ctl"
+
+[node name="SprintHBoxContainer" type="HBoxContainer" parent="MainVBoxContainer/MainPanelContainer/MainVBoxContainer" groups=["controls"]]
+visible = false
+layout_mode = 2
+alignment = 1
+
+[node name="SprintLabel" type="Label" parent="MainVBoxContainer/MainPanelContainer/MainVBoxContainer/SprintHBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "sprint"
+
+[node name="SprintButton" type="Button" parent="MainVBoxContainer/MainPanelContainer/MainVBoxContainer/SprintHBoxContainer"]
+custom_minimum_size = Vector2(60, 0)
+layout_mode = 2
+text = "shift"
+
+[node name="MenuToggleHBoxContainer" type="HBoxContainer" parent="MainVBoxContainer/MainPanelContainer/MainVBoxContainer" groups=["controls"]]
+visible = false
+layout_mode = 2
+alignment = 1
+
+[node name="MenuToggleLabel" type="Label" parent="MainVBoxContainer/MainPanelContainer/MainVBoxContainer/MenuToggleHBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "menu toggle"
+
+[node name="MenuToggleButton" type="Button" parent="MainVBoxContainer/MainPanelContainer/MainVBoxContainer/MenuToggleHBoxContainer"]
+custom_minimum_size = Vector2(60, 0)
+layout_mode = 2
+text = "esc"
+
+[node name="QuitButton" type="Button" parent="MainVBoxContainer/MainPanelContainer/MainVBoxContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 20
+text = "quit"
+
+[connection signal="button_down" from="MainVBoxContainer/MainPanelContainer/MainVBoxContainer/StartButton" to="." method="_on_button_down"]
+[connection signal="button_up" from="MainVBoxContainer/MainPanelContainer/MainVBoxContainer/StartButton" to="." method="_on_button_up"]
+[connection signal="pressed" from="MainVBoxContainer/MainPanelContainer/MainVBoxContainer/StartButton" to="." method="_on_start_button_pressed"]
+[connection signal="button_down" from="MainVBoxContainer/MainPanelContainer/MainVBoxContainer/OptionsButton" to="." method="_on_button_down"]
+[connection signal="button_up" from="MainVBoxContainer/MainPanelContainer/MainVBoxContainer/OptionsButton" to="." method="_on_button_up"]
+[connection signal="toggled" from="MainVBoxContainer/MainPanelContainer/MainVBoxContainer/OptionsButton" to="." method="_on_options_button_toggled"]
+[connection signal="drag_ended" from="MainVBoxContainer/MainPanelContainer/MainVBoxContainer/SensitivityHBoxContainer/SensitivityHSlider" to="." method="_on_sensitivity_volume_h_slider_drag_ended"]
+[connection signal="button_down" from="MainVBoxContainer/MainPanelContainer/MainVBoxContainer/ControlsButton" to="." method="_on_button_down"]
+[connection signal="button_up" from="MainVBoxContainer/MainPanelContainer/MainVBoxContainer/ControlsButton" to="." method="_on_button_up"]
+[connection signal="toggled" from="MainVBoxContainer/MainPanelContainer/MainVBoxContainer/ControlsButton" to="." method="_on_controls_button_toggled"]
+[connection signal="button_down" from="MainVBoxContainer/MainPanelContainer/MainVBoxContainer/QuitButton" to="." method="_on_button_down"]
+[connection signal="button_up" from="MainVBoxContainer/MainPanelContainer/MainVBoxContainer/QuitButton" to="." method="_on_button_up"]
+[connection signal="pressed" from="MainVBoxContainer/MainPanelContainer/MainVBoxContainer/QuitButton" to="." method="_on_quit_button_pressed"]
