@@ -40,6 +40,7 @@ func _on_controls_button_toggled(toggled_on):
 func _on_sensitivity_volume_h_slider_drag_ended(value_changed):
 	if value_changed:
 		Config.set_config(Game.OPTIONS_GROUP_NAME, Game.MOUSE_SENSITIVITY_CONFIG_NAME, %SensitivityHSlider.value)
+		Game.mouse_sensitivity = %SensitivityHSlider.value
 
 func _on_quit_button_pressed():
 	get_tree().quit()
