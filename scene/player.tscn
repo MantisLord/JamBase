@@ -1,14 +1,23 @@
-[gd_scene load_steps=3 format=3 uid="uid://cq7jn8ibk56a"]
+[gd_scene load_steps=4 format=3 uid="uid://cq7jn8ibk56a"]
 
 [ext_resource type="Script" path="res://script/player.gd" id="1_0aebm"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_v13iy"]
 
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_qqblw"]
+height = 1.2
+
 [node name="Player" type="CharacterBody3D"]
 script = ExtResource("1_0aebm")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+[node name="StandCollisionShape3D" type="CollisionShape3D" parent="."]
+unique_name_in_owner = true
 shape = SubResource("CapsuleShape3D_v13iy")
+
+[node name="CrouchCollisionShape3D" type="CollisionShape3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.4, 0)
+shape = SubResource("CapsuleShape3D_qqblw")
 
 [node name="Head" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
@@ -27,3 +36,8 @@ offset_bottom = 40.0
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 23.0
+
+[node name="HeadCollisionRayCast3D" type="RayCast3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+target_position = Vector3(0, 2, 0)

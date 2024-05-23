@@ -1,8 +1,10 @@
-[gd_scene load_steps=4 format=3 uid="uid://c30oyit3fjbso"]
+[gd_scene load_steps=6 format=3 uid="uid://c30oyit3fjbso"]
 
 [ext_resource type="Script" path="res://script/audio_manager.gd" id="1_nxs1i"]
 [ext_resource type="AudioStream" uid="uid://crv2yi16qk1nj" path="res://sound/button_down.wav" id="3_5yfu5"]
+[ext_resource type="AudioStream" uid="uid://bjnhh6p2ukg3s" path="res://sound/jump.mp3" id="4_3qxsk"]
 [ext_resource type="AudioStream" uid="uid://cqars18fto4vf" path="res://sound/button_up.wav" id="4_7s61m"]
+[ext_resource type="AudioStream" uid="uid://17av0562vc1q" path="res://sound/footsteps.mp3" id="5_mokmy"]
 
 [node name="AudioManager" type="Node"]
 script = ExtResource("1_nxs1i")
@@ -12,3 +14,9 @@ stream = ExtResource("3_5yfu5")
 
 [node name="ButtonUpAudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("4_7s61m")
+
+[node name="JumpAudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_3qxsk")
+
+[node name="FootstepsAudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_mokmy")
