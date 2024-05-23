@@ -1,5 +1,9 @@
 extends Control
 
+var remapping_control = false
+var remap_action_name
+var remap_control_original_text
+
 func _ready():
 	_initialize_settings_from_config()
 	
@@ -44,3 +48,18 @@ func _on_sensitivity_volume_h_slider_drag_ended(value_changed):
 
 func _on_quit_button_pressed():
 	get_tree().quit()
+
+func _on_forward_button_pressed():
+	_remap_control(%ForwardButton, Game.ACTION_FORWARD)
+	
+func _input(event: InputEvent) -> void:
+	if event is InputEventKey and remapping_control:
+		emit_signal("")
+			
+		
+		
+func _remap_control(control_button, action_name):
+	remapping_control = true
+	remap_action_name = action_name
+	remap_control_original_text = control_button.text
+	control_button.text = "..."

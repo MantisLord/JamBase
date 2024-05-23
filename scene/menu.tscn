@@ -175,6 +175,7 @@ size_flags_horizontal = 3
 text = "forward"
 
 [node name="ForwardButton" type="Button" parent="MainVBoxContainer/MainPanelContainer/MainVBoxContainer/ForwardHBoxContainer"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(60, 0)
 layout_mode = 2
 text = "w"
@@ -316,6 +317,7 @@ text = "quit"
 [connection signal="button_down" from="MainVBoxContainer/MainPanelContainer/MainVBoxContainer/ControlsButton" to="." method="_on_button_down"]
 [connection signal="button_up" from="MainVBoxContainer/MainPanelContainer/MainVBoxContainer/ControlsButton" to="." method="_on_button_up"]
 [connection signal="toggled" from="MainVBoxContainer/MainPanelContainer/MainVBoxContainer/ControlsButton" to="." method="_on_controls_button_toggled"]
+[connection signal="pressed" from="MainVBoxContainer/MainPanelContainer/MainVBoxContainer/ForwardHBoxContainer/ForwardButton" to="." method="_on_forward_button_pressed"]
 [connection signal="button_down" from="MainVBoxContainer/MainPanelContainer/MainVBoxContainer/QuitButton" to="." method="_on_button_down"]
 [connection signal="button_up" from="MainVBoxContainer/MainPanelContainer/MainVBoxContainer/QuitButton" to="." method="_on_button_up"]
 [connection signal="pressed" from="MainVBoxContainer/MainPanelContainer/MainVBoxContainer/QuitButton" to="." method="_on_quit_button_pressed"]

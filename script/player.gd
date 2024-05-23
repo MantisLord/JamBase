@@ -23,7 +23,7 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 var play_footsteps_sfx = false
 var speed = 0.0
 var head_bob_time = 0.0
-
+		
 func _process(delta):
 	if Input.is_action_just_pressed("menu"):
 		Menu.visible = !Menu.visible
