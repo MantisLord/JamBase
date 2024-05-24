@@ -37,6 +37,11 @@ text = "GAME TITLE"
 label_settings = SubResource("LabelSettings_a8r7b")
 horizontal_alignment = 1
 
+[node name="DebugLabel" type="Label" parent="MainVBoxContainer/TitleMarginContainer"]
+layout_mode = 2
+text = "
+"
+
 [node name="MainPanelContainer" type="PanelContainer" parent="MainVBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
@@ -163,6 +168,13 @@ size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 20
 toggle_mode = true
 text = "controls"
+
+[node name="ControlsLabel" type="Label" parent="MainVBoxContainer/MainPanelContainer/MainVBoxContainer" groups=["controls"]]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "click a button to remap action"
 
 [node name="ForwardHBoxContainer" type="HBoxContainer" parent="MainVBoxContainer/MainPanelContainer/MainVBoxContainer" groups=["controls"]]
 visible = false

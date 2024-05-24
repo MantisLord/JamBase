@@ -2,7 +2,12 @@ extends Control
 
 var remapping_control = false
 var remap_action_name
-var remap_control_original_text
+var remap_control_button
+
+var last_input_event : InputEvent
+
+const controls_label_default = "click a button to remap action"
+const controls_label_remapping = ""
 
 func _ready():
 	_initialize_settings_from_config()
@@ -50,16 +55,32 @@ func _on_quit_button_pressed():
 	get_tree().quit()
 
 func _on_forward_button_pressed():
-	_remap_control(%ForwardButton, Game.ACTION_FORWARD)
+	_start_remap_control(%ForwardButton, Game.ACTION_FORWARD)
 	
-func _input(event: InputEvent) -> void:
+func _unhandled_input(event):
+	if !visible:
+		return
 	if event is InputEventKey and remapping_control:
-		emit_signal("")
-			
+		var input_event_text = OS.get_keycode_string(event.get_physical_keycode_with_modifiers())
+		if input_event_text.is_empty():
+			return
+		last_input_event = event
+		$MainVBoxContainer/TitleMarginContainer/DebugLabel.text += "\r\nlast_input_event: " + input_event_text
+		remapping_control = false
+		remap_control_button.text = input_event_text
+		#InputMap.action_erase_event(remap_action_name, )
+		_toggle_buttons_in_group(Game.OPTIONS_GROUP_NAME, false)
+
+func _toggle_buttons_in_group(group_name, disabled):
+	for member in get_tree().get_nodes_in_group(group_name):
+		if member is Button:
+			member.disabled = disabled		
 		
 		
-func _remap_control(control_button, action_name):
+func _start_remap_control(control_button, action_name):
+	_toggle_buttons_in_group(Game.OPTIONS_GROUP_NAME, true)
 	remapping_control = true
 	remap_action_name = action_name
-	remap_control_original_text = control_button.text
+	remap_control_button = control_button
 	control_button.text = "..."
+	$MainVBoxContainer/TitleMarginContainer/DebugLabel.text = "remap_action_name: " + remap_action_name
