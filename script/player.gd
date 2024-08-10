@@ -47,7 +47,7 @@ func _physics_process(delta):
 	# Handle jump.
 	if Input.is_action_just_pressed("jump") and is_on_floor():
 		velocity.y = JUMP_VELOCITY
-		AudioManager.jump_sfx.play()
+		AudioManager.play_sfx(AudioManager.jump_sfx, 0.1)
 		play_footsteps_sfx = false
 
 	# Get the input direction.
@@ -96,7 +96,7 @@ func _physics_process(delta):
 	if !play_footsteps_sfx:
 		AudioManager.footsteps_sfx.stop()
 	elif !AudioManager.footsteps_sfx.playing:
-		AudioManager.footsteps_sfx.play(randi_range(0, 50))
+		AudioManager.play_sfx(AudioManager.footsteps_sfx, 0.5, randi_range(0, 50))
 	
 	# FOV
 	var velocity_clamped = clamp(velocity.length(), 0.5, SPEED_SPRINT * 2.0)

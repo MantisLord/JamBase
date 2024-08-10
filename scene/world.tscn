@@ -1,9 +1,19 @@
-[gd_scene load_steps=6 format=3 uid="uid://n0wmlukh4m02"]
+[gd_scene load_steps=8 format=3 uid="uid://n0wmlukh4m02"]
 
 [ext_resource type="PackedScene" uid="uid://cq7jn8ibk56a" path="res://scene/player.tscn" id="1_yw80t"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_evj4g"]
 albedo_color = Color(0.291845, 0.837691, 0.982231, 1)
+metallic = 1.0
+roughness = 0.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3kw0w"]
+albedo_color = Color(0.968627, 0.0196078, 0, 1)
+metallic = 1.0
+roughness = 0.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kuiqp"]
+albedo_color = Color(0.968627, 1, 0, 1)
 metallic = 1.0
 roughness = 0.0
 
@@ -19,10 +29,28 @@ sky = SubResource("Sky_yoc1e")
 [node name="World" type="Node3D"]
 
 [node name="CSGBox3D" type="CSGBox3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.236572, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.71087, 0)
 material_override = SubResource("StandardMaterial3D_evj4g")
 use_collision = true
-size = Vector3(10, 0.01, 10)
+size = Vector3(10, 0.75, 10)
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.014, -3.12114, -7.968)
+material_override = SubResource("StandardMaterial3D_3kw0w")
+use_collision = true
+size = Vector3(10, 1, 10)
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, -1.23875, -6)
+material_override = SubResource("StandardMaterial3D_kuiqp")
+use_collision = true
+size = Vector3(2, 0.5, 2)
+
+[node name="CSGBox3D5" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, -2.23875, -8)
+material_override = SubResource("StandardMaterial3D_kuiqp")
+use_collision = true
+size = Vector3(2, 0.5, 2)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_nkv7t")
