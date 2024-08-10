@@ -14,7 +14,6 @@ stream = ExtResource("3_5yfu5")
 
 [node name="ButtonUpAudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("4_7s61m")
-volume_db = 10.0
 
 [node name="JumpAudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("4_3qxsk")

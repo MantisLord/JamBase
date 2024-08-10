@@ -24,7 +24,7 @@ var play_footsteps_sfx = false
 var speed = 0.0
 var head_bob_time = 0.0
 		
-func _process(delta):
+func _process(_delta):
 	if Input.is_action_just_pressed("menu"):
 		Menu.visible = !Menu.visible
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE if Menu.visible else Input.MOUSE_MODE_CAPTURED
