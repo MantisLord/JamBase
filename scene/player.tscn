@@ -1,11 +1,27 @@
-[gd_scene load_steps=4 format=3 uid="uid://cq7jn8ibk56a"]
+[gd_scene load_steps=6 format=3 uid="uid://cq7jn8ibk56a"]
 
 [ext_resource type="Script" path="res://script/player.gd" id="1_0aebm"]
+[ext_resource type="PackedScene" uid="uid://dhf0yu2i6obb0" path="res://scene/menu.tscn" id="2_b1yb2"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_v13iy"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_qqblw"]
 height = 1.2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yumv1"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(0, 0, 0, 0.294118)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
 
 [node name="Player" type="CharacterBody3D"]
 script = ExtResource("1_0aebm")
@@ -31,13 +47,62 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.5)
 
+[node name="InteractRayCast3D" type="RayCast3D" parent="Head"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.5)
+target_position = Vector3(0, 0, -3)
+collision_mask = 2
+
 [node name="UI" type="Control" parent="."]
 layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="DebugLabel" type="Label" parent="UI"]
+unique_name_in_owner = true
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 23.0
+text = "DEBUG LABEL"
+
+[node name="InteractLabel" type="Label" parent="UI"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -11.5
+offset_right = 20.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "INTERACT LABEL"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="UI"]
+custom_minimum_size = Vector2(250, 100)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -18.0
+offset_bottom = 18.0
+grow_horizontal = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_yumv1")
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 2
+
+[node name="DevLogLabel" type="Label" parent="UI/ScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "This is the super secret dev log :)"
+
+[node name="Menu" parent="UI" instance=ExtResource("2_b1yb2")]
+unique_name_in_owner = true
+layout_mode = 1

@@ -4,11 +4,6 @@ var remapping_control = false
 var remap_action_name
 var remap_control_button
 
-var last_input_event : InputEvent
-
-const controls_label_default = "click a button to remap action"
-const controls_label_remapping = ""
-
 func _ready():
 	_initialize_settings_from_config()
 	var control_buttons = get_tree().get_nodes_in_group("control_buttons")
@@ -19,12 +14,23 @@ func _initialize_settings_from_config():
 	var sensitivity = Config.get_config("options", Game.MOUSE_SENSITIVITY_CONFIG_NAME)
 	%SensitivityHSlider.value = sensitivity
 	Game.mouse_sensitivity = sensitivity
+	
+	var master_volume = Config.get_config("options", Game.MASTER_VOLUME_CONFIG_NAME, 1.0)
+	%MasterVolumeHSlider.value = master_volume * 100
+	Game.master_volume = master_volume
+	
+	var sfx_volume = Config.get_config("options", Game.SFX_VOLUME_CONFIG_NAME, 1.0)
+	%SFXVolumeHSlider.value = sfx_volume * 100
+	Game.sfx_volume = sfx_volume
+	
+	var music_volume = Config.get_config("options", Game.MUSIC_VOLUME_CONFIG_NAME, 1.0)
+	%MusicVolumeHSlider.value = music_volume * 100
+	Game.music_volume = music_volume
+	
 	print("set sensitivity to %f for both game/menu" % sensitivity)
 
 func _on_start_button_pressed():
 	Game.change_scene("world")
-	Menu.visible = false
-	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
 func _on_button_down():
 	AudioManager.play_sfx(AudioManager.button_down_sfx, 1.5)
@@ -51,7 +57,7 @@ func _on_controls_button_toggled(toggled_on):
 
 func _on_sensitivity_volume_h_slider_drag_ended(value_changed):
 	if value_changed:
-		Config.set_config(Game.OPTIONS_GROUP_NAME, Game.MOUSE_SENSITIVITY_CONFIG_NAME, %SensitivityHSlider.value)
+		Config.set_config("options", Game.MOUSE_SENSITIVITY_CONFIG_NAME, %SensitivityHSlider.value)
 		Game.mouse_sensitivity = %SensitivityHSlider.value
 
 func _on_quit_button_pressed():
@@ -63,22 +69,17 @@ func _on_control_button_remap_pressed(button: Button):
 	remap_action_name = button.name.replace("Button","").to_lower()
 	remap_control_button = button
 	remap_control_button.text = "..."
-	%DebugLabel.text = "remap_action_name: " + remap_action_name
 
-func _unhandled_input(event):
+func _input(event):
 	if !visible:
 		return
-	if event is InputEventKey and remapping_control:
-		var input_event_text = OS.get_keycode_string(event.get_physical_keycode_with_modifiers())
-		if input_event_text.is_empty():
-			return
-		last_input_event = event
-		%DebugLabel.text += "\r\nlast_input_event: " + input_event_text
-		remapping_control = false
-		remap_control_button.text = input_event_text
-		InputMap.action_erase_events(remap_action_name)
-		InputMap.action_add_event(remap_action_name, event)
-		_toggle_buttons_in_group("control_buttons", false)
+	if remapping_control:
+		if (event is InputEventMouseButton or event is InputEventKey) and event.pressed:
+			remap_control_button.text = get_key_name_from_event(event)
+			InputMap.action_erase_events(remap_action_name)
+			InputMap.action_add_event(remap_action_name, event)
+			remapping_control = false
+			_toggle_buttons_in_group("control_buttons", false)
 
 func _toggle_buttons_in_group(group_name, disabled):
 	for member in get_tree().get_nodes_in_group(group_name):
@@ -99,10 +100,39 @@ func _on_fullscreen_check_box_toggled(toggled_on):
 		DisplayServer.window_set_position(new_position)
 
 func _on_master_volume_h_slider_value_changed(value):
-	AudioManager.set_master_volume(value / 100)
+	Config.set_config("options", Game.MASTER_VOLUME_CONFIG_NAME, value / 100)
+	Game.master_volume = value / 100
 
 func _on_music_volume_h_slider_value_changed(value):
-	AudioManager.set_music_volume(value / 100)
+	Config.set_config("options", Game.MUSIC_VOLUME_CONFIG_NAME, value / 100)
+	Game.music_volume = value / 100
 
 func _on_sfx_volume_h_slider_value_changed(value):
-	AudioManager.set_sfx_volume(value / 100)
+	Config.set_config("options", Game.SFX_VOLUME_CONFIG_NAME, value / 100)
+	Game.sfx_volume = value / 100
+
+func get_mouse_button_string(button_index: int) -> String:
+	match button_index:
+		MOUSE_BUTTON_LEFT:
+			return "LMouse"
+		MOUSE_BUTTON_RIGHT:
+			return "RMouse"
+		MOUSE_BUTTON_MIDDLE:
+			return "MidMouse"
+		MOUSE_BUTTON_WHEEL_UP:
+			return "WheelUp"
+		MOUSE_BUTTON_WHEEL_DOWN:
+			return "WheelDown"
+		MOUSE_BUTTON_XBUTTON1:
+			return "Mouse4"
+		MOUSE_BUTTON_XBUTTON2:
+			return "Mouse5"
+		_:
+			return "Mouse%d" % button_index
+
+func get_key_name_from_event(event) -> String:
+	if event is InputEventKey:
+		return OS.get_keycode_string(event.get_physical_keycode_with_modifiers())
+	elif event is InputEventMouseButton:
+		return get_mouse_button_string(event.button_index)
+	return "No key or mouse button assigned"

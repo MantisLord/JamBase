@@ -23,16 +23,28 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 var play_footsteps_sfx = false
 var speed = 0.0
 var head_bob_time = 0.0
-		
+
+func _ready():
+	%Menu.visible = false
+	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+
 func _process(_delta):
 	if Input.is_action_just_pressed("menu"):
-		Menu.visible = !Menu.visible
-		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE if Menu.visible else Input.MOUSE_MODE_CAPTURED
-	$UI/DebugLabel.text = "FPS: %f" % Engine.get_frames_per_second()
-	$UI/DebugLabel.text += "\r\nmouse_sensitivity: %f" % Game.mouse_sensitivity
-	$UI/DebugLabel.text += "\r\nPlayer Position: %s" % str(position)
+		%Menu.visible = !%Menu.visible
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE if %Menu.visible else Input.MOUSE_MODE_CAPTURED
+		
+	%DebugLabel.text = "FPS: %f" % Engine.get_frames_per_second()
+	%DebugLabel.text += "\r\nmouse_sensitivity: %f" % Game.mouse_sensitivity
+	%DebugLabel.text += "\r\nPlayer Position: %s" % str(position)
+	
+	if %InteractRayCast3D.is_colliding():
+		var collider = %InteractRayCast3D.get_collider()
+		if collider is Interactable:		
+			%InteractLabel.text = "Press %s to interact with %s." % %Menu.get_key_name_from_action("interact") % collider.name
+	else:
+		%InteractLabel.text = ""
 
-func _unhandled_input(event):
+func _input(event):
 	if event is InputEventMouseMotion and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
 		$Head.rotate_y(deg_to_rad(-event.relative.x * Game.mouse_sensitivity))
 		%Cam.rotate_x(deg_to_rad(-event.relative.y * Game.mouse_sensitivity))
@@ -47,7 +59,7 @@ func _physics_process(delta):
 	# Handle jump.
 	if Input.is_action_just_pressed("jump") and is_on_floor():
 		velocity.y = JUMP_VELOCITY
-		AudioManager.play_sfx(AudioManager.jump_sfx, 0.1)
+		AudioManager.play_sfx(AudioManager.jump_sfx, 0.05)
 		play_footsteps_sfx = false
 
 	# Get the input direction.
@@ -96,7 +108,7 @@ func _physics_process(delta):
 	if !play_footsteps_sfx:
 		AudioManager.footsteps_sfx.stop()
 	elif !AudioManager.footsteps_sfx.playing:
-		AudioManager.play_sfx(AudioManager.footsteps_sfx, 0.5, randi_range(0, 50))
+		AudioManager.play_sfx(AudioManager.footsteps_sfx, 0.1, randi_range(0, 50))
 	
 	# FOV
 	var velocity_clamped = clamp(velocity.length(), 0.5, SPEED_SPRINT * 2.0)
