@@ -85,7 +85,9 @@ text = "fullscreen"
 label_settings = SubResource("LabelSettings_wgg0m")
 
 [node name="FullscreenCheckBox" type="CheckBox" parent="MainVBoxContainer/MainPanelContainer/MainVBoxContainer/FullscreenHBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
+focus_mode = 0
 
 [node name="MasterVolumeHBoxContainer" type="HBoxContainer" parent="MainVBoxContainer/MainPanelContainer/MainVBoxContainer" groups=["options"]]
 visible = false
@@ -101,7 +103,6 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 size_flags_vertical = 4
-min_value = 1.0
 value = 100.0
 
 [node name="MusicVolumeHBoxContainer" type="HBoxContainer" parent="MainVBoxContainer/MainPanelContainer/MainVBoxContainer" groups=["options"]]
@@ -118,7 +119,6 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 size_flags_vertical = 4
-min_value = 1.0
 value = 100.0
 
 [node name="SFXVolumeHBoxContainer" type="HBoxContainer" parent="MainVBoxContainer/MainPanelContainer/MainVBoxContainer" groups=["options"]]
@@ -135,7 +135,6 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 size_flags_vertical = 4
-min_value = 1.0
 value = 100.0
 
 [node name="SensitivityHBoxContainer" type="HBoxContainer" parent="MainVBoxContainer/MainPanelContainer/MainVBoxContainer" groups=["options"]]
@@ -338,6 +337,8 @@ text = "quit"
 [connection signal="button_down" from="MainVBoxContainer/MainPanelContainer/MainVBoxContainer/OptionsButton" to="." method="_on_button_down"]
 [connection signal="button_up" from="MainVBoxContainer/MainPanelContainer/MainVBoxContainer/OptionsButton" to="." method="_on_button_up"]
 [connection signal="toggled" from="MainVBoxContainer/MainPanelContainer/MainVBoxContainer/OptionsButton" to="." method="_on_options_button_toggled"]
+[connection signal="button_down" from="MainVBoxContainer/MainPanelContainer/MainVBoxContainer/FullscreenHBoxContainer/FullscreenCheckBox" to="." method="_on_button_down"]
+[connection signal="button_up" from="MainVBoxContainer/MainPanelContainer/MainVBoxContainer/FullscreenHBoxContainer/FullscreenCheckBox" to="." method="_on_button_up"]
 [connection signal="toggled" from="MainVBoxContainer/MainPanelContainer/MainVBoxContainer/FullscreenHBoxContainer/FullscreenCheckBox" to="." method="_on_fullscreen_check_box_toggled"]
 [connection signal="value_changed" from="MainVBoxContainer/MainPanelContainer/MainVBoxContainer/MasterVolumeHBoxContainer/MasterVolumeHSlider" to="." method="_on_master_volume_h_slider_value_changed"]
 [connection signal="value_changed" from="MainVBoxContainer/MainPanelContainer/MainVBoxContainer/MusicVolumeHBoxContainer/MusicVolumeHSlider" to="." method="_on_music_volume_h_slider_value_changed"]

@@ -6,6 +6,7 @@ var remap_control_button
 
 func _ready():
 	_initialize_settings_from_config()
+	AudioManager.play_music(AudioManager.music_hurdy)
 	var control_buttons = get_tree().get_nodes_in_group("control_buttons")
 	for button in control_buttons:
 		button.connect("pressed", Callable(self, "_on_control_button_remap_pressed").bind(button))
@@ -27,16 +28,18 @@ func _initialize_settings_from_config():
 	%MusicVolumeHSlider.value = music_volume * 100
 	Game.music_volume = music_volume
 	
-	print("set sensitivity to %f for both game/menu" % sensitivity)
+	var fullscreen = Config.get_config("options", Game.FULLSCREEN_CONFIG_NAME, false)
+	%FullscreenCheckBox.button_pressed = fullscreen
+	Game.toggle_fullscreen(fullscreen)
 
 func _on_start_button_pressed():
 	Game.change_scene("world")
 
 func _on_button_down():
-	AudioManager.play_sfx(AudioManager.button_down_sfx, 1.5)
+	AudioManager.play_sfx(AudioManager.sfx_btn_down)
 
 func _on_button_up():
-	AudioManager.play_sfx(AudioManager.button_up_sfx, 1.5)
+	AudioManager.play_sfx(AudioManager.sfx_btn_up)
 
 func _toggle_group(toggled_on, group_name):
 	var members = get_tree().get_nodes_in_group(group_name)
@@ -87,29 +90,23 @@ func _toggle_buttons_in_group(group_name, disabled):
 			member.disabled = disabled
 
 func _on_fullscreen_check_box_toggled(toggled_on):
-	if toggled_on:
-		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
-	else:
-		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
-		DisplayServer.window_set_size(Vector2(800, 600))
-		var primary_screen_index = DisplayServer.get_primary_screen()
-		var screen_position = DisplayServer.screen_get_position(primary_screen_index)
-		var screen_size = DisplayServer.screen_get_size(primary_screen_index)
-		var window_size = DisplayServer.window_get_size()
-		var new_position = screen_position + (screen_size - window_size) / 2
-		DisplayServer.window_set_position(new_position)
+	Config.set_config("options", Game.FULLSCREEN_CONFIG_NAME, toggled_on)
+	Game.toggle_fullscreen(toggled_on)
 
 func _on_master_volume_h_slider_value_changed(value):
 	Config.set_config("options", Game.MASTER_VOLUME_CONFIG_NAME, value / 100)
 	Game.master_volume = value / 100
+	AudioManager.adjust_playing_audio()
 
 func _on_music_volume_h_slider_value_changed(value):
 	Config.set_config("options", Game.MUSIC_VOLUME_CONFIG_NAME, value / 100)
 	Game.music_volume = value / 100
+	AudioManager.adjust_playing_audio()
 
 func _on_sfx_volume_h_slider_value_changed(value):
 	Config.set_config("options", Game.SFX_VOLUME_CONFIG_NAME, value / 100)
 	Game.sfx_volume = value / 100
+	AudioManager.adjust_playing_audio()
 
 func get_mouse_button_string(button_index: int) -> String:
 	match button_index:

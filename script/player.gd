@@ -59,7 +59,7 @@ func _physics_process(delta):
 	# Handle jump.
 	if Input.is_action_just_pressed("jump") and is_on_floor():
 		velocity.y = JUMP_VELOCITY
-		AudioManager.play_sfx(AudioManager.jump_sfx, 0.05)
+		AudioManager.play_sfx(AudioManager.sfx_jump)
 		play_footsteps_sfx = false
 
 	# Get the input direction.
@@ -70,7 +70,7 @@ func _physics_process(delta):
 	if Input.is_action_pressed("crouch"):
 		$Head.position.y = lerp($Head.position.y, CROUCH_DEPTH, delta * SPEED_HEAD)
 		speed = SPEED_CROUCH
-		AudioManager.footsteps_sfx.pitch_scale = 0.6
+		AudioManager.sfx_footsteps.audio_player.pitch_scale = 0.6
 		%CrouchCollisionShape3D.disabled = false;
 		%StandCollisionShape3D.disabled = true;
 	elif !%HeadCollisionRayCast3D.is_colliding():
@@ -79,10 +79,10 @@ func _physics_process(delta):
 		$Head.position.y = lerp($Head.position.y, 0.5, delta * SPEED_HEAD)
 		if Input.is_action_pressed("sprint"):
 			speed = SPEED_SPRINT
-			AudioManager.footsteps_sfx.pitch_scale = 1.6
+			AudioManager.sfx_footsteps.audio_player.pitch_scale = 1.6
 		else:
 			speed = SPEED_RUN
-			AudioManager.footsteps_sfx.pitch_scale = 1.0
+			AudioManager.sfx_footsteps.audio_player.pitch_scale = 1.0
 
 	# Handle the movement/deceleration.
 	if is_on_floor():
@@ -106,9 +106,9 @@ func _physics_process(delta):
 	%Cam.transform.origin = pos
 	
 	if !play_footsteps_sfx:
-		AudioManager.footsteps_sfx.stop()
-	elif !AudioManager.footsteps_sfx.playing:
-		AudioManager.play_sfx(AudioManager.footsteps_sfx, 0.1, randi_range(0, 50))
+		AudioManager.sfx_footsteps.audio_player.stop()
+	elif !AudioManager.sfx_footsteps.audio_player.playing:
+		AudioManager.play_sfx(AudioManager.sfx_footsteps, randi_range(0, 50))
 	
 	# FOV
 	var velocity_clamped = clamp(velocity.length(), 0.5, SPEED_SPRINT * 2.0)
