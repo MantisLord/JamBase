@@ -21,6 +21,7 @@ func adjust_playing_audio():
 func play_sfx(audio_dict: Dictionary, from_position: float = 0.0):
 	adjust_vol(audio_dict)
 	audio_dict.audio_player.play(from_position)
+	print("played sfx audio at %f db" % audio_dict.audio_player.volume_db)
 
 func play_music(audio_dict: Dictionary):
 	adjust_vol(audio_dict, false)

@@ -1,7 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://cq7jn8ibk56a"]
+[gd_scene load_steps=12 format=3 uid="uid://cq7jn8ibk56a"]
 
 [ext_resource type="Script" path="res://script/player.gd" id="1_0aebm"]
 [ext_resource type="PackedScene" uid="uid://dhf0yu2i6obb0" path="res://scene/menu.tscn" id="2_b1yb2"]
+[ext_resource type="PackedScene" uid="uid://v33lj5o6jf8i" path="res://model/Pistol.glb" id="4_f24gv"]
+[ext_resource type="Texture2D" uid="uid://b1qnkm5ru5u12" path="res://image/pistol.png" id="4_wndun"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_v13iy"]
 
@@ -22,6 +24,75 @@ corner_radius_top_left = 5
 corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_54vpr"]
+bg_color = Color(0, 0, 0, 0.196078)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.8, 0.8, 0.8, 0.392157)
+
+[sub_resource type="Animation" id="Animation_gp7g2"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Head/Pistol:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(2, -1, -1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Head/Pistol:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 1.5708, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_2pcmr"]
+resource_name = "raise"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Head/Pistol:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(2, -1, -1), Vector3(0.458567, -0.382676, -1.18289)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Head/Pistol:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0.0928627, 1.0759, -0.0868371), Vector3(0, 1.5708, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ulrgn"]
+_data = {
+"RESET": SubResource("Animation_gp7g2"),
+"raise": SubResource("Animation_2pcmr")
+}
 
 [node name="Player" type="CharacterBody3D"]
 script = ExtResource("1_0aebm")
@@ -52,6 +123,9 @@ unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.5)
 target_position = Vector3(0, 0, -3)
 collision_mask = 2
+
+[node name="Pistol" parent="Head" instance=ExtResource("4_f24gv")]
+transform = Transform3D(-1.74845e-08, 0, 0.4, 0, 0.4, 0, -0.4, 0, -1.74846e-08, 2, -1, -1)
 
 [node name="UI" type="Control" parent="."]
 layout_mode = 3
@@ -106,3 +180,97 @@ text = "This is the super secret dev log :)"
 [node name="Menu" parent="UI" instance=ExtResource("2_b1yb2")]
 unique_name_in_owner = true
 layout_mode = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="UI"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -20.0
+offset_top = -40.0
+offset_right = 20.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_54vpr")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/PanelContainer"]
+layout_mode = 2
+
+[node name="ItemPanel1" type="Panel" parent="UI/PanelContainer/HBoxContainer"]
+clip_contents = true
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+
+[node name="PistolTextureRect" type="TextureRect" parent="UI/PanelContainer/HBoxContainer/ItemPanel1"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_wndun")
+expand_mode = 2
+
+[node name="Item1BindLabel" type="Label" parent="UI/PanelContainer/HBoxContainer/ItemPanel1"]
+visible = false
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -12.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 8
+text = "Keybind 1"
+horizontal_alignment = 2
+
+[node name="ItemPanel2" type="Panel" parent="UI/PanelContainer/HBoxContainer"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+
+[node name="PistolTextureRect" type="TextureRect" parent="UI/PanelContainer/HBoxContainer/ItemPanel2"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_wndun")
+expand_mode = 2
+
+[node name="Item2BindLabel" type="Label" parent="UI/PanelContainer/HBoxContainer/ItemPanel2"]
+visible = false
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -12.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 8
+text = "Keybind 2"
+horizontal_alignment = 2
+
+[node name="ItemPanel3" type="Panel" parent="UI/PanelContainer/HBoxContainer"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+
+[node name="ItemPanel4" type="Panel" parent="UI/PanelContainer/HBoxContainer"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+
+[node name="ItemPanel5" type="Panel" parent="UI/PanelContainer/HBoxContainer"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+unique_name_in_owner = true
+libraries = {
+"": SubResource("AnimationLibrary_ulrgn")
+}

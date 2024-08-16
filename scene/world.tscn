@@ -1,6 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://n0wmlukh4m02"]
+[gd_scene load_steps=10 format=3 uid="uid://n0wmlukh4m02"]
 
 [ext_resource type="PackedScene" uid="uid://cq7jn8ibk56a" path="res://scene/player.tscn" id="1_yw80t"]
+[ext_resource type="PackedScene" uid="uid://c0kjrmt0ol4ur" path="res://scene/item_pickup.tscn" id="2_mlqrx"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_evj4g"]
 albedo_color = Color(0.291845, 0.837691, 0.982231, 1)
@@ -14,6 +15,11 @@ roughness = 0.0
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kuiqp"]
 albedo_color = Color(0.968627, 1, 0, 1)
+metallic = 1.0
+roughness = 0.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qv0li"]
+albedo_color = Color(0.06, 1, 0.0913333, 1)
 metallic = 1.0
 roughness = 0.0
 
@@ -35,10 +41,10 @@ use_collision = true
 size = Vector3(10, 0.75, 10)
 
 [node name="CSGBox3D3" type="CSGBox3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.83292, -3.12114, -7.968)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.83292, -3.12114, -4.32451)
 material_override = SubResource("StandardMaterial3D_3kw0w")
 use_collision = true
-size = Vector3(13.6938, 1, 10)
+size = Vector3(13.6938, 1, 17.287)
 
 [node name="CSGBox3D4" type="CSGBox3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, -1.23875, -6)
@@ -52,8 +58,17 @@ material_override = SubResource("StandardMaterial3D_kuiqp")
 use_collision = true
 size = Vector3(2, 0.5, 2)
 
+[node name="CSGBox3D6" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.878626, -0.477511, 0, 0.477511, 0.878626, -9.28149, -4.29656, -9.00593)
+material_override = SubResource("StandardMaterial3D_qv0li")
+use_collision = true
+size = Vector3(7.35596, 0.5, 38.6666)
+
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_nkv7t")
 
 [node name="Player" parent="." instance=ExtResource("1_yw80t")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
+
+[node name="PistolPickup" parent="." instance=ExtResource("2_mlqrx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.39935, -2.62114, 3.72767)
