@@ -1,12 +1,12 @@
 extends Node3D
+class_name ItemPickup
 
-#@export_file("*.png") var icon_path: String
+@export var item_res: Item
 
-# Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
+	var scene = load(item_res.scene_path)
+	var instance = scene.instantiate()
+	instance.scale = item_res.display_scale
+	instance.rotation = item_res.pickup_rotation
+	%CollisionShape3D.shape.size = item_res.pickup_collider_size
+	add_child(instance)

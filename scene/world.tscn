@@ -1,7 +1,8 @@
-[gd_scene load_steps=10 format=3 uid="uid://n0wmlukh4m02"]
+[gd_scene load_steps=11 format=3 uid="uid://n0wmlukh4m02"]
 
 [ext_resource type="PackedScene" uid="uid://cq7jn8ibk56a" path="res://scene/player.tscn" id="1_yw80t"]
 [ext_resource type="PackedScene" uid="uid://c0kjrmt0ol4ur" path="res://scene/item_pickup.tscn" id="2_mlqrx"]
+[ext_resource type="Resource" uid="uid://d0ngofqqrc4mc" path="res://resource/pistol.tres" id="3_afoy2"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_evj4g"]
 albedo_color = Color(0.291845, 0.837691, 0.982231, 1)
@@ -71,4 +72,5 @@ environment = SubResource("Environment_nkv7t")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
 
 [node name="PistolPickup" parent="." instance=ExtResource("2_mlqrx")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.39935, -2.62114, 3.72767)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, -0.21521, 3)
+item_res = ExtResource("3_afoy2")

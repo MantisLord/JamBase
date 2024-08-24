@@ -1,21 +1,13 @@
-[gd_scene load_steps=14 format=3 uid="uid://cq7jn8ibk56a"]
+[gd_scene load_steps=11 format=3 uid="uid://cq7jn8ibk56a"]
 
 [ext_resource type="Script" path="res://script/player.gd" id="1_0aebm"]
 [ext_resource type="PackedScene" uid="uid://dhf0yu2i6obb0" path="res://scene/menu.tscn" id="2_b1yb2"]
+[ext_resource type="PackedScene" uid="uid://b0e5nh1ot07mm" path="res://scene/item_panel.tscn" id="3_obqth"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_v13iy"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_qqblw"]
 height = 1.2
-
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_xo4fh"]
-
-[sub_resource type="SphereMesh" id="SphereMesh_t37ui"]
-radius = 0.05
-height = 0.1
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7xmvg"]
-albedo_color = Color(1, 0.0823529, 1, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yumv1"]
 content_margin_left = 5.0
@@ -42,40 +34,14 @@ border_color = Color(0.8, 0.8, 0.8, 0.392157)
 
 [sub_resource type="Animation" id="Animation_gp7g2"]
 length = 0.001
-tracks/0/type = "position_3d"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Head/Cam/EquippedItemNode3D")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = PackedFloat32Array(0, 1, 2, -2, -1)
 
 [sub_resource type="Animation" id="Animation_2pcmr"]
 resource_name = "raise"
 length = 0.5
-tracks/0/type = "position_3d"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Head/Cam/EquippedItemNode3D")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = PackedFloat32Array(0, 1, 2, -2, -1, 0.5, 1, 0.5, -0.5, -1)
-
-[sub_resource type="Animation" id="Animation_l7vvt"]
-resource_name = "lower"
-length = 0.5
-tracks/0/type = "position_3d"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Head/Cam/EquippedItemNode3D")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = PackedFloat32Array(0, 1, 0.5, -0.5, -1, 0.5, 1, 2, -2, -1)
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ulrgn"]
 _data = {
 "RESET": SubResource("Animation_gp7g2"),
-"lower": SubResource("Animation_l7vvt"),
 "raise": SubResource("Animation_2pcmr")
 }
 
@@ -96,9 +62,6 @@ unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.4, 0)
 shape = SubResource("CapsuleShape3D_qqblw")
 
-[node name="BodyMeshInstance3D" type="MeshInstance3D" parent="."]
-mesh = SubResource("CapsuleMesh_xo4fh")
-
 [node name="Head" type="Node3D" parent="."]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
@@ -107,24 +70,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.5)
 
-[node name="InteractRayCast3D" type="RayCast3D" parent="Head/Cam"]
+[node name="InteractRayCast3D" type="RayCast3D" parent="Head"]
 unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.5)
 target_position = Vector3(0, 0, -3)
 collision_mask = 2
-collide_with_areas = true
-debug_shape_custom_color = Color(0.633084, 0.855017, 0, 1)
-debug_shape_thickness = 1
-
-[node name="EquippedItemNode3D" type="Node3D" parent="Head/Cam"]
-unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, -2, -1)
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Head/Cam/EquippedItemNode3D"]
-mesh = SubResource("SphereMesh_t37ui")
-surface_material_override/0 = SubResource("StandardMaterial3D_7xmvg")
-
-[node name="Camera3D" type="Camera3D" parent="Head"]
-transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, 1.5, 2)
 
 [node name="UI" type="Control" parent="."]
 layout_mode = 3
@@ -158,7 +108,6 @@ grow_vertical = 2
 text = "INTERACT LABEL"
 
 [node name="ScrollContainer" type="ScrollContainer" parent="UI"]
-unique_name_in_owner = true
 custom_minimum_size = Vector2(250, 100)
 layout_mode = 1
 anchors_preset = 1
@@ -167,8 +116,6 @@ anchor_right = 1.0
 offset_left = -18.0
 offset_bottom = 18.0
 grow_horizontal = 0
-focus_mode = 1
-mouse_filter = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_yumv1")
 horizontal_scroll_mode = 0
 vertical_scroll_mode = 2
@@ -183,9 +130,7 @@ text = "This is the super secret dev log :)"
 unique_name_in_owner = true
 layout_mode = 1
 
-[node name="InventoryPanelContainer" type="PanelContainer" parent="UI"]
-unique_name_in_owner = true
-visible = false
+[node name="EquipmentPanelContainer" type="PanelContainer" parent="UI"]
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -199,8 +144,22 @@ grow_horizontal = 2
 grow_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_54vpr")
 
-[node name="InventoryHBoxContainer" type="HBoxContainer" parent="UI/InventoryPanelContainer"]
-unique_name_in_owner = true
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/EquipmentPanelContainer"]
+layout_mode = 2
+
+[node name="ItemPanel1" parent="UI/EquipmentPanelContainer/HBoxContainer" instance=ExtResource("3_obqth")]
+layout_mode = 2
+
+[node name="ItemPanel2" parent="UI/EquipmentPanelContainer/HBoxContainer" instance=ExtResource("3_obqth")]
+layout_mode = 2
+
+[node name="ItemPanel3" parent="UI/EquipmentPanelContainer/HBoxContainer" instance=ExtResource("3_obqth")]
+layout_mode = 2
+
+[node name="ItemPanel4" parent="UI/EquipmentPanelContainer/HBoxContainer" instance=ExtResource("3_obqth")]
+layout_mode = 2
+
+[node name="ItemPanel5" parent="UI/EquipmentPanelContainer/HBoxContainer" instance=ExtResource("3_obqth")]
 layout_mode = 2
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]

@@ -132,4 +132,12 @@ func get_key_name_from_event(event) -> String:
 		return OS.get_keycode_string(event.get_physical_keycode_with_modifiers())
 	elif event is InputEventMouseButton:
 		return get_mouse_button_string(event.button_index)
-	return "No key or mouse button assigned"
+	return ""
+
+func get_key_name_from_action(action_name) -> String:
+	var input_events = InputMap.action_get_events(action_name)
+	var key_name = ""
+	for event in input_events:
+		if event is InputEventKey:
+			key_name = get_key_name_from_event(event)
+	return key_name
