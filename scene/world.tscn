@@ -71,6 +71,6 @@ environment = SubResource("Environment_nkv7t")
 [node name="Player" parent="." instance=ExtResource("1_yw80t")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
 
-[node name="PistolPickup" parent="." instance=ExtResource("2_mlqrx")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, -0.21521, 3)
+[node name="ItemPickup" parent="." instance=ExtResource("2_mlqrx")]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -0.291331, 3.47755, -4.96678)
 item_res = ExtResource("3_afoy2")

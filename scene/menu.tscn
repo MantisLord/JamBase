@@ -281,32 +281,43 @@ layout_mode = 2
 focus_mode = 0
 text = "Shift"
 
-[node name="ShootReloadHBoxContainer" type="HBoxContainer" parent="MainVBoxContainer/MainPanelContainer/MainVBoxContainer" groups=["controls"]]
+[node name="ShootReloadDropHBoxContainer" type="HBoxContainer" parent="MainVBoxContainer/MainPanelContainer/MainVBoxContainer" groups=["controls"]]
 visible = false
 layout_mode = 2
 alignment = 1
 
-[node name="ShootLabel" type="Label" parent="MainVBoxContainer/MainPanelContainer/MainVBoxContainer/ShootReloadHBoxContainer"]
+[node name="ShootLabel" type="Label" parent="MainVBoxContainer/MainPanelContainer/MainVBoxContainer/ShootReloadDropHBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "shoot/use item"
 
-[node name="ShootButton" type="Button" parent="MainVBoxContainer/MainPanelContainer/MainVBoxContainer/ShootReloadHBoxContainer" groups=["control_buttons"]]
+[node name="ShootButton" type="Button" parent="MainVBoxContainer/MainPanelContainer/MainVBoxContainer/ShootReloadDropHBoxContainer" groups=["control_buttons"]]
 custom_minimum_size = Vector2(60, 0)
 layout_mode = 2
 focus_mode = 0
 text = "LMouse"
 
-[node name="ReloadLabel" type="Label" parent="MainVBoxContainer/MainPanelContainer/MainVBoxContainer/ShootReloadHBoxContainer"]
+[node name="ReloadLabel" type="Label" parent="MainVBoxContainer/MainPanelContainer/MainVBoxContainer/ShootReloadDropHBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "reload"
 
-[node name="ReloadButton" type="Button" parent="MainVBoxContainer/MainPanelContainer/MainVBoxContainer/ShootReloadHBoxContainer" groups=["control_buttons"]]
+[node name="ReloadButton" type="Button" parent="MainVBoxContainer/MainPanelContainer/MainVBoxContainer/ShootReloadDropHBoxContainer" groups=["control_buttons"]]
 custom_minimum_size = Vector2(60, 0)
 layout_mode = 2
 focus_mode = 0
 text = "R"
+
+[node name="DropLabel" type="Label" parent="MainVBoxContainer/MainPanelContainer/MainVBoxContainer/ShootReloadDropHBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "drop"
+
+[node name="DropButton" type="Button" parent="MainVBoxContainer/MainPanelContainer/MainVBoxContainer/ShootReloadDropHBoxContainer" groups=["control_buttons"]]
+custom_minimum_size = Vector2(60, 0)
+layout_mode = 2
+focus_mode = 0
+text = "G"
 
 [node name="MenuNextPrevItemHBoxContainer" type="HBoxContainer" parent="MainVBoxContainer/MainPanelContainer/MainVBoxContainer" groups=["controls"]]
 visible = false
