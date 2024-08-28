@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://script/player.gd" id="1_0aebm"]
 [ext_resource type="PackedScene" uid="uid://dhf0yu2i6obb0" path="res://scene/menu.tscn" id="2_b1yb2"]
-[ext_resource type="Texture2D" uid="uid://c1tnbppj8ep8w" path="res://image/crosshair180.png" id="3_c4ms8"]
+[ext_resource type="Texture2D" uid="uid://drug5w86ewv2k" path="res://image/crosshair001.png" id="2_ijvjw"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_v13iy"]
 
@@ -113,8 +113,16 @@ unique_name_in_owner = true
 target_position = Vector3(0, 0, -3)
 collision_mask = 2
 collide_with_areas = true
-debug_shape_custom_color = Color(0.633084, 0.855017, 0, 1)
-debug_shape_thickness = 1
+
+[node name="AimRayCast3D" type="RayCast3D" parent="Head/Cam"]
+unique_name_in_owner = true
+target_position = Vector3(0, 0, -100)
+collision_mask = 3
+collide_with_areas = true
+
+[node name="AimRayEndNode3D" type="Node3D" parent="Head/Cam"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -101.5)
 
 [node name="EquippedItemNode3D" type="Node3D" parent="Head/Cam"]
 unique_name_in_owner = true
@@ -123,6 +131,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, -2, -1)
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Head/Cam/EquippedItemNode3D"]
 mesh = SubResource("SphereMesh_t37ui")
 surface_material_override/0 = SubResource("StandardMaterial3D_7xmvg")
+
+[node name="DropItemNode3D" type="Node3D" parent="Head/Cam"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.499785)
 
 [node name="Camera3D" type="Camera3D" parent="Head"]
 transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, 1.5, 2)
@@ -150,13 +162,30 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -20.0
+offset_left = -64.0
 offset_top = -11.5
-offset_right = 20.0
+offset_right = 64.0
 offset_bottom = 11.5
 grow_horizontal = 2
 grow_vertical = 2
 text = "INTERACT LABEL"
+
+[node name="CrosshairTextureRect" type="TextureRect" parent="UI"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -64.0
+offset_top = -64.0
+offset_right = 64.0
+offset_bottom = 64.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_ijvjw")
+stretch_mode = 5
 
 [node name="ScrollContainer" type="ScrollContainer" parent="UI"]
 unique_name_in_owner = true
@@ -203,21 +232,6 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_54vpr")
 [node name="InventoryHBoxContainer" type="HBoxContainer" parent="UI/InventoryPanelContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-
-[node name="CrosshairTextureRect" type="TextureRect" parent="UI"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -20.0
-offset_right = 20.0
-offset_bottom = 20.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("3_c4ms8")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 unique_name_in_owner = true

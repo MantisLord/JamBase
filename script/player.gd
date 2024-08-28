@@ -31,6 +31,8 @@ var item_panel = preload("res://scene/item_panel.tscn")
 var is_animating = false
 var item_pickup = preload("res://scene/item_pickup.tscn")
 
+var bullet = preload("res://scene/bullet.tscn")
+
 func _pick_up_item(item_res) -> void:
 	if !%InventoryPanelContainer.visible:
 		%InventoryPanelContainer.visible = true
@@ -59,8 +61,8 @@ func _drop_item(item_res) -> void:
 	await _unequip_item()
 	var pickup = item_pickup.instantiate()
 	pickup.item_res = item_res
-	pickup.position = position
 	get_tree().root.add_child(pickup)
+	pickup.global_position = %DropItemNode3D.global_position
 	inventory.remove_at(dropping_index)
 	var panel = %InventoryHBoxContainer.get_child(equipped_item_index)
 	%InventoryHBoxContainer.remove_child(panel)
@@ -92,7 +94,6 @@ func _equip_item(new_index) -> void:
 	var item_res = inventory[new_index]
 	var item_scene = load(item_res.scene_path)
 	equipped_item_instance = item_scene.instantiate()
-	#equipped_item_instance.scale = item_res.display_scale
 	var rotation_parent = Node3D.new()
 	rotation_parent.name = "weapon_rot_tracker"
 	%EquippedItemNode3D.add_child(rotation_parent)
@@ -112,10 +113,20 @@ func _shoot(weapon):
 		equipped_item_instance.get_node("AnimationPlayer").play("fire")
 		AudioManager.play_sfx_by_name(weapon.shoot_sound)
 		weapon.left_in_clip -= 1
+		
+		var bullet_instance = bullet.instantiate()
+		bullet_instance.position = equipped_item_instance.get_node("BarrelNode3D").global_position
+		get_tree().root.add_child(bullet_instance)
+		if %AimRayCast3D.is_colliding():
+			bullet_instance.set_velocity(%AimRayCast3D.get_collision_point())
+		else:
+			bullet_instance.set_velocity(%AimRayEndNode3D.global_position)
 	else:
 		AudioManager.play_sfx_by_name(weapon.clip_empty_sound)
 
 func _reload(weapon):
+	if weapon.left_in_clip == weapon.max_clip_size:
+		return
 	if weapon.total_ammo > 0 && weapon.left_in_clip < weapon.max_clip_size:
 		AudioManager.play_sfx_by_name(weapon.reload_sound)
 		var amount = min(weapon.total_ammo, weapon.max_clip_size)
@@ -129,6 +140,7 @@ func _ready():
 func _process(_delta):
 	if Input.is_action_just_pressed("menu"):
 		%Menu.visible = !%Menu.visible
+		%CrosshairTextureRect.visible = !%Menu.visible
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE if %Menu.visible else Input.MOUSE_MODE_CAPTURED
 	
 	for n in inventory.size():
@@ -158,15 +170,18 @@ func _process(_delta):
 	else:
 		%DebugLabel.text += "\r\nNothing equipped."
 	
-	if %InteractRayCast3D.is_colliding():
-		var collider = %InteractRayCast3D.get_collider().get_parent()
-		if collider is ItemPickup:
-			%InteractLabel.text = "Press %s to pick up %s." % [%Menu.get_key_name_from_action("interact"), collider.item_res.name]
-			if Input.is_action_just_pressed("interact"):
-				_pick_up_item(collider.item_res)
-				collider.queue_free()
-	else:
-		%InteractLabel.text = ""
+	if !%Menu.visible:
+		if %InteractRayCast3D.is_colliding():
+			var collider = %InteractRayCast3D.get_collider().get_parent()
+			if collider is ItemPickup:
+				%InteractLabel.text = "Press %s to pick up %s." % [%Menu.get_key_name_from_action("interact"), collider.item_res.name]
+				%CrosshairTextureRect.visible = false
+				if Input.is_action_just_pressed("interact"):
+					_pick_up_item(collider.item_res)
+					collider.queue_free()
+		else:
+			%InteractLabel.text = ""
+			%CrosshairTextureRect.visible = true
 
 func _input(event):
 	if event is InputEventMouseMotion and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:

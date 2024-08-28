@@ -114,3 +114,6 @@ unique_name_in_owner = true
 libraries = {
 "": SubResource("AnimationLibrary_r66rn")
 }
+
+[node name="BarrelNode3D" type="Node3D" parent="." index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.52774, 0.571816, 0)
