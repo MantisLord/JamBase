@@ -57,6 +57,8 @@ func _log(text) -> void:
 	print(text)
 
 func _drop_item(item_res) -> void:
+	if is_animating:
+		return
 	var dropping_index = equipped_item_index
 	await _unequip_item()
 	var pickup = item_pickup.instantiate()
@@ -132,9 +134,11 @@ func _reload(weapon):
 		var amount = min(weapon.total_ammo, weapon.max_clip_size)
 		weapon.total_ammo -= amount - weapon.left_in_clip
 		weapon.left_in_clip = min(weapon.total_ammo, weapon.max_clip_size)
-		
+
 func _ready():
 	%Menu.visible = false
+	%Menu.get_node("%TitleMarginContainer").visible = false
+	%Menu.get_node("%MainPanelContainer").size_flags_vertical = Control.SIZE_SHRINK_CENTER + Control.SIZE_EXPAND
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
 func _process(_delta):
