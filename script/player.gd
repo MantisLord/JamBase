@@ -193,17 +193,14 @@ func _input(event):
 		%Cam.rotate_x(deg_to_rad(-event.relative.y * Game.mouse_sensitivity))
 		%Cam.rotation.x = clamp(%Cam.rotation.x, deg_to_rad(MIN_ANGLE_VIEW), deg_to_rad(MAX_ANGLE_VIEW))
 
-func _is_on_floor_custom() -> bool:
-	return %FloorCollisionRayCast3D.is_colliding()
-
 func _physics_process(delta):
 	# Add the gravity.
-	if not _is_on_floor_custom():
+	if not is_on_floor():
 		velocity.y -= gravity * delta
 		play_footsteps_sfx = false
 
 	# Handle jump.
-	if Input.is_action_just_pressed("jump") and _is_on_floor_custom():
+	if Input.is_action_just_pressed("jump") and is_on_floor():
 		velocity.y = JUMP_VELOCITY
 		AudioManager.play_sfx(AudioManager.sfx_jump)
 		play_footsteps_sfx = false
@@ -231,7 +228,7 @@ func _physics_process(delta):
 			AudioManager.sfx_footsteps.audio_player.pitch_scale = 1.0
 
 	# Handle the movement/deceleration.
-	if _is_on_floor_custom():
+	if is_on_floor():
 		if direction:
 			play_footsteps_sfx = true
 			velocity.x = lerp(velocity.x, direction.x * speed, delta * SPEED_GROUND_ACCEL)
@@ -245,7 +242,7 @@ func _physics_process(delta):
 		velocity.z = lerp(velocity.z, direction.z * speed, delta * SPEED_AIR)
 		
 	# Handle head bob.
-	head_bob_time += delta * velocity.length() * 1 if _is_on_floor_custom() else 0
+	head_bob_time += delta * velocity.length() * 1 if is_on_floor() else 0
 	var pos = Vector3.ZERO
 	pos.y = sin(head_bob_time * HEAD_BOB_FREQ) * HEAD_BOB_AMP
 	pos.x = cos(head_bob_time * HEAD_BOB_FREQ / 2) * HEAD_BOB_AMP
@@ -260,15 +257,5 @@ func _physics_process(delta):
 	var velocity_clamped = clamp(velocity.length(), 0.5, SPEED_SPRINT * 2.0)
 	var target_fov = FOV_BASE + FOV_CHANGE * velocity_clamped
 	%Cam.fov = lerp(%Cam.fov, target_fov, delta * SPEED_CAMERA)
-	
-	var collision_info = move_and_collide(velocity * delta)
-	
-	#var on_floor = move_and_slide()
-	#var collision_info = get_last_slide_collision()
-	if collision_info:
-		var collision_normal = collision_info.get_normal()
-		var collider = collision_info.get_collider()
-		velocity = velocity.slide(collision_normal)
-		if collider is RigidBody3D:
-			var impulse = -collision_normal * velocity.length() * 1.5
-			collider.apply_central_impulse(impulse)
+
+	move_and_slide()
