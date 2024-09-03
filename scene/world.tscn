@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://n0wmlukh4m02"]
+[gd_scene load_steps=15 format=3 uid="uid://n0wmlukh4m02"]
 
 [ext_resource type="PackedScene" uid="uid://cq7jn8ibk56a" path="res://scene/player.tscn" id="1_yw80t"]
 [ext_resource type="PackedScene" uid="uid://c0kjrmt0ol4ur" path="res://scene/item_pickup.tscn" id="2_mlqrx"]
@@ -54,6 +54,10 @@ pickup_physics_box_position = Vector3(0.231, 0.065, 0)
 pickup_sound = "item_pickup"
 equip_sound = "item_equip"
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_bx184"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_kdvxc"]
+
 [node name="World" type="Node3D"]
 
 [node name="CSGBox3D" type="CSGBox3D" parent="."]
@@ -99,3 +103,12 @@ item_res = ExtResource("3_afoy2")
 [node name="ItemPickup2" parent="." instance=ExtResource("2_mlqrx")]
 transform = Transform3D(-4.37114e-08, -1, -4.37114e-08, 0, -4.37114e-08, 1, -1, 4.37114e-08, 1.91069e-15, -2.29133, 1.47755, -3.96678)
 item_res = SubResource("Resource_fr1iy")
+
+[node name="RigidBody3D" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -4)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D"]
+shape = SubResource("BoxShape3D_bx184")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D"]
+mesh = SubResource("BoxMesh_kdvxc")
