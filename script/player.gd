@@ -9,7 +9,7 @@ const SPEED_GROUND_DECCEL = 7.0
 const SPEED_HEAD = 10.0
 const SPEED_CAMERA = 8.0
 const JUMP_VELOCITY = 4.5
-const MIN_ANGLE_VIEW = -40
+const MIN_ANGLE_VIEW = -60
 const MAX_ANGLE_VIEW = 60
 const CROUCH_DEPTH = -0.5
 const HEAD_BOB_FREQ = 2.4
@@ -130,11 +130,12 @@ func _shoot(weapon):
 func _reload(weapon):
 	if weapon.left_in_clip == weapon.max_clip_size:
 		return
-	if weapon.total_ammo > 0 && weapon.left_in_clip < weapon.max_clip_size:
+	var needed = weapon.max_clip_size - weapon.left_in_clip
+	var reload_amount = min(needed, weapon.total_ammo)
+	if reload_amount > 0:
 		AudioManager.play_sfx_by_name(weapon.reload_sound)
-		var amount = min(weapon.total_ammo, weapon.max_clip_size)
-		weapon.total_ammo -= amount - weapon.left_in_clip
-		weapon.left_in_clip = min(weapon.total_ammo, weapon.max_clip_size)
+	weapon.left_in_clip += reload_amount
+	weapon.total_ammo -= reload_amount
 
 func _ready():
 	%Menu.visible = false
