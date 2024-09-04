@@ -16,6 +16,7 @@ const HEAD_BOB_FREQ = 2.4
 const HEAD_BOB_AMP = 0.08
 const FOV_BASE = 75.0
 const FOV_CHANGE = 1.5
+const PHYSICS_IMPULSE_STRENGTH: float = 0.5
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
@@ -259,3 +260,10 @@ func _physics_process(delta):
 	%Cam.fov = lerp(%Cam.fov, target_fov, delta * SPEED_CAMERA)
 
 	move_and_slide()
+	var collision_info = get_last_slide_collision()
+	if collision_info:
+		var collider = collision_info.get_collider()
+		var collision_normal = collision_info.get_normal()
+		if collider is RigidBody3D:
+			var impulse = -collision_normal * velocity.length() * PHYSICS_IMPULSE_STRENGTH
+			collider.apply_central_impulse(impulse)
