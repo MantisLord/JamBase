@@ -66,7 +66,7 @@ func _drop_item(item_res) -> void:
 	get_tree().root.add_child(pickup)
 	pickup.global_position = %DropItemNode3D.global_position
 	inventory.remove_at(dropping_index)
-	var panel = %InventoryHBoxContainer.get_child(equipped_item_index)
+	var panel = %InventoryHBoxContainer.get_child(dropping_index)
 	%InventoryHBoxContainer.remove_child(panel)
 	panel.queue_free()
 	_log("dropped %s " % item_res.name)
