@@ -21,7 +21,6 @@ equip_rotation_y_offset = 90
 equip_position = Vector3(0, 0, 0)
 scene_path = "res://scene/pistol.tscn"
 physics_box_shape = SubResource("BoxShape3D_l7hj5")
-pickup_physics_box_size = Vector3(0.714, 0.435, 0.12)
 pickup_physics_box_position = Vector3(0.231, 0.065, 0)
 pickup_sound = "item_pickup"
 equip_sound = "item_equip"
