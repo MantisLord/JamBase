@@ -69,6 +69,12 @@ func _drop_item(item_res) -> void:
 	var panel = %InventoryHBoxContainer.get_child(dropping_index)
 	%InventoryHBoxContainer.remove_child(panel)
 	panel.queue_free()
+	var action_counter = 1
+	for child in %InventoryHBoxContainer.get_children():
+		var action_name = "selectitem%d" % action_counter
+		var key_name = %Menu.get_key_name_from_action(action_name)
+		child.get_node("BindLabel").text = key_name
+		action_counter += 1
 	_log("dropped %s " % item_res.name)
 
 func _unequip_item() -> void:
