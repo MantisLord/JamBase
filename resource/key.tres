@@ -1,6 +1,9 @@
-[gd_resource type="Resource" script_class="Item" load_steps=2 format=3 uid="uid://dvytm8jnxnxaj"]
+[gd_resource type="Resource" script_class="Item" load_steps=3 format=3 uid="uid://dvytm8jnxnxaj"]
 
 [ext_resource type="Script" path="res://script/item.gd" id="1_64kt6"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_8n4mi"]
+size = Vector3(0.262, 0.108, 0.015)
 
 [resource]
 script = ExtResource("1_64kt6")
@@ -9,6 +12,7 @@ icon = "res://image/key.png"
 equip_rotation_y_offset = 180
 equip_position = Vector3(0, 0, 0)
 scene_path = "res://scene/key.tscn"
+physics_box_shape = SubResource("BoxShape3D_8n4mi")
 pickup_physics_box_size = Vector3(0.262, 0.108, 0.015)
 pickup_physics_box_position = Vector3(0, 0, 0)
 pickup_sound = "pickup_key"

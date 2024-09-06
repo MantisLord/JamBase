@@ -26,3 +26,7 @@ visible = false
 
 [node name="Key" parent="RigidBody3D" instance=ExtResource("3_ln78f")]
 visible = false
+
+[node name="DebugLabel3D" type="Label3D" parent="RigidBody3D"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.48588, 0)

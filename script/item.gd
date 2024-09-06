@@ -6,7 +6,7 @@ extends Resource
 @export var equip_rotation_y_offset: int = 90
 @export var equip_position: Vector3 = Vector3(0, 0, 0)
 @export var scene_path: String
-@export var pickup_physics_box_size: Vector3 = Vector3(0.714, 0.435, 0.12)
+@export var physics_box_shape: BoxShape3D
 @export var pickup_physics_box_position: Vector3 = Vector3(0.231, 0.065, 0)
 @export var pickup_sound: String = "item_pickup"
 @export var equip_sound: String = "item_equip"
