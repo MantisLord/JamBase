@@ -162,13 +162,32 @@ func _process(_delta):
 		%CrosshairTextureRect.visible = !%Menu.visible
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE if %Menu.visible else Input.MOUSE_MODE_CAPTURED
 	
-	for n in inventory.size():
-		if Input.is_action_just_pressed("selectitem%d" % (n + 1)) && !%AnimationPlayer.is_playing():
-			_log("detected player selected item index %d" % n)
-			if n == equipped_item_index:
-				_unequip_item()
-			else:
-				_equip_item(n)
+	if !%AnimationPlayer.is_playing():
+		for n in inventory.size():
+			if Input.is_action_just_pressed("selectitem%d" % (n + 1)):
+				_log("detected player selected item index %d" % n)
+				if n == equipped_item_index:
+					_unequip_item()
+				else:
+					_equip_item(n)
+		if Input.is_action_just_pressed("nextitem"):
+			if equipped_item_index > -1:
+				var new_index = equipped_item_index
+				if equipped_item_index == inventory.size() - 1:
+					new_index = 0
+				else:
+					new_index = equipped_item_index + 1
+				if new_index != equipped_item_index:
+					_equip_item(new_index)
+		if Input.is_action_just_pressed("previtem"):
+			if equipped_item_index > -1:
+				var new_index = equipped_item_index
+				if equipped_item_index == 0:
+					new_index = inventory.size() - 1
+				else:
+					new_index = equipped_item_index - 1
+				if new_index != equipped_item_index:
+					_equip_item(new_index)
 			
 	%DebugLabel.text = "FPS: %f" % Engine.get_frames_per_second()
 	%DebugLabel.text += "\r\nmouse_sensitivity: %f" % Game.mouse_sensitivity
