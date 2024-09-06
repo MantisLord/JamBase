@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://c30oyit3fjbso"]
+[gd_scene load_steps=15 format=3 uid="uid://c30oyit3fjbso"]
 
 [ext_resource type="Script" path="res://script/audio_manager.gd" id="1_nxs1i"]
 [ext_resource type="AudioStream" uid="uid://crv2yi16qk1nj" path="res://sound/button_down.wav" id="3_5yfu5"]
@@ -11,6 +11,9 @@
 [ext_resource type="AudioStream" uid="uid://1da25rx04ht2" path="res://sound/glock_clipin.wav" id="8_ymc11"]
 [ext_resource type="AudioStream" uid="uid://4npahmqlfaky" path="res://sound/buttonclickrelease.wav" id="9_1owqt"]
 [ext_resource type="AudioStream" uid="uid://vy21kkyusy5v" path="res://sound/clipempty_pistol.wav" id="10_7bsyh"]
+[ext_resource type="AudioStream" uid="uid://crcaase88kycx" path="res://sound/chain_pul2.wav" id="12_v62pc"]
+[ext_resource type="AudioStream" uid="uid://bktr3abwd35hc" path="res://sound/shrtblad.wav" id="13_n8hg8"]
+[ext_resource type="AudioStream" uid="uid://rhicwap4h258" path="res://sound/ring.wav" id="14_lptmi"]
 
 [node name="AudioManager" type="Node"]
 script = ExtResource("1_nxs1i")
@@ -44,3 +47,12 @@ stream = ExtResource("9_1owqt")
 
 [node name="ClipEmptyAudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("10_7bsyh")
+
+[node name="UseKeyAudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("12_v62pc")
+
+[node name="EquipKeyAudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("13_n8hg8")
+
+[node name="PickupKeyAudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("14_lptmi")

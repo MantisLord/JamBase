@@ -1,9 +1,10 @@
-[gd_scene load_steps=15 format=3 uid="uid://n0wmlukh4m02"]
+[gd_scene load_steps=16 format=3 uid="uid://n0wmlukh4m02"]
 
 [ext_resource type="PackedScene" uid="uid://cq7jn8ibk56a" path="res://scene/player.tscn" id="1_yw80t"]
 [ext_resource type="PackedScene" uid="uid://c0kjrmt0ol4ur" path="res://scene/item_pickup.tscn" id="2_mlqrx"]
 [ext_resource type="Resource" uid="uid://d0ngofqqrc4mc" path="res://resource/pistol.tres" id="3_afoy2"]
-[ext_resource type="Script" path="res://script/weapon.gd" id="4_4dws7"]
+[ext_resource type="Script" path="res://script/weapon.gd" id="5_70kdu"]
+[ext_resource type="Resource" uid="uid://dvytm8jnxnxaj" path="res://resource/key.tres" id="5_bitgo"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_evj4g"]
 albedo_color = Color(0.291845, 0.837691, 0.982231, 1)
@@ -34,8 +35,12 @@ sky_material = SubResource("ProceduralSkyMaterial_vyugs")
 background_mode = 2
 sky = SubResource("Sky_yoc1e")
 
-[sub_resource type="Resource" id="Resource_fr1iy"]
-script = ExtResource("4_4dws7")
+[sub_resource type="BoxMesh" id="BoxMesh_yl8q8"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_xk4do"]
+
+[sub_resource type="Resource" id="Resource_05xyg"]
+script = ExtResource("5_70kdu")
 max_clip_size = 12
 left_in_clip = 12
 total_ammo = 36
@@ -53,10 +58,7 @@ pickup_physics_box_size = Vector3(0.714, 0.435, 0.12)
 pickup_physics_box_position = Vector3(0.231, 0.065, 0)
 pickup_sound = "item_pickup"
 equip_sound = "item_equip"
-
-[sub_resource type="BoxMesh" id="BoxMesh_yl8q8"]
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_xk4do"]
+use_sound = ""
 
 [node name="World" type="Node3D"]
 
@@ -96,14 +98,6 @@ environment = SubResource("Environment_nkv7t")
 [node name="Player" parent="." instance=ExtResource("1_yw80t")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
 
-[node name="ItemPickup" parent="." instance=ExtResource("2_mlqrx")]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -0.291331, 3.47755, -4.96678)
-item_res = ExtResource("3_afoy2")
-
-[node name="ItemPickup2" parent="." instance=ExtResource("2_mlqrx")]
-transform = Transform3D(-4.37114e-08, -1, -4.37114e-08, 0, -4.37114e-08, 1, -1, 4.37114e-08, 1.91069e-15, -2.29133, 1.47755, -3.96678)
-item_res = SubResource("Resource_fr1iy")
-
 [node name="RigidBody3D" type="RigidBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 1, -4)
 
@@ -113,3 +107,15 @@ skeleton = NodePath("../..")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D"]
 shape = SubResource("BoxShape3D_xk4do")
+
+[node name="ItemPickup" parent="." instance=ExtResource("2_mlqrx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -4)
+item_res = ExtResource("5_bitgo")
+
+[node name="ItemPickup2" parent="." instance=ExtResource("2_mlqrx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 1, -3)
+item_res = ExtResource("3_afoy2")
+
+[node name="ItemPickup3" parent="." instance=ExtResource("2_mlqrx")]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 2.72169, -5)
+item_res = SubResource("Resource_05xyg")

@@ -20,6 +20,7 @@ func _process(_delta: float) -> void:
 		$MeshInstance3D.visible = false
 		$GPUParticles3D.emitting = true
 		$RayCast3D.enabled = false
+		print("bullet hit %s" % collider.name)
 		if collider is RigidBody3D:
 			var impulse = -$RayCast3D.get_collision_normal() * controlled_velocity.length() * PHYSICS_IMPULSE_STRENGTH
 			collider.apply_impulse(impulse, $RayCast3D.get_collision_point())

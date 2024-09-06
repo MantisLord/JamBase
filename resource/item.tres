@@ -13,3 +13,4 @@ pickup_physics_box_size = Vector3(0.714, 0.435, 0.12)
 pickup_physics_box_position = Vector3(0.231, 0.065, 0)
 pickup_sound = "item_pickup"
 equip_sound = "item_equip"
+use_sound = ""

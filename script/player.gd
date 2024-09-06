@@ -29,7 +29,6 @@ var inventory = []
 var equipped_item_index = -1
 var equipped_item_instance
 var item_panel = preload("res://scene/item_panel.tscn")
-var is_animating = false
 var item_pickup = preload("res://scene/item_pickup.tscn")
 
 var bullet = preload("res://scene/bullet.tscn")
@@ -58,7 +57,7 @@ func _log(text) -> void:
 	print(text)
 
 func _drop_item(item_res) -> void:
-	if is_animating:
+	if %AnimationPlayer.is_playing():
 		return
 	var dropping_index = equipped_item_index
 	await _unequip_item()
@@ -73,15 +72,13 @@ func _drop_item(item_res) -> void:
 	_log("dropped %s " % item_res.name)
 
 func _unequip_item() -> void:
-	if is_animating:
+	if %AnimationPlayer.is_playing():
 		return
 	if equipped_item_index != -1:
 		_log("unequipped %s" % inventory[equipped_item_index].name)
 		AudioManager.play_sfx_by_name(inventory[equipped_item_index].equip_sound)
 		%AnimationPlayer.play("lower")
-		is_animating = true
 		await %AnimationPlayer.animation_finished
-		is_animating = false
 		for child in %EquippedItemNode3D.get_children():
 			if child.name == "weapon_rot_tracker":
 				%EquippedItemNode3D.remove_child(child)
@@ -90,7 +87,7 @@ func _unequip_item() -> void:
 		equipped_item_index = -1
 
 func _equip_item(new_index) -> void:
-	if is_animating:
+	if %AnimationPlayer.is_playing():
 		return
 	if equipped_item_index != -1:
 		await _unequip_item()
@@ -104,13 +101,22 @@ func _equip_item(new_index) -> void:
 	equipped_item_instance.position = item_res.equip_position
 	rotation_parent.add_child(equipped_item_instance)
 	%AnimationPlayer.play("raise")
-	is_animating = true
-	AudioManager.play_sfx_by_name(inventory[equipped_item_index].equip_sound)
+	AudioManager.play_sfx_by_name(inventory[new_index].equip_sound)
 	await %AnimationPlayer.animation_finished
-	is_animating = false
 	equipped_item_index = new_index
 	_log("equipped %s" % inventory[equipped_item_index].name)
 
+func _use(item):
+	if item is Weapon:
+		_shoot(item)
+	else:
+		var itemAnimPlayer = equipped_item_instance.get_node("AnimationPlayer")
+		if !itemAnimPlayer.is_playing():
+			itemAnimPlayer.play("use")
+			if item.name == "Key":
+				await get_tree().create_timer(1.0).timeout
+				AudioManager.play_sfx_by_name(item.use_sound)
+	
 func _shoot(weapon):
 	if weapon.left_in_clip > 0:
 		equipped_item_instance.get_node("AnimationPlayer").play("fire")
@@ -121,6 +127,7 @@ func _shoot(weapon):
 		bullet_instance.position = equipped_item_instance.get_node("BarrelNode3D").global_position
 		get_tree().root.add_child(bullet_instance)
 		if %AimRayCast3D.is_colliding():
+			_log("bullet targeting %s shot" % %AimRayCast3D.get_collider().name)
 			bullet_instance.set_velocity(%AimRayCast3D.get_collision_point())
 		else:
 			bullet_instance.set_velocity(%AimRayEndNode3D.global_position)
@@ -150,7 +157,7 @@ func _process(_delta):
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE if %Menu.visible else Input.MOUSE_MODE_CAPTURED
 	
 	for n in inventory.size():
-		if Input.is_action_just_pressed("selectitem%d" % (n + 1)) && !is_animating:
+		if Input.is_action_just_pressed("selectitem%d" % (n + 1)) && !%AnimationPlayer.is_playing():
 			_log("detected player selected item index %d" % n)
 			if n == equipped_item_index:
 				_unequip_item()
@@ -163,16 +170,16 @@ func _process(_delta):
 	if equipped_item_index != -1:
 		var equipped_item_res = inventory[equipped_item_index];
 		%DebugLabel.text += "\r\nEquipped %s (%d)" % [equipped_item_res.name, equipped_item_index]
-		if !%Menu.visible && Input.is_action_just_pressed("drop"):
-			_drop_item(equipped_item_res)
 		if equipped_item_res is Weapon:
 			%DebugLabel.text += "\r\nCurrent Clip (%d/%d)" % [equipped_item_res.left_in_clip, equipped_item_res.max_clip_size]
 			%DebugLabel.text += "\r\nAmmo: %d" % equipped_item_res.total_ammo
-			if %AnimationPlayer.animation_finished && !%Menu.visible:
-				if Input.is_action_just_pressed("shoot"):
-					_shoot(equipped_item_res)
-				if Input.is_action_just_pressed("reload"):
-					_reload(equipped_item_res)
+		if !%Menu.visible && Input.is_action_just_pressed("drop"):
+			_drop_item(equipped_item_res)
+		if !%AnimationPlayer.is_playing() && !%Menu.visible:
+			if Input.is_action_just_pressed("useitem"):
+				_use(equipped_item_res)
+			if equipped_item_res is Weapon && Input.is_action_just_pressed("reload"):
+				_reload(equipped_item_res)
 	else:
 		%DebugLabel.text += "\r\nNothing equipped."
 	

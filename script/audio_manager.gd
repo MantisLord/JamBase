@@ -13,6 +13,10 @@ extends Node
 @onready var sfx_clip_empty = { "audio_player": $ClipEmptyAudioStreamPlayer, "volume": 1.0, "name": "clip_empty" }
 @onready var sfx_reload_pistol = { "audio_player": $ReloadPistolAudioStreamPlayer, "volume": 1.0, "name": "reload_pistol" }
 
+@onready var sfx_use_key = { "audio_player": $UseKeyAudioStreamPlayer, "volume": 0.5, "name": "use_key" }
+@onready var sfx_equip_key = { "audio_player": $EquipKeyAudioStreamPlayer, "volume": 0.5, "name": "equip_key" }
+@onready var sfx_pickup_key = { "audio_player": $PickupKeyAudioStreamPlayer, "volume": 0.5, "name": "pickup_key" }
+
 var audio_list = []
 
 func _ready() -> void:
@@ -26,6 +30,9 @@ func _ready() -> void:
 	audio_list.append(sfx_item_equip)
 	audio_list.append(sfx_clip_empty)
 	audio_list.append(sfx_reload_pistol)
+	audio_list.append(sfx_use_key)
+	audio_list.append(sfx_equip_key)
+	audio_list.append(sfx_pickup_key)
 
 func adjust_vol(audio_dict: Dictionary, is_sfx: bool = true):
 	var new_vol = linear2db(audio_dict.volume * (Game.sfx_volume if is_sfx else Game.music_volume) * Game.master_volume)
