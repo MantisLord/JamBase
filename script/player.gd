@@ -235,6 +235,9 @@ func _process(_delta):
 		else:
 			%InteractLabel.text = ""
 			%CrosshairTextureRect.visible = true
+	else:
+		%InteractLabel.text = ""
+		%CrosshairTextureRect.visible = false
 
 func _input(event):
 	if event is InputEventMouseMotion and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:

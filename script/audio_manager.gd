@@ -2,20 +2,20 @@ extends Node
 
 @onready var music_hurdy = { "audio_player": $MusicAudioStreamPlayer, "volume": 1.0, "name": "hurdy" }
 
-@onready var sfx_footsteps = { "audio_player": $FootstepsAudioStreamPlayer, "volume": 0.2, "name": "footsteps" }
-@onready var sfx_jump = { "audio_player": $JumpAudioStreamPlayer, "volume": 0.04, "name": "jump" }
-@onready var sfx_btn_down = { "audio_player": $ButtonDownAudioStreamPlayer, "volume": 1.5, "name": "btn_down" }
-@onready var sfx_btn_up = { "audio_player": $ButtonUpAudioStreamPlayer, "volume": 1.5, "name": "btn_up"  }
+@onready var sfx_footsteps = { "audio_player": $FootstepsAudioStreamPlayer, "volume": 2.0, "name": "footsteps" }
+@onready var sfx_jump = { "audio_player": $JumpAudioStreamPlayer, "volume": 0.25, "name": "jump" }
+@onready var sfx_btn_down = { "audio_player": $ButtonDownAudioStreamPlayer, "volume": 20.0, "name": "btn_down" }
+@onready var sfx_btn_up = { "audio_player": $ButtonUpAudioStreamPlayer, "volume": 20.0, "name": "btn_up"  }
 
 @onready var sfx_shoot_pistol = { "audio_player": $ShootPistolAudioStreamPlayer, "volume": 0.2, "name": "shoot_pistol" }
-@onready var sfx_item_pickup = { "audio_player": $ItemPickupAudioStreamPlayer, "volume": 1.0, "name": "item_pickup" }
-@onready var sfx_item_equip = { "audio_player": $ItemEquipAudioStreamPlayer, "volume": 1.0, "name": "item_equip" }
-@onready var sfx_clip_empty = { "audio_player": $ClipEmptyAudioStreamPlayer, "volume": 1.0, "name": "clip_empty" }
-@onready var sfx_reload_pistol = { "audio_player": $ReloadPistolAudioStreamPlayer, "volume": 1.0, "name": "reload_pistol" }
+@onready var sfx_item_pickup = { "audio_player": $ItemPickupAudioStreamPlayer, "volume": 2.0, "name": "item_pickup" }
+@onready var sfx_item_equip = { "audio_player": $ItemEquipAudioStreamPlayer, "volume": 2.0, "name": "item_equip" }
+@onready var sfx_clip_empty = { "audio_player": $ClipEmptyAudioStreamPlayer, "volume": 2.0, "name": "clip_empty" }
+@onready var sfx_reload_pistol = { "audio_player": $ReloadPistolAudioStreamPlayer, "volume": 2.0, "name": "reload_pistol" }
 
-@onready var sfx_use_key = { "audio_player": $UseKeyAudioStreamPlayer, "volume": 0.5, "name": "use_key" }
-@onready var sfx_equip_key = { "audio_player": $EquipKeyAudioStreamPlayer, "volume": 0.5, "name": "equip_key" }
-@onready var sfx_pickup_key = { "audio_player": $PickupKeyAudioStreamPlayer, "volume": 0.5, "name": "pickup_key" }
+@onready var sfx_use_key = { "audio_player": $UseKeyAudioStreamPlayer, "volume": 0.1, "name": "use_key" }
+@onready var sfx_equip_key = { "audio_player": $EquipKeyAudioStreamPlayer, "volume": 0.1, "name": "equip_key" }
+@onready var sfx_pickup_key = { "audio_player": $PickupKeyAudioStreamPlayer, "volume": 0.1, "name": "pickup_key" }
 
 var audio_list = []
 
