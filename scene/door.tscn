@@ -1,0 +1,49 @@
+[gd_scene load_steps=7 format=3 uid="uid://co1jhl6faiaf2"]
+
+[ext_resource type="Script" path="res://script/door.gd" id="1_uwwl0"]
+[ext_resource type="Material" uid="uid://coe1l4y83ye5e" path="res://image/texture/wood46/wood46.tres" id="2_bcm5o"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_pj23o"]
+size = Vector3(2, 3, 0.25)
+
+[sub_resource type="BoxMesh" id="BoxMesh_ppae2"]
+material = ExtResource("2_bcm5o")
+size = Vector3(2, 3, 0.25)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_hobio"]
+top_radius = 0.2
+bottom_radius = 0.2
+height = 3.0
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_2myjb"]
+height = 3.0
+radius = 0.2
+
+[node name="Door" type="Node3D"]
+script = ExtResource("1_uwwl0")
+
+[node name="DoorRigidBody3D" type="RigidBody3D" parent="."]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, 0, 0, 0)
+collision_layer = 3
+collision_mask = 3
+gravity_scale = 0.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DoorRigidBody3D"]
+shape = SubResource("BoxShape3D_pj23o")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="DoorRigidBody3D"]
+mesh = SubResource("BoxMesh_ppae2")
+
+[node name="HingeJoint3D" type="HingeJoint3D" parent="DoorRigidBody3D"]
+transform = Transform3D(-4.37114e-08, -1, 0, -4.37114e-08, 1.91069e-15, -1, 1, -4.37114e-08, -4.37114e-08, 1, 0, 0)
+node_a = NodePath("../../StaticBody3D")
+node_b = NodePath("..")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.21093, -0.0126941, 0.00603914)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
+mesh = SubResource("CylinderMesh_hobio")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+shape = SubResource("CylinderShape3D_2myjb")

@@ -116,12 +116,20 @@ func _use(item):
 	if item is Weapon:
 		_shoot(item)
 	else:
-		var itemAnimPlayer = equipped_item_instance.get_node("AnimationPlayer")
-		if !itemAnimPlayer.is_playing():
-			itemAnimPlayer.play("use")
+		var item_anim_player = equipped_item_instance.get_node("AnimationPlayer")
+		if !item_anim_player.is_playing():
+			item_anim_player.play("use")
 			if item.name == "Key":
 				await get_tree().create_timer(1.0).timeout
-				AudioManager.play_sfx_by_name(item.use_sound)
+				if %InteractRayCast3D.is_colliding():
+					var collider = %InteractRayCast3D.get_collider().get_parent()
+					if collider is Door:
+						collider.locked = !collider.locked
+						AudioManager.play_sfx_by_name(item.use_sound)
+						var action_word = "unlock"
+						if collider.locked:
+							action_word = "lock"
+						_log("Used key to %s door." % action_word)
 	
 func _shoot(weapon):
 	if weapon.left_in_clip > 0:
@@ -217,6 +225,13 @@ func _process(_delta):
 				if Input.is_action_just_pressed("interact"):
 					_pick_up_item(collider.item_res)
 					collider.queue_free()
+			elif collider is Door:
+				if collider.locked:
+					%CrosshairTextureRect.visible = false
+					%InteractLabel.text = "Locked."
+				else:
+					%CrosshairTextureRect.visible = true
+					%InteractLabel.text = ""
 		else:
 			%InteractLabel.text = ""
 			%CrosshairTextureRect.visible = true

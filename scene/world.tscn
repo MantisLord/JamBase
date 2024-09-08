@@ -1,10 +1,13 @@
-[gd_scene load_steps=17 format=3 uid="uid://n0wmlukh4m02"]
+[gd_scene load_steps=20 format=3 uid="uid://n0wmlukh4m02"]
 
+[ext_resource type="Material" uid="uid://defyr25bd2mhr" path="res://image/texture/tiles133a/tiles133a.tres" id="1_4qmqp"]
 [ext_resource type="PackedScene" uid="uid://cq7jn8ibk56a" path="res://scene/player.tscn" id="1_yw80t"]
 [ext_resource type="PackedScene" uid="uid://c0kjrmt0ol4ur" path="res://scene/item_pickup.tscn" id="2_mlqrx"]
+[ext_resource type="Material" uid="uid://djj5m2cx2rruh" path="res://image/texture/bricks85/bricks85.tres" id="2_sdf2w"]
 [ext_resource type="Resource" uid="uid://d0ngofqqrc4mc" path="res://resource/pistol.tres" id="3_afoy2"]
 [ext_resource type="Script" path="res://script/weapon.gd" id="5_70kdu"]
 [ext_resource type="Resource" uid="uid://dvytm8jnxnxaj" path="res://resource/key.tres" id="5_bitgo"]
+[ext_resource type="PackedScene" uid="uid://co1jhl6faiaf2" path="res://scene/door.tscn" id="6_mdl7e"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_evj4g"]
 albedo_color = Color(0.291845, 0.837691, 0.982231, 1)
@@ -65,6 +68,49 @@ use_sound = ""
 
 [node name="World" type="Node3D"]
 
+[node name="House" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.325682, -0.105192)
+
+[node name="Door" parent="House" instance=ExtResource("6_mdl7e")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.35, 1.51, 5.15)
+locked = true
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="House"]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -2.113, 1.51, 10.289)
+material_override = ExtResource("2_sdf2w")
+use_collision = true
+size = Vector3(10, 3, 0.25)
+
+[node name="CSGBox3D7" type="CSGBox3D" parent="House"]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 8.11709, 1.51, 10.2764)
+material_override = ExtResource("2_sdf2w")
+use_collision = true
+size = Vector3(10, 3, 0.25)
+
+[node name="CSGBox3D11" type="CSGBox3D" parent="House"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.312, 1.51, 5.15)
+material_override = ExtResource("2_sdf2w")
+use_collision = true
+size = Vector3(3.375, 3, 0.25)
+
+[node name="CSGBox3D12" type="CSGBox3D" parent="House"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.100504, 1.51, 5.15)
+material_override = ExtResource("2_sdf2w")
+use_collision = true
+size = Vector3(4.4, 3, 0.25)
+
+[node name="CSGBox3D10" type="CSGBox3D" parent="House"]
+transform = Transform3D(1, -8.74228e-08, -8.74228e-08, -8.74228e-08, -1, 7.64274e-15, -8.74228e-08, 0, -1, 3.01301, 1.51, 15.1278)
+material_override = ExtResource("2_sdf2w")
+use_collision = true
+size = Vector3(10, 3, 0.25)
+
+[node name="CSGBox3D9" type="CSGBox3D" parent="House"]
+transform = Transform3D(1.91069e-15, -1, 4.37114e-08, -4.37114e-08, -4.37114e-08, -1, 1, 0, -4.37114e-08, 3, 0, 10)
+material_override = ExtResource("1_4qmqp")
+use_collision = true
+size = Vector3(10, 10, 0.01)
+
 [node name="CSGBox3D" type="CSGBox3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.71087, 0)
 material_override = SubResource("StandardMaterial3D_evj4g")
@@ -99,7 +145,7 @@ size = Vector3(7.35596, 0.5, 38.6666)
 environment = SubResource("Environment_nkv7t")
 
 [node name="Player" parent="." instance=ExtResource("1_yw80t")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 1, 12)
 
 [node name="RigidBody3D" type="RigidBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 1, -4)
@@ -112,7 +158,7 @@ skeleton = NodePath("../..")
 shape = SubResource("BoxShape3D_xk4do")
 
 [node name="ItemPickup" parent="." instance=ExtResource("2_mlqrx")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -4)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.1495, 2, 6.02426)
 item_res = ExtResource("5_bitgo")
 
 [node name="ItemPickup2" parent="." instance=ExtResource("2_mlqrx")]
