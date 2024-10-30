@@ -1,4 +1,5 @@
 extends CharacterBody3D
+class_name Player
 
 const SPEED_RUN = 5.0
 const SPEED_SPRINT = 8.0
@@ -141,10 +142,9 @@ func _shoot(weapon):
 		bullet_instance.position = equipped_item_instance.get_node("BarrelNode3D").global_position
 		get_tree().root.add_child(bullet_instance)
 		if %AimRayCast3D.is_colliding():
-			_log("bullet targeting %s shot" % %AimRayCast3D.get_collider().name)
-			bullet_instance.set_velocity(%AimRayCast3D.get_collision_point())
+			bullet_instance.setup(%AimRayCast3D.get_collision_point(), self)
 		else:
-			bullet_instance.set_velocity(%AimRayEndNode3D.global_position)
+			bullet_instance.setup(%AimRayEndNode3D.global_position, self)
 	else:
 		AudioManager.play_sfx_by_name(weapon.clip_empty_sound)
 
@@ -168,7 +168,12 @@ func _process(_delta):
 	if Input.is_action_just_pressed("menu"):
 		%Menu.visible = !%Menu.visible
 		%CrosshairTextureRect.visible = !%Menu.visible
-		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE if %Menu.visible else Input.MOUSE_MODE_CAPTURED
+		if %Menu.visible:
+			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+			AudioManager.play_sfx(AudioManager.sfx_menu_open)
+		else:
+			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+			AudioManager.play_sfx(AudioManager.sfx_menu_close)
 	
 	if !%AnimationPlayer.is_playing():
 		for n in inventory.size():
@@ -218,7 +223,9 @@ func _process(_delta):
 	
 	if !%Menu.visible:
 		if %InteractRayCast3D.is_colliding():
-			var collider = %InteractRayCast3D.get_collider().get_parent()
+			var collider = %InteractRayCast3D.get_collider()
+			if collider != null: # why though?
+				collider = collider.get_parent()
 			if collider is ItemPickup:
 				%InteractLabel.text = "Press %s to pick up %s." % [%Menu.get_key_name_from_action("interact"), collider.item_res.name]
 				%CrosshairTextureRect.visible = false
