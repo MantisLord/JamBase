@@ -20,6 +20,8 @@ extends Node
 @onready var sfx_menu_open = { "audio_player": $MenuOpenAudioStreamPlayer, "volume": 0.75, "name": "menu_open" }
 @onready var sfx_menu_close = { "audio_player": $MenuCloseAudioStreamPlayer, "volume": 0.75, "name": "menu_close" }
 
+@onready var sfx_take_damage = { "audio_player": $TakeDamageAudioStreamPlayer, "volume": 1.0, "name": "take_damage" }
+
 var audio_list = []
 var sound_library: Dictionary = {}
 
@@ -46,6 +48,9 @@ func _ready() -> void:
 	sound_library["flesh_impact_bullet5"] = preload("res://sound/flesh_impact_bullet5.wav")
 	sound_library["headshot1"] = preload("res://sound/headshot1.wav")
 	sound_library["headshot2"] = preload("res://sound/headshot2.wav")
+	sound_library["mouse_attack1"] = preload("res://sound/428114__higgs01__squeakfinal.wav")
+	sound_library["mouse_attack2"] = preload("res://sound/468442__breviceps__video-game-squeak.wav")
+	sound_library["mouse_attack3"] = preload("res://sound/684866__faircashew__mouse-squek.mp3")
 
 func adjust_vol(volume, is_sfx: bool = true) -> int:
 	var new_vol = linear2db(volume * (Game.sfx_volume if is_sfx else Game.music_volume) * Game.master_volume)

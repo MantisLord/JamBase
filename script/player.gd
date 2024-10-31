@@ -26,6 +26,9 @@ var play_footsteps_sfx = false
 var speed = 0.0
 var head_bob_time = 0.0
 
+var max_health = 100
+var current_health = 100
+
 var inventory = []
 var equipped_item_index = -1
 var equipped_item_instance
@@ -33,6 +36,11 @@ var item_panel = preload("res://scene/item_panel.tscn")
 var item_pickup = preload("res://scene/item_pickup.tscn")
 
 var bullet = preload("res://scene/bullet.tscn")
+
+func hit(damage, attacker):
+	current_health -= damage
+	_log("%s hit player for %d damage. Player has %d HP remaining." % [attacker.name, damage, current_health])
+	AudioManager.play_sfx(AudioManager.sfx_take_damage)
 
 func _pick_up_item(item_res) -> void:
 	if !%InventoryPanelContainer.visible:
