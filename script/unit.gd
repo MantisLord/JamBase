@@ -26,6 +26,9 @@ func attack_ended() -> void:
 	if !_target_in_range() || !_can_detect_target():
 		_set_state("Chase")
 
+func death_anim_done() -> void:
+	toggle_ragdoll(true)
+
 func _target_in_range(leeway = 0.0) -> bool:
 	return global_position.distance_to(chase_target.global_position) < attack_range + leeway
 
@@ -100,3 +103,9 @@ func _on_vision_timer_timeout() -> void:
 	if state == "Idle" || state == "Wander":
 		if _can_detect_target():
 			_set_state("Chase")
+
+func toggle_ragdoll(enabled: bool):
+	if enabled:
+		%PhysicalBoneSimulator3D.physical_bones_start_simulation()
+	else:
+		%PhysicalBoneSimulator3D.physical_bones_stop_simulation()

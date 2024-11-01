@@ -15,6 +15,9 @@ func setup(target: Vector3, bullet_owner) -> void:
 	look_at(target)
 	controlled_velocity = position.direction_to(target) * SPEED
 
+func _calc_impulse() -> Vector3:
+	return -$RayCast3D.get_collision_normal() * controlled_velocity.length() * PHYSICS_IMPULSE_STRENGTH
+
 func _process(_delta: float) -> void:
 	if $RayCast3D.is_colliding():
 		var collider = $RayCast3D.get_collider()
@@ -22,12 +25,14 @@ func _process(_delta: float) -> void:
 		$GPUParticles3D.emitting = true
 		$RayCast3D.enabled = false
 		if collider is RigidBody3D:
-			var impulse = -$RayCast3D.get_collision_normal() * controlled_velocity.length() * PHYSICS_IMPULSE_STRENGTH
-			collider.apply_impulse(impulse, $RayCast3D.get_collision_point())
+			collider.apply_impulse(_calc_impulse(), $RayCast3D.get_collision_point())
 		if collider is BodyPart:
 			var topmost_parent = collider
 			while topmost_parent.get_parent() != null:
 				topmost_parent = topmost_parent.get_parent()
+				if topmost_parent is PhysicalBoneSimulator3D:
+					if topmost_parent.is_simulating_physics():
+						collider.apply_impulse(_calc_impulse(), $RayCast3D.get_collision_point())
 				if topmost_parent is Unit:
 					topmost_parent.hit(DAMAGE * collider.damage_multiplier, shooter, collider.part_name)
 					if shooter is Player:
