@@ -156,6 +156,17 @@ offset_right = 40.0
 offset_bottom = 23.0
 text = "DEBUG LABEL"
 
+[node name="EquipLabel" type="Label" parent="UI"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -23.0
+offset_right = 100.0
+grow_vertical = 0
+text = "EQUIP LABEL"
+
 [node name="InteractLabel" type="Label" parent="UI"]
 unique_name_in_owner = true
 layout_mode = 1

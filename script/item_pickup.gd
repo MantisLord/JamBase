@@ -4,8 +4,11 @@ class_name ItemPickup
 @export var item_res: Item
 
 func _process(_delta: float) -> void:
-	%DebugLabel3D.text = str(position)
-	%DebugLabel3D.text += "\r\n%s" % item_res.name
+	if Game.debug_mode:
+		%DebugLabel3D.text = str(position)
+		%DebugLabel3D.text += "\r\n%s" % item_res.name
+	else:
+		%DebugLabel3D.text = ""
 
 func _ready():
 	%RigidBody3D.get_node(item_res.name).visible = true

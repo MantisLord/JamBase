@@ -31,6 +31,10 @@ func _initialize_settings_from_config():
 	var fullscreen = Config.get_config("options", Game.FULLSCREEN_CONFIG_NAME, false)
 	%FullscreenCheckBox.button_pressed = fullscreen
 	Game.toggle_fullscreen(fullscreen)
+	
+	var debug_mode = Config.get_config("options", Game.DEBUG_MODE_CONFIG_NAME, false)
+	%DebugModeCheckBox.button_pressed = debug_mode
+	Game.debug_mode = debug_mode
 
 func _on_start_button_pressed():
 	Game.change_scene("world")
@@ -92,6 +96,10 @@ func _toggle_buttons_in_group(group_name, disabled):
 func _on_fullscreen_check_box_toggled(toggled_on):
 	Config.set_config("options", Game.FULLSCREEN_CONFIG_NAME, toggled_on)
 	Game.toggle_fullscreen(toggled_on)
+
+func _on_debug_mode_check_box_toggled(toggled_on: bool) -> void:
+	Config.set_config("options", Game.DEBUG_MODE_CONFIG_NAME, toggled_on)
+	Game.debug_mode = toggled_on
 
 func _on_master_volume_h_slider_value_changed(value):
 	Config.set_config("options", Game.MASTER_VOLUME_CONFIG_NAME, value / 100)

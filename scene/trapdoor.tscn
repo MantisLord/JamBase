@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3 uid="uid://dncckx5mgo358"]
+
+[ext_resource type="Script" path="res://script/trapdoor.gd" id="1_7txip"]
+[ext_resource type="Material" uid="uid://coe1l4y83ye5e" path="res://image/texture/wood46/wood46.tres" id="1_cowon"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_cmfg0"]
+material = ExtResource("1_cowon")
+size = Vector3(1, 0.05, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_lq5bm"]
+size = Vector3(1, 0.05, 1)
+
+[node name="Trapdoor" type="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, 0)
+script = ExtResource("1_7txip")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.500039, 0, 0)
+collision_layer = 3
+collision_mask = 3
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
+mesh = SubResource("BoxMesh_cmfg0")
+skeleton = NodePath("../../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+shape = SubResource("BoxShape3D_lq5bm")

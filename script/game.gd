@@ -5,11 +5,13 @@ const MASTER_VOLUME_CONFIG_NAME = "master_volume"
 const MUSIC_VOLUME_CONFIG_NAME = "music_volume"
 const SFX_VOLUME_CONFIG_NAME = "sfx_volume"
 const FULLSCREEN_CONFIG_NAME = "fullscreen"
+const DEBUG_MODE_CONFIG_NAME = "debug_mode"
 
 var mouse_sensitivity
 var sfx_volume
 var music_volume
 var master_volume
+var debug_mode
 
 func change_scene(scene_name):
 	get_tree().change_scene_to_file("scene/%s.tscn" % scene_name)

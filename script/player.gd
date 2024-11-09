@@ -125,20 +125,30 @@ func _use(item):
 	if item is Weapon:
 		_shoot(item)
 	else:
-		var item_anim_player = equipped_item_instance.get_node("AnimationPlayer")
-		if !item_anim_player.is_playing():
-			item_anim_player.play("use")
-			if item.name == "Key":
-				await get_tree().create_timer(1.0).timeout
-				if %InteractRayCast3D.is_colliding():
-					var collider = %InteractRayCast3D.get_collider().get_parent()
-					if collider is Door:
-						collider.locked = !collider.locked
-						AudioManager.play_sfx_by_name(item.use_sound)
-						var action_word = "unlock"
-						if collider.locked:
-							action_word = "lock"
-						_log("Used key to %s door." % action_word)
+		match item.name:
+			"Key":
+				var item_anim_player = equipped_item_instance.get_node("AnimationPlayer")
+				if !item_anim_player.is_playing():
+					item_anim_player.play("use")
+					await get_tree().create_timer(1.0).timeout
+					if %InteractRayCast3D.is_colliding():
+						var collider = %InteractRayCast3D.get_collider().get_parent()
+						if collider is Door:
+							collider.locked = !collider.locked
+							AudioManager.play_sfx_by_name(item.use_sound)
+							var action_word = "unlock"
+							if collider.locked:
+								action_word = "lock"
+							_log("Used key to %s door." % action_word)
+			"Torch":
+				var light = equipped_item_instance.get_node("OmniLight3D")
+				var emitter = equipped_item_instance.get_node("GPUParticles3D")
+				if light.light_energy == 2:
+					light.light_energy = 0
+					emitter.emitting = false
+				else:
+					light.light_energy = 2
+					emitter.emitting = true
 	
 func _shoot(weapon):
 	if weapon.left_in_clip > 0:
@@ -209,16 +219,20 @@ func _process(_delta):
 					new_index = equipped_item_index - 1
 				if new_index != equipped_item_index:
 					_equip_item(new_index)
-			
-	%DebugLabel.text = "FPS: %f" % Engine.get_frames_per_second()
-	%DebugLabel.text += "\r\nmouse_sensitivity: %f" % Game.mouse_sensitivity
-	%DebugLabel.text += "\r\nPlayer Position: %s" % str(position)
+	if Game.debug_mode:
+		%DebugLabel.text = "FPS: %f" % Engine.get_frames_per_second()
+		%DebugLabel.text += "\r\nmouse_sensitivity: %f" % Game.mouse_sensitivity
+		%DebugLabel.text += "\r\nPlayer Position: %s" % str(position)
+	else:
+		%DebugLabel.text = ""
+	%ScrollContainer.visible = Game.debug_mode
+	
 	if equipped_item_index != -1:
 		var equipped_item_res = inventory[equipped_item_index];
-		%DebugLabel.text += "\r\nEquipped %s (%d)" % [equipped_item_res.name, equipped_item_index]
+		%EquipLabel.text = "%s (%d)" % [equipped_item_res.name, equipped_item_index]
 		if equipped_item_res is Weapon:
-			%DebugLabel.text += "\r\nCurrent Clip (%d/%d)" % [equipped_item_res.left_in_clip, equipped_item_res.max_clip_size]
-			%DebugLabel.text += "\r\nAmmo: %d" % equipped_item_res.total_ammo
+			%EquipLabel.text += "\r\nCurrent Clip (%d/%d)" % [equipped_item_res.left_in_clip, equipped_item_res.max_clip_size]
+			%EquipLabel.text += "\r\nAmmo: %d" % equipped_item_res.total_ammo
 		if !%Menu.visible && Input.is_action_just_pressed("drop"):
 			_drop_item(equipped_item_res)
 		if !%AnimationPlayer.is_playing() && !%Menu.visible:
@@ -227,7 +241,7 @@ func _process(_delta):
 			if equipped_item_res is Weapon && Input.is_action_just_pressed("reload"):
 				_reload(equipped_item_res)
 	else:
-		%DebugLabel.text += "\r\nNothing equipped."
+		%EquipLabel.text = ""
 	
 	if !%Menu.visible:
 		if %InteractRayCast3D.is_colliding():
@@ -247,6 +261,11 @@ func _process(_delta):
 				else:
 					%CrosshairTextureRect.visible = true
 					%InteractLabel.text = ""
+			elif collider is Trapdoor:
+				%InteractLabel.text = "Press %s to travel to %s." % [%Menu.get_key_name_from_action("interact"), collider.teleport_scene_name]
+				%CrosshairTextureRect.visible = false
+				if Input.is_action_just_pressed("interact"):
+					Game.change_scene("sewer")
 		else:
 			%InteractLabel.text = ""
 			%CrosshairTextureRect.visible = true

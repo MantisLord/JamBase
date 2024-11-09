@@ -92,6 +92,23 @@ unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
 
+[node name="DebugModeHBoxContainer" type="HBoxContainer" parent="OverallVBoxContainer/MainPanelContainer/MainVBoxContainer" groups=["options"]]
+visible = false
+layout_mode = 2
+alignment = 1
+
+[node name="DebugModeLabel" type="Label" parent="OverallVBoxContainer/MainPanelContainer/MainVBoxContainer/DebugModeHBoxContainer"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "debug mode"
+label_settings = SubResource("LabelSettings_wgg0m")
+
+[node name="DebugModeCheckBox" type="CheckBox" parent="OverallVBoxContainer/MainPanelContainer/MainVBoxContainer/DebugModeHBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+
 [node name="MasterVolumeHBoxContainer" type="HBoxContainer" parent="OverallVBoxContainer/MainPanelContainer/MainVBoxContainer" groups=["options"]]
 visible = false
 layout_mode = 2
@@ -414,6 +431,9 @@ text = "quit"
 [connection signal="button_down" from="OverallVBoxContainer/MainPanelContainer/MainVBoxContainer/FullscreenHBoxContainer/FullscreenCheckBox" to="." method="_on_button_down"]
 [connection signal="button_up" from="OverallVBoxContainer/MainPanelContainer/MainVBoxContainer/FullscreenHBoxContainer/FullscreenCheckBox" to="." method="_on_button_up"]
 [connection signal="toggled" from="OverallVBoxContainer/MainPanelContainer/MainVBoxContainer/FullscreenHBoxContainer/FullscreenCheckBox" to="." method="_on_fullscreen_check_box_toggled"]
+[connection signal="button_down" from="OverallVBoxContainer/MainPanelContainer/MainVBoxContainer/DebugModeHBoxContainer/DebugModeCheckBox" to="." method="_on_button_down"]
+[connection signal="button_up" from="OverallVBoxContainer/MainPanelContainer/MainVBoxContainer/DebugModeHBoxContainer/DebugModeCheckBox" to="." method="_on_button_up"]
+[connection signal="toggled" from="OverallVBoxContainer/MainPanelContainer/MainVBoxContainer/DebugModeHBoxContainer/DebugModeCheckBox" to="." method="_on_debug_mode_check_box_toggled"]
 [connection signal="value_changed" from="OverallVBoxContainer/MainPanelContainer/MainVBoxContainer/MasterVolumeHBoxContainer/MasterVolumeHSlider" to="." method="_on_master_volume_h_slider_value_changed"]
 [connection signal="value_changed" from="OverallVBoxContainer/MainPanelContainer/MainVBoxContainer/MusicVolumeHBoxContainer/MusicVolumeHSlider" to="." method="_on_music_volume_h_slider_value_changed"]
 [connection signal="value_changed" from="OverallVBoxContainer/MainPanelContainer/MainVBoxContainer/SFXVolumeHBoxContainer/SFXVolumeHSlider" to="." method="_on_sfx_volume_h_slider_value_changed"]

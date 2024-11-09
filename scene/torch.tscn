@@ -1,0 +1,88 @@
+[gd_scene load_steps=12 format=3 uid="uid://cytq7m77lul32"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gxic0"]
+albedo_color = Color(0.531512, 0.35597, 0.288277, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_a4iw5"]
+material = SubResource("StandardMaterial3D_gxic0")
+size = Vector3(0.025, 0.5, 0.025)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_h7io0"]
+albedo_color = Color(0.576471, 0.227451, 0.192157, 1)
+emission_enabled = true
+emission = Color(1, 0.67451, 0, 1)
+emission_energy_multiplier = 0.01
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_8uyd1"]
+material = SubResource("StandardMaterial3D_h7io0")
+radius = 0.02
+height = 0.08
+
+[sub_resource type="Gradient" id="Gradient_oii1t"]
+colors = PackedColorArray(0.89607, 0.402974, 0, 1, 0.992157, 0.764706, 0.243137, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_ih0qh"]
+gradient = SubResource("Gradient_oii1t")
+
+[sub_resource type="Curve" id="Curve_6gc5e"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.5, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_5mw44"]
+curve = SubResource("Curve_6gc5e")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_1bhjt"]
+radial_velocity_min = -2.23517e-05
+radial_velocity_max = 0.149978
+gravity = Vector3(0, 0.5, 0)
+scale_curve = SubResource("CurveTexture_5mw44")
+color = Color(1, 1, 1, 0)
+color_ramp = SubResource("GradientTexture1D_ih0qh")
+hue_variation_min = -2.23517e-08
+hue_variation_max = 0.03
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pqbgg"]
+vertex_color_use_as_albedo = true
+albedo_color = Color(1, 1, 1, 0)
+emission_enabled = true
+emission = Color(0.956497, 0.823029, 0.304337, 1)
+disable_receive_shadows = true
+billboard_mode = 1
+billboard_keep_scale = true
+
+[sub_resource type="SphereMesh" id="SphereMesh_rm6nk"]
+lightmap_size_hint = Vector2i(5, 3)
+material = SubResource("StandardMaterial3D_pqbgg")
+radius = 0.05
+height = 0.1
+
+[node name="Torch" type="Node3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+cast_shadow = 0
+mesh = SubResource("BoxMesh_a4iw5")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0284755, 0)
+cast_shadow = 0
+mesh = SubResource("CapsuleMesh_8uyd1")
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000452191, -0.0324103, -0.00119574)
+layers = 2
+cast_shadow = 0
+amount = 30
+lifetime = 1.25
+randomness = 0.25
+process_material = SubResource("ParticleProcessMaterial_1bhjt")
+draw_pass_1 = SubResource("SphereMesh_rm6nk")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.054575, 0)
+light_color = Color(1, 0.772549, 0.356863, 1)
+light_energy = 2.0
+light_size = 0.05
+light_cull_mask = 4294967293
+shadow_enabled = true
+omni_range = 10.0

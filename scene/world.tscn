@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://n0wmlukh4m02"]
+[gd_scene load_steps=19 format=3 uid="uid://n0wmlukh4m02"]
 
 [ext_resource type="Material" uid="uid://defyr25bd2mhr" path="res://image/texture/tiles133a/tiles133a.tres" id="1_4qmqp"]
 [ext_resource type="PackedScene" uid="uid://cq7jn8ibk56a" path="res://scene/player.tscn" id="1_yw80t"]
@@ -9,6 +9,7 @@
 [ext_resource type="Resource" uid="uid://dvytm8jnxnxaj" path="res://resource/key.tres" id="5_bitgo"]
 [ext_resource type="PackedScene" uid="uid://co1jhl6faiaf2" path="res://scene/door.tscn" id="6_mdl7e"]
 [ext_resource type="PackedScene" uid="uid://njqw58hhiq4x" path="res://scene/rat.tscn" id="9_widyg"]
+[ext_resource type="PackedScene" uid="uid://dncckx5mgo358" path="res://scene/trapdoor.tscn" id="10_i0t8t"]
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_hdxwv"]
 vertices = PackedVector3Array(-11.5, 0.169317, 5.89481, -2.75, 0.169317, 6.14481, -2.75, 0.169317, 4.64481, -2.75, 0.169317, -4.60519, -11.5, 0.169317, -4.60519, 2.25, 0.169317, 4.14481, 2.5, 0.169317, 4.89481, 3.5, 0.169317, 4.89481, 3.75, 0.169317, 4.14481, 9, 0.169317, -4.60519, 8.5, 0.169317, 4.14481, 8.75, 0.169317, 4.64481, -2.25, 0.169317, 4.14481, 8.75, 0.169317, 5.89481, 17.5, 0.169317, 5.64481, 17.5, 0.169317, -4.60519, 2.25, 0.169317, 5.64481, 3.75, 0.169317, 5.64481, -1.25, 0.169317, 14.1448, 7.25, 0.169317, 14.1448, -1.25, 0.169317, 5.64481, 7.25, 0.169317, 5.64481, 8.75, 0.169317, 13.8948, 17.5, 0.169317, 14.1448, -11.5, 0.169317, 14.1448, -2.75, 0.169317, 13.8948, -2.75, 0.169317, 15.3948, -1.25, 0.169317, 24.3948, -1, 0.169317, 15.6448, -11.5, 0.169317, 24.3948, 8.5, 0.169317, 15.6448, 7, 0.169317, 15.6448, 7.25, 0.169317, 24.3948, 17.5, 0.169317, 24.3948)
@@ -110,9 +111,10 @@ shape = SubResource("BoxShape3D_xk4do")
 
 [node name="Door" parent="." instance=ExtResource("6_mdl7e")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 1.18432, 4.89481)
+locked = true
 
 [node name="KeyItemPickup" parent="." instance=ExtResource("2_mlqrx")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.1495, 2, 6.02426)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.8505, 3, -3.97574)
 item_res = ExtResource("5_bitgo")
 
 [node name="Pistol1ItemPickup" parent="." instance=ExtResource("2_mlqrx")]
@@ -125,3 +127,7 @@ item_res = SubResource("Resource_h7ce6")
 
 [node name="Rat" parent="." instance=ExtResource("9_widyg")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.1054, -0.320682, 8.39752)
+state = "Wander"
+
+[node name="Trapdoor" parent="." instance=ExtResource("10_i0t8t")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, -0.29034, 13.0443)
