@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="Weapon" load_steps=3 format=3 uid="uid://cqa5s4mikctu0"]
+
+[ext_resource type="Script" path="res://script/weapon.gd" id="1_u7qhb"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_udq2r"]
+size = Vector3(0.194, 0.969, 0.025)
+
+[resource]
+script = ExtResource("1_u7qhb")
+max_clip_size = 0
+left_in_clip = 0
+total_ammo = 0
+is_automatic = false
+fire_rate = 2.0
+shoot_sound = ""
+clip_empty_sound = ""
+reload_sound = ""
+projectile_speed = 40.0
+damage_min = 5.0
+damage_max = 7.0
+physics_impulse_strength = 0.1
+name = "Sledge"
+icon = "res://image/sledge.png"
+equip_rotation_y_offset = 90
+equip_position = Vector3(0, 0, 0)
+scene_path = "res://scene/sledge.tscn"
+physics_box_shape = SubResource("BoxShape3D_udq2r")
+pickup_physics_box_position = Vector3(0, 0.485, 0)
+pickup_sound = "item_pickup"
+equip_sound = "item_equip"
+use_sound = ""

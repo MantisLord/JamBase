@@ -17,7 +17,6 @@ polygons = [PackedInt32Array(2, 1, 0), PackedInt32Array(5, 4, 3), PackedInt32Arr
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_i4rbi"]
 resource_name = "Bricks2"
 cull_mode = 2
-albedo_color = Color(1, 1, 1, 1)
 albedo_texture = ExtResource("1_3t4wb")
 normal_enabled = true
 normal_texture = ExtResource("2_g3ohg")

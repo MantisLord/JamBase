@@ -9,3 +9,7 @@ extends Item
 @export var shoot_sound: String = "shoot_pistol"
 @export var clip_empty_sound: String = "clip_empty"
 @export var reload_sound: String = "reload_pistol"
+@export var projectile_speed: float = 40.0
+@export var damage_min: float = 2.0
+@export var damage_max: float = 2.0
+@export var physics_impulse_strength: float = 0.01

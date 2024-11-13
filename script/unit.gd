@@ -10,8 +10,15 @@ class_name Unit
 @export var resume_wander_max_secs: float = 12.0
 @export var idle_while_wander_chance: float = 0.1
 @export var attack_range: float = 2.5
-@export var damage_dealt: int = 5
+@export var damage_dealt_min: int = 1
+@export var damage_dealt_max: int = 5
+@export var sounds_wound: Array[String] = ["flesh_impact_bullet1", "flesh_impact_bullet2", "flesh_impact_bullet3", "flesh_impact_bullet4", "flesh_impact_bullet5"]
+@export var sounds_critical_wound: Array[String] = ["headshot1", "headshot2"]
+@export var sounds_attack: Array[String] = ["mouse_attack1", "mouse_attack2", "mouse_attack3"]
+@export var sounds_death: Array[String] = ["human_death1", "human_death2", "human_death3", "human_death4", "human_death5", "human_death6"]
 @export_enum("Idle", "Wander", "Chase", "Attack", "Dead") var state: String = "Idle"
+@export_enum("Humanity", "SewerBeasts", "Passive", "Defensive", "Aggressive") var faction: String = "Aggressive"
+
 @onready var anim_player: AnimationPlayer = get_node("AnimationPlayer")
 @onready var nav_agent: NavigationAgent3D = get_node("NavigationAgent3D")
 @onready var player: CharacterBody3D = get_parent().get_node("Player")
@@ -19,16 +26,18 @@ class_name Unit
 var chase_target
 var first_spawned = true
 var wander_target
+var spawn_state
 
 func check_hit() -> void:
-	if _target_in_range(1.0):
-		chase_target.hit(damage_dealt, self)
+	if _target_in_range(1.0) && _detect_target() == chase_target:
+		chase_target.hit(randi_range(damage_dealt_min, damage_dealt_max), self)
 
 func attack_started() -> void:
-	AudioManager.play_sfx_3d("mouse_attack" + str(randi_range(1, 3)), global_transform.origin)
+	if sounds_attack.size() > 0:
+		AudioManager.play_sfx_3d(_get_rand_str(sounds_attack), global_transform.origin)
 
 func attack_ended() -> void:
-	if !_target_in_range() || !_can_detect_target():
+	if !_target_in_range() || _detect_target() != chase_target:
 		_set_state("Chase")
 
 func death_anim_done() -> void:
@@ -40,10 +49,13 @@ func _target_in_range(leeway = 0.0) -> bool:
 		target = chase_target.global_position
 	else:
 		target = wander_target
+	if target == null:
+		return false
 	return global_position.distance_to(target) < attack_range + leeway
 
 func _ready():
 	_set_state(state)
+	spawn_state = state
 	first_spawned = false
 
 func _set_state(new_state):
@@ -53,25 +65,40 @@ func _set_state(new_state):
 	anim_player.speed_scale = 1
 	match new_state:
 		"Idle":
-			anim_player.play("Idle")
+			anim_player.stop()
+			if anim_player.has_animation("Idle"):
+				anim_player.play("Idle")
 		"Chase":
 			anim_player.speed_scale = 2
 			anim_player.play("Walk")
 		"Dead":
-			anim_player.play("Death")
+			player._log("%s died." % self.name)
+			if sounds_death.size() > 0:
+				AudioManager.play_sfx_3d(_get_rand_str(sounds_death), global_transform.origin)
+			if anim_player.has_animation("Death"):
+				anim_player.play("Death")
+			else:
+				anim_player.stop()
+				toggle_ragdoll(true)
 			$VisionTimer.stop()
 		"Wander":
 			wander_target = null
 			anim_player.play("Walk")
 		"Attack":
-			anim_player.play("Attack")
+			anim_player.stop()
 	state = new_state
+
+func _get_rand_str(string_array: Array[String]) -> String:
+	return string_array[int(randf() * string_array.size())]
 
 func hit(damage, attacker = null, body_part: String = ""):
 	if body_part == "Head":
-		AudioManager.play_sfx_3d("headshot" + str(randi_range(1, 2)), global_transform.origin)
+		if sounds_critical_wound.size() > 0:
+			AudioManager.play_sfx_3d(_get_rand_str(sounds_critical_wound), global_transform.origin)
 	else:
-		AudioManager.play_sfx_3d("flesh_impact_bullet" + str(randi_range(1, 5)), global_transform.origin)
+		if sounds_wound.size() > 0:
+			AudioManager.play_sfx_3d(_get_rand_str(sounds_wound), global_transform.origin)
+	player._log("%s hit %s for %d damage." % [attacker.name, self.name, damage])
 	current_health -= damage
 	if current_health <= 0:
 		_set_state("Dead")
@@ -98,50 +125,105 @@ func _process(_delta):
 					var snapped_position = NavigationServer3D.map_get_closest_point(nav_map, target_pos)
 					wander_target = snapped_position
 				nav_agent.target_position = wander_target
-				player._log("%s is wandering to new random point." % self.name)
-			elif wander_target != null && _target_in_range():
-				wander_target = null
-				if randf() < idle_while_wander_chance:
-					_set_state("Idle")
-					var resume_time = randf_range(resume_wander_min_secs, resume_wander_max_secs)
-					%ResumeWanderTimer.wait_time = resume_time
-					player._log("%s switched to temp idle state for %f secs."  % [self.name, resume_time])
-					%ResumeWanderTimer.start()
-					return
-			_move_toward_point(nav_agent.get_next_path_position(), speed_wander, _delta)
+				player._log("%s is wandering to new random point. %s" % [self.name, nav_agent.target_position])
+			elif wander_target != null:
+				if _target_in_range():
+					wander_target = null
+					player._log("%s reached wander point. %s" % [self.name, nav_agent.target_position])
+					if randf() < idle_while_wander_chance:
+						_set_state("Idle")
+						var resume_time = randf_range(resume_wander_min_secs, resume_wander_max_secs)
+						%ResumeWanderTimer.wait_time = resume_time
+						player._log("%s switched to temp idle state for %f secs." % [self.name, resume_time])
+						%ResumeWanderTimer.start()
+						return
+				else:
+					_move_toward_point(nav_agent.get_next_path_position(), speed_wander, _delta)
 		"Idle":
 			pass
+		"Attack":
+			if _target_dead():
+				_reset()
+			if !anim_player.is_playing():
+				anim_player.play("Attack")
 		"Chase":
-			if _target_in_range():
+			if _target_dead():
+				_reset()
+			if _target_in_range() && _detect_target() == chase_target:
 				_set_state("Attack")
 				return
 			nav_agent.target_position = chase_target.global_transform.origin
 			_move_toward_point(nav_agent.get_next_path_position(), speed_chase, _delta)
+
+func _reset():
+	player._log("%s is done engaging %s. Going back to spawn state %s." % [self.name, chase_target.name, spawn_state])
+	_set_state(spawn_state)
+
+func _target_dead():
+	if chase_target is Unit:
+		return chase_target.state == "Dead"
+	if chase_target is Player:
+		return chase_target.current_health <= 0
 
 func _move_toward_point(point, speed, delta) -> void:
 	velocity = (point - global_transform.origin).normalized() * speed
 	rotation.y = lerp_angle(rotation.y, atan2(velocity.x, velocity.z), delta * 10)
 	move_and_slide()
 
-func _can_detect_target() -> bool:
-	var found_target = false
+# Faction		CanAttack
+# 1 Humanity	SewerBeasts, Player (if attacked)
+# 2 SewerBeasts	Humanity, Player
+# 3 Passive		None, runs away if attacked by any
+# 4 Defensive	All, only if attacked
+# 5 Aggressive	All
+func _is_aggressive_to(target) -> bool:
+	match faction:
+		"Aggressive":
+			return true
+		"SewerBeasts":
+			if target is Player:
+				return true
+			if target is Unit:
+				if target.faction in ["Humanity"]:
+					return true
+		"Humanity":
+			if target is Unit:
+				if target.faction in ["SewerBeasts"]:
+					return true
+	return false
+
+func _get_body_part_parent(body_part):
+	return body_part.get_parent().get_parent().get_parent().get_parent() # find a better way...
+
+func _detect_target():
 	var overlaps = %VisionArea3D.get_overlapping_bodies()
 	if overlaps.size() > 0:
 		for overlap in overlaps:
+			var root_target = null
+			if overlap is BodyPart:
+				root_target = _get_body_part_parent(overlap)
 			if overlap is Player:
+				root_target = overlap
+			if root_target != null:
 				$VisionRayCast3D.look_at(overlap.global_transform.origin, Vector3.UP)
 				$VisionRayCast3D.force_raycast_update()
 				if $VisionRayCast3D.is_colliding():
 					var collider = $VisionRayCast3D.get_collider()
-					if collider.name == "Player":
-						chase_target = overlap
-						found_target = true
-	return found_target
+					if collider is BodyPart:
+						if _get_body_part_parent(collider) == root_target:
+							return root_target
+					if collider is Player:
+						return root_target
+	return null
 
 func _on_vision_timer_timeout() -> void:
 	if state == "Idle" || state == "Wander":
-		if _can_detect_target():
-			_set_state("Chase")
+		var target = _detect_target()
+		if target != null:
+			if _is_aggressive_to(target):
+				player._log("%s is engaging %s" % [self.name, target.name])
+				chase_target = target
+				_set_state("Chase")
 
 func toggle_ragdoll(enabled: bool):
 	if enabled:

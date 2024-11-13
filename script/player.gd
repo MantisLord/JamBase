@@ -149,7 +149,7 @@ func _use(item):
 				else:
 					light.light_energy = 2
 					emitter.emitting = true
-	
+
 func _shoot(weapon):
 	if weapon.left_in_clip > 0:
 		equipped_item_instance.get_node("AnimationPlayer").play("fire")
@@ -160,9 +160,9 @@ func _shoot(weapon):
 		bullet_instance.position = equipped_item_instance.get_node("BarrelNode3D").global_position
 		get_tree().root.add_child(bullet_instance)
 		if %AimRayCast3D.is_colliding():
-			bullet_instance.setup(%AimRayCast3D.get_collision_point(), self)
+			bullet_instance.setup(%AimRayCast3D.get_collision_point(), self, weapon)
 		else:
-			bullet_instance.setup(%AimRayEndNode3D.global_position, self)
+			bullet_instance.setup(%AimRayEndNode3D.global_position, self, weapon)
 	else:
 		AudioManager.play_sfx_by_name(weapon.clip_empty_sound)
 

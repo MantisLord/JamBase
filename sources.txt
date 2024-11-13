@@ -14,4 +14,6 @@ Video Game Squeak by Breviceps -- https://freesound.org/s/468442/ -- License: Cr
 squeakFinal.wav by Higgs01 -- https://freesound.org/s/428114/ -- License: Creative Commons 0
 mouse squek.mp3 by FairCashew -- https://freesound.org/s/684866/ -- License: Creative Commons 0
 
+https://freesound.org/people/F.M.Audio/
+
 https://github.com/godot-jolt/godot-jolt/pull/902
