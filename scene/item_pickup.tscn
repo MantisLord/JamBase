@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://c0kjrmt0ol4ur"]
+[gd_scene load_steps=8 format=3 uid="uid://c0kjrmt0ol4ur"]
 
 [ext_resource type="Script" path="res://script/item_pickup.gd" id="1_231g1"]
 [ext_resource type="PackedScene" uid="uid://beptuprgjdevk" path="res://scene/pistol.tscn" id="2_e7w83"]
@@ -8,6 +8,10 @@
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_3hs10"]
 size = Vector3(0.194152, 0.969238, 0.025)
+
+[sub_resource type="SphereMesh" id="SphereMesh_h8p12"]
+radius = 0.05
+height = 0.1
 
 [node name="ItemPickup" type="Node3D"]
 script = ExtResource("1_231g1")
@@ -38,3 +42,7 @@ visible = false
 [node name="DebugLabel3D" type="Label3D" parent="RigidBody3D"]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.48588, 0)
+
+[node name="PlaceholderMeshInstance3D" type="MeshInstance3D" parent="RigidBody3D"]
+unique_name_in_owner = true
+mesh = SubResource("SphereMesh_h8p12")

@@ -1,0 +1,17 @@
+[gd_resource type="StandardMaterial3D" load_steps=6 format=3 uid="uid://htwlvud1njhw"]
+
+[ext_resource type="Texture2D" uid="uid://bg3jv2onsjfv2" path="res://image/texture/crate/Wood_Crate_001_basecolor.jpg" id="1_a5vcl"]
+[ext_resource type="Texture2D" uid="uid://cf4pml6sp7wu2" path="res://image/texture/crate/Wood_Crate_001_ambientOcclusion.jpg" id="2_dldgk"]
+[ext_resource type="Texture2D" uid="uid://v6q01hlr11f2" path="res://image/texture/crate/Wood_Crate_001_height.png" id="3_5xran"]
+[ext_resource type="Texture2D" uid="uid://d11pgpmjd83cj" path="res://image/texture/crate/Wood_Crate_001_normal.jpg" id="4_q56ap"]
+[ext_resource type="Texture2D" uid="uid://cpc5xk1hj0syr" path="res://image/texture/crate/Wood_Crate_001_roughness.jpg" id="5_k2uxg"]
+
+[resource]
+albedo_texture = ExtResource("1_a5vcl")
+roughness_texture = ExtResource("5_k2uxg")
+normal_enabled = true
+normal_texture = ExtResource("4_q56ap")
+ao_enabled = true
+ao_texture = ExtResource("2_dldgk")
+heightmap_enabled = true
+heightmap_texture = ExtResource("3_5xran")

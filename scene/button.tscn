@@ -1,0 +1,87 @@
+[gd_scene load_steps=10 format=3 uid="uid://b0gc43cqpyuuw"]
+
+[ext_resource type="Script" path="res://script/button.gd" id="1_8282v"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gmvie"]
+albedo_color = Color(0.180005, 0.180005, 0.180005, 1)
+metallic = 1.0
+roughness = 0.0
+
+[sub_resource type="BoxMesh" id="BoxMesh_8dint"]
+material = SubResource("StandardMaterial3D_gmvie")
+size = Vector3(0.5, 0.1, 0.5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_r00ij"]
+albedo_color = Color(1, 0, 0, 1)
+metallic = 1.0
+roughness = 0.0
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_ngv1k"]
+material = SubResource("StandardMaterial3D_r00ij")
+top_radius = 0.15
+bottom_radius = 0.2
+height = 0.1
+
+[sub_resource type="Animation" id="Animation_pv3us"]
+length = 0.001
+tracks/0/type = "position_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MeshInstance3D2")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0.1, 0)
+
+[sub_resource type="Animation" id="Animation_ox5u6"]
+resource_name = "press"
+tracks/0/type = "position_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MeshInstance3D2")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0.1, 0, 0.5, 1, 0, 0.0501579, 0, 1, 1, 0, 0.1, 0)
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.5),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"pressed"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_i76a1"]
+_data = {
+"RESET": SubResource("Animation_pv3us"),
+"press": SubResource("Animation_ox5u6")
+}
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_77i3q"]
+size = Vector3(0.5, 0.2, 0.5)
+
+[node name="ButtonArea3D" type="Area3D"]
+collision_layer = 3
+collision_mask = 3
+script = ExtResource("1_8282v")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_8dint")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+mesh = SubResource("CylinderMesh_ngv1k")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_i76a1")
+}
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
+shape = SubResource("BoxShape3D_77i3q")

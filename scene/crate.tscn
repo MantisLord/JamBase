@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://cwtj13g6520ye"]
+
+[ext_resource type="Material" uid="uid://htwlvud1njhw" path="res://image/texture/crate/crate.tres" id="1_rqn2q"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_yl8q8"]
+material = ExtResource("1_rqn2q")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_xk4do"]
+
+[node name="CrateRigidBody3D" type="RigidBody3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_yl8q8")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_xk4do")

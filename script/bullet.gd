@@ -41,8 +41,7 @@ func _process(_delta: float) -> void:
 				if topmost_parent is Unit:
 					var final_dmg = randf_range(min_damage, max_damage) * collider.damage_multiplier
 					topmost_parent.hit(final_dmg, shooter, collider.part_name)
-					if shooter is Player:
-						shooter._log("%s's bullet hit %s's %s for %f damage." % [shooter.name, topmost_parent.name, collider.part_name, final_dmg])
+					Game.log_out("%s's bullet hit %s's %s for %f damage." % [shooter.name, topmost_parent.name, collider.part_name, final_dmg])
 		await get_tree().create_timer(1.0).timeout
 		queue_free()
 

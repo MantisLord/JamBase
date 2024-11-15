@@ -21,7 +21,6 @@ class_name Unit
 
 @onready var anim_player: AnimationPlayer = get_node("AnimationPlayer")
 @onready var nav_agent: NavigationAgent3D = get_node("NavigationAgent3D")
-@onready var player: CharacterBody3D = get_parent().get_node("Player")
 
 var chase_target
 var first_spawned = true
@@ -34,7 +33,7 @@ func check_hit() -> void:
 
 func attack_started() -> void:
 	if sounds_attack.size() > 0:
-		AudioManager.play_sfx_3d(_get_rand_str(sounds_attack), global_transform.origin)
+		AudioManager.play_sfx_3d(Game.get_rand_str(sounds_attack), global_transform.origin)
 
 func attack_ended() -> void:
 	if !_target_in_range() || _detect_target() != chase_target:
@@ -72,9 +71,9 @@ func _set_state(new_state):
 			anim_player.speed_scale = 2
 			anim_player.play("Walk")
 		"Dead":
-			player._log("%s died." % self.name)
+			Game.log_out("%s died." % self.name)
 			if sounds_death.size() > 0:
-				AudioManager.play_sfx_3d(_get_rand_str(sounds_death), global_transform.origin)
+				AudioManager.play_sfx_3d(Game.get_rand_str(sounds_death), global_transform.origin)
 			if anim_player.has_animation("Death"):
 				anim_player.play("Death")
 			else:
@@ -88,17 +87,14 @@ func _set_state(new_state):
 			anim_player.stop()
 	state = new_state
 
-func _get_rand_str(string_array: Array[String]) -> String:
-	return string_array[int(randf() * string_array.size())]
-
 func hit(damage, attacker = null, body_part: String = ""):
 	if body_part == "Head":
 		if sounds_critical_wound.size() > 0:
-			AudioManager.play_sfx_3d(_get_rand_str(sounds_critical_wound), global_transform.origin)
+			AudioManager.play_sfx_3d(Game.get_rand_str(sounds_critical_wound), global_transform.origin)
 	else:
 		if sounds_wound.size() > 0:
-			AudioManager.play_sfx_3d(_get_rand_str(sounds_wound), global_transform.origin)
-	player._log("%s hit %s for %d damage." % [attacker.name, self.name, damage])
+			AudioManager.play_sfx_3d(Game.get_rand_str(sounds_wound), global_transform.origin)
+	Game.log_out("%s hit %s for %d damage." % [attacker.name, self.name, damage])
 	current_health -= damage
 	if current_health <= 0:
 		_set_state("Dead")
@@ -108,8 +104,10 @@ func hit(damage, attacker = null, body_part: String = ""):
 
 func _process(_delta):
 	if Game.debug_mode:
+		$DebugLabel3D.visible = true
 		$DebugLabel3D.text = "Name: %s\r\nHP: %d/%d\r\nState: %s" % [self.name, current_health, max_health, state]
 	else:
+		$DebugLabel3D.visible = false
 		$DebugLabel3D.text = ""
 	for child in %VisionArea3D.get_children():
 		if child is MeshInstance3D:
@@ -125,16 +123,16 @@ func _process(_delta):
 					var snapped_position = NavigationServer3D.map_get_closest_point(nav_map, target_pos)
 					wander_target = snapped_position
 				nav_agent.target_position = wander_target
-				player._log("%s is wandering to new random point. %s" % [self.name, nav_agent.target_position])
+				Game.log_out("%s is wandering to new random point. %s" % [self.name, nav_agent.target_position])
 			elif wander_target != null:
 				if _target_in_range():
 					wander_target = null
-					player._log("%s reached wander point. %s" % [self.name, nav_agent.target_position])
+					Game.log_out("%s reached wander point. %s" % [self.name, nav_agent.target_position])
 					if randf() < idle_while_wander_chance:
 						_set_state("Idle")
 						var resume_time = randf_range(resume_wander_min_secs, resume_wander_max_secs)
 						%ResumeWanderTimer.wait_time = resume_time
-						player._log("%s switched to temp idle state for %f secs." % [self.name, resume_time])
+						Game.log_out("%s switched to temp idle state for %f secs." % [self.name, resume_time])
 						%ResumeWanderTimer.start()
 						return
 				else:
@@ -142,28 +140,30 @@ func _process(_delta):
 		"Idle":
 			pass
 		"Attack":
-			if _target_dead():
+			if _target_dead(chase_target):
 				_reset()
 			if !anim_player.is_playing():
 				anim_player.play("Attack")
+			#look_at(Vector3(chase_target.global_position.x, global_position.y, chase_target.global_position.z), Vector3.UP)
 		"Chase":
-			if _target_dead():
+			if _target_dead(chase_target):
 				_reset()
-			if _target_in_range() && _detect_target() == chase_target:
+			if _target_in_range():
 				_set_state("Attack")
 				return
 			nav_agent.target_position = chase_target.global_transform.origin
 			_move_toward_point(nav_agent.get_next_path_position(), speed_chase, _delta)
 
 func _reset():
-	player._log("%s is done engaging %s. Going back to spawn state %s." % [self.name, chase_target.name, spawn_state])
+	Game.log_out("%s is done engaging %s. Going back to spawn state %s." % [self.name, chase_target.name, spawn_state])
 	_set_state(spawn_state)
 
-func _target_dead():
-	if chase_target is Unit:
-		return chase_target.state == "Dead"
-	if chase_target is Player:
-		return chase_target.current_health <= 0
+func _target_dead(target) -> bool:
+	if target is Unit:
+		return target.state == "Dead"
+	if target is Player:
+		return target.current_health <= 0
+	return false
 
 func _move_toward_point(point, speed, delta) -> void:
 	velocity = (point - global_transform.origin).normalized() * speed
@@ -205,10 +205,10 @@ func _detect_target():
 			if overlap is Player:
 				root_target = overlap
 			if root_target != null:
-				$VisionRayCast3D.look_at(overlap.global_transform.origin, Vector3.UP)
-				$VisionRayCast3D.force_raycast_update()
-				if $VisionRayCast3D.is_colliding():
-					var collider = $VisionRayCast3D.get_collider()
+				%VisionRayCast3D.look_at(overlap.global_transform.origin, Vector3.UP)
+				%VisionRayCast3D.force_raycast_update()
+				if %VisionRayCast3D.is_colliding():
+					var collider = %VisionRayCast3D.get_collider()
 					if collider is BodyPart:
 						if _get_body_part_parent(collider) == root_target:
 							return root_target
@@ -220,8 +220,8 @@ func _on_vision_timer_timeout() -> void:
 	if state == "Idle" || state == "Wander":
 		var target = _detect_target()
 		if target != null:
-			if _is_aggressive_to(target):
-				player._log("%s is engaging %s" % [self.name, target.name])
+			if _is_aggressive_to(target) && !_target_dead(target):
+				Game.log_out("%s is engaging %s" % [self.name, target.name])
 				chase_target = target
 				_set_state("Chase")
 

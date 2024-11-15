@@ -39,7 +39,7 @@ var bullet = preload("res://scene/bullet.tscn")
 
 func hit(damage, attacker):
 	current_health -= damage
-	_log("%s hit player for %d damage. Player has %d HP remaining." % [attacker.name, damage, current_health])
+	Game.log_out("%s hit player for %d damage. Player has %d HP remaining." % [attacker.name, damage, current_health])
 	AudioManager.play_sfx(AudioManager.sfx_take_damage)
 
 func _pick_up_item(item_res) -> void:
@@ -50,20 +50,14 @@ func _pick_up_item(item_res) -> void:
 	panel.get_node("TextureRect").texture = load(item_res.icon)
 	var action_name = "selectitem%d" % int(inventory.size())
 	var key_name = %Menu.get_key_name_from_action(action_name)
-	_log("got key name %s for action name %s" % [key_name, action_name])
+	Game.log_out("got key name %s for action name %s" % [key_name, action_name])
 	panel.get_node("BindLabel").text = key_name
 	%InventoryHBoxContainer.add_child(panel)
-	_log("picked up %s" % item_res.name)
+	Game.log_out("picked up %s" % item_res.name)
 	AudioManager.play_sfx_by_name(item_res.pickup_sound)
 	if equipped_item_index == -1:
-		_log("auto-equipping %s" % item_res.name)
+		Game.log_out("auto-equipping %s" % item_res.name)
 		_equip_item(inventory.size() - 1)
-
-func _log(text) -> void:
-	%DevLogLabel.text += "\r\n%s" % text
-	await get_tree().process_frame
-	%ScrollContainer.scroll_vertical = %ScrollContainer.get_v_scroll_bar().max_value
-	print(text)
 
 func _drop_item(item_res) -> void:
 	if %AnimationPlayer.is_playing():
@@ -84,13 +78,13 @@ func _drop_item(item_res) -> void:
 		var key_name = %Menu.get_key_name_from_action(action_name)
 		child.get_node("BindLabel").text = key_name
 		action_counter += 1
-	_log("dropped %s " % item_res.name)
+	Game.log_out("dropped %s " % item_res.name)
 
 func _unequip_item() -> void:
 	if %AnimationPlayer.is_playing():
 		return
 	if equipped_item_index != -1:
-		_log("unequipped %s" % inventory[equipped_item_index].name)
+		Game.log_out("unequipped %s" % inventory[equipped_item_index].name)
 		AudioManager.play_sfx_by_name(inventory[equipped_item_index].equip_sound)
 		%AnimationPlayer.play("lower")
 		await %AnimationPlayer.animation_finished
@@ -119,7 +113,7 @@ func _equip_item(new_index) -> void:
 	AudioManager.play_sfx_by_name(inventory[new_index].equip_sound)
 	await %AnimationPlayer.animation_finished
 	equipped_item_index = new_index
-	_log("equipped %s" % inventory[equipped_item_index].name)
+	Game.log_out("equipped %s" % inventory[equipped_item_index].name)
 
 func _use(item):
 	if item is Weapon:
@@ -139,7 +133,7 @@ func _use(item):
 							var action_word = "unlock"
 							if collider.locked:
 								action_word = "lock"
-							_log("Used key to %s door." % action_word)
+							Game.log_out("Used key to %s door." % action_word)
 			"Torch":
 				var light = equipped_item_instance.get_node("OmniLight3D")
 				var emitter = equipped_item_instance.get_node("GPUParticles3D")
@@ -196,7 +190,7 @@ func _process(_delta):
 	if !%AnimationPlayer.is_playing():
 		for n in inventory.size():
 			if Input.is_action_just_pressed("selectitem%d" % (n + 1)):
-				_log("detected player selected item index %d" % n)
+				Game.log_out("detected player selected item index %d" % n)
 				if n == equipped_item_index:
 					_unequip_item()
 				else:
@@ -246,7 +240,7 @@ func _process(_delta):
 	if !%Menu.visible:
 		if %InteractRayCast3D.is_colliding():
 			var collider = %InteractRayCast3D.get_collider()
-			if collider != null: # why though?
+			if collider != null and collider is not InteractButton:
 				collider = collider.get_parent()
 			if collider is ItemPickup:
 				%InteractLabel.text = "Press %s to pick up %s." % [%Menu.get_key_name_from_action("interact"), collider.item_res.name]
@@ -266,6 +260,11 @@ func _process(_delta):
 				%CrosshairTextureRect.visible = false
 				if Input.is_action_just_pressed("interact"):
 					Game.change_scene("sewer")
+			elif collider is InteractButton:
+				%InteractLabel.text = "Press %s to %s." % [%Menu.get_key_name_from_action("interact"), collider.action_display]
+				%CrosshairTextureRect.visible = false
+				if Input.is_action_just_pressed("interact"):
+					collider.start_press()
 		else:
 			%InteractLabel.text = ""
 			%CrosshairTextureRect.visible = true

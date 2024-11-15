@@ -65,22 +65,27 @@ func _ready() -> void:
 	sound_library["human_death4"] = preload("res://sound/death-cry-4.wav")
 	sound_library["human_death5"] = preload("res://sound/death-cry-5.wav")
 	sound_library["human_death6"] = preload("res://sound/death-cry-6.wav")
+	
+	sound_library["button_fail1"] = preload("res://sound/button_fail_1.wav")
+	sound_library["button_fail2"] = preload("res://sound/button_fail_2.wav")
+	sound_library["button_success1"] = preload("res://sound/button_success_1.wav")
+	sound_library["button_success2"] = preload("res://sound/button_success_2.wav")
 
-func adjust_vol(volume, is_sfx: bool = true) -> int:
+func adjust_vol(volume, is_sfx: bool = true, audio_name: String = "") -> int:
 	var new_vol = linear2db(volume * (Game.sfx_volume if is_sfx else Game.music_volume) * Game.master_volume)
 	if new_vol == 0: new_vol = -80
+	Game.log_out("playing audio (%s) %f db" % [audio_name, new_vol])
 	return new_vol
 
 func adjust_playing_audio():
 	if sfx_footsteps.audio_player.playing:
-		sfx_footsteps.audio_player.volume_db = adjust_vol(sfx_footsteps.volume)
+		sfx_footsteps.audio_player.volume_db = adjust_vol(sfx_footsteps.volume, true, sfx_footsteps.name)
 	if music_hurdy.audio_player.playing:
-		music_hurdy.audio_player.volume_db = adjust_vol(music_hurdy.volume, false)
+		music_hurdy.audio_player.volume_db = adjust_vol(music_hurdy.volume, false, music_hurdy.name)
 
 func play_sfx(audio_dict: Dictionary, from_position: float = 0.0):
-	audio_dict.audio_player.volume_db = adjust_vol(audio_dict.volume)
+	audio_dict.audio_player.volume_db = adjust_vol(audio_dict.volume, true, audio_dict.name)
 	audio_dict.audio_player.play(from_position)
-	print("played sfx audio at %f db" % audio_dict.audio_player.volume_db)
 
 func play_sfx_by_name(audio_name: String):
 	for a in audio_list:
@@ -88,7 +93,7 @@ func play_sfx_by_name(audio_name: String):
 			play_sfx(a)
 
 func play_music(audio_dict: Dictionary):
-	audio_dict.audio_player.volume_db = adjust_vol(audio_dict.volume, false)
+	audio_dict.audio_player.volume_db = adjust_vol(audio_dict.volume, false, audio_dict.name)
 	audio_dict.audio_player.play()
 
 func play_sfx_3d(sound_name: String, position: Vector3, volume: float = 1.0):
@@ -97,13 +102,13 @@ func play_sfx_3d(sound_name: String, position: Vector3, volume: float = 1.0):
 		var audio_player = AudioStreamPlayer3D.new()
 		audio_player.stream = sound
 		audio_player.position = position
-		audio_player.volume_db = adjust_vol(volume)
+		audio_player.volume_db = adjust_vol(volume, true, sound_name)
 		
 		add_child(audio_player)
 		audio_player.play()
 		audio_player.finished.connect(audio_player.queue_free)
 	else:
-		print("Sound not found: ", sound_name)
+		Game.log_out("Sound not found: %s" % sound_name)
 
 func linear2db(linear: float) -> float:
 	if linear <= 0:

@@ -1,10 +1,12 @@
-[gd_scene load_steps=21 format=3 uid="uid://n0wmlukh4m02"]
+[gd_scene load_steps=27 format=3 uid="uid://n0wmlukh4m02"]
 
 [ext_resource type="Material" uid="uid://defyr25bd2mhr" path="res://image/texture/tiles133a/tiles133a.tres" id="1_4qmqp"]
 [ext_resource type="PackedScene" uid="uid://cq7jn8ibk56a" path="res://scene/player.tscn" id="1_yw80t"]
 [ext_resource type="PackedScene" uid="uid://c0kjrmt0ol4ur" path="res://scene/item_pickup.tscn" id="2_mlqrx"]
 [ext_resource type="Material" uid="uid://djj5m2cx2rruh" path="res://image/texture/bricks85/bricks85.tres" id="2_sdf2w"]
 [ext_resource type="Resource" uid="uid://d0ngofqqrc4mc" path="res://resource/pistol.tres" id="3_afoy2"]
+[ext_resource type="PackedScene" uid="uid://b0gc43cqpyuuw" path="res://scene/button.tscn" id="3_l1san"]
+[ext_resource type="PackedScene" uid="uid://cwtj13g6520ye" path="res://scene/crate.tscn" id="4_s2meq"]
 [ext_resource type="Script" path="res://script/weapon.gd" id="5_70kdu"]
 [ext_resource type="Resource" uid="uid://dvytm8jnxnxaj" path="res://resource/key.tres" id="5_bitgo"]
 [ext_resource type="PackedScene" uid="uid://co1jhl6faiaf2" path="res://scene/door.tscn" id="6_mdl7e"]
@@ -25,10 +27,6 @@ sky_material = SubResource("ProceduralSkyMaterial_vyugs")
 [sub_resource type="Environment" id="Environment_nkv7t"]
 background_mode = 2
 sky = SubResource("Sky_yoc1e")
-
-[sub_resource type="BoxMesh" id="BoxMesh_yl8q8"]
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_xk4do"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_l7hj5"]
 size = Vector3(0.714, 0.435, 0.12)
@@ -58,6 +56,27 @@ pickup_sound = "item_pickup"
 equip_sound = "item_equip"
 use_sound = ""
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xldo6"]
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dkif1"]
+albedo_color = Color(0, 1, 0, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qeigf"]
+transparency = 1
+albedo_color = Color(0, 0, 1, 0.196078)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_h5gew"]
+transparency = 1
+albedo_color = Color(1, 1, 0, 0.294118)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mwihf"]
+transparency = 1
+albedo_color = Color(0.517647, 0.670588, 1, 0.0784314)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_oull8"]
+albedo_color = Color(0.240929, 0.138005, 0.0510764, 1)
+
 [node name="World" type="Node3D"]
 
 [node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
@@ -82,7 +101,7 @@ use_collision = true
 size = Vector3(10, 3, 0.25)
 
 [node name="Wall4CSGBox3D" type="CSGBox3D" parent="NavigationRegion3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 2, -10)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.17339, 2, -10)
 material_override = ExtResource("2_sdf2w")
 use_collision = true
 size = Vector3(3.9, 3, 0.25)
@@ -94,7 +113,7 @@ use_collision = true
 size = Vector3(3.8, 3, 0.25)
 
 [node name="FloorCSGBox3D" type="CSGBox3D" parent="NavigationRegion3D"]
-transform = Transform3D(1.91069e-15, -1, 4.37114e-08, -4.37114e-08, -4.37114e-08, -1, 1, 0, -4.37114e-08, 0, 0, 0)
+transform = Transform3D(-4.37114e-08, -1, 4.37114e-08, 0, -4.37114e-08, -1, 1, -4.37114e-08, 1.91069e-15, 0, 0, 0)
 material_override = ExtResource("1_4qmqp")
 use_collision = true
 size = Vector3(30, 30, 1)
@@ -127,20 +146,22 @@ size = Vector3(30, 3, 0.25)
 environment = SubResource("Environment_nkv7t")
 
 [node name="Player" parent="." instance=ExtResource("1_yw80t")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 1.5, 11)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17, 9.5, 3)
 
-[node name="BoxRigidBody3D" type="RigidBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 3, 4)
+[node name="Crate" parent="." instance=ExtResource("4_s2meq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.10936, 3.0297, 4.16453)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="BoxRigidBody3D"]
-mesh = SubResource("BoxMesh_yl8q8")
-skeleton = NodePath("../..")
+[node name="Crate2" parent="." instance=ExtResource("4_s2meq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.89064, 2.37481, -6.83547)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="BoxRigidBody3D"]
-shape = SubResource("BoxShape3D_xk4do")
+[node name="Crate3" parent="." instance=ExtResource("4_s2meq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.862516, 4.01913, -1.84139)
+
+[node name="Crate4" parent="." instance=ExtResource("4_s2meq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7, -4)
 
 [node name="Door" parent="." instance=ExtResource("6_mdl7e")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0243939, 2, -10)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0438219, 2, -10)
 locked = true
 
 [node name="KeyItemPickup" parent="." instance=ExtResource("2_mlqrx")]
@@ -161,14 +182,99 @@ item_res = ExtResource("9_60dtm")
 
 [node name="Human" parent="." instance=ExtResource("11_m7hvv")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 0.5, -11)
-state = "Wander"
 
 [node name="Trapdoor" parent="." instance=ExtResource("10_i0t8t")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.658, 0.51, -0.979)
 
 [node name="Rat" parent="." instance=ExtResource("9_widyg")]
 transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, -10.681, 0.5, -3.218)
-state = "Wander"
 
 [node name="DebugCamera3D" type="Camera3D" parent="."]
 transform = Transform3D(-2.18557e-08, 0.866025, -0.5, 3.78552e-08, 0.5, 0.866025, 1, 0, -4.37114e-08, -13, 17, 0)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.3, 2, -2.5)
+use_collision = true
+size = Vector3(5, 0.1, 5)
+material = SubResource("StandardMaterial3D_xldo6")
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.375, 3.45, -2.625)
+use_collision = true
+size = Vector3(5, 0.1, 5)
+material = SubResource("StandardMaterial3D_dkif1")
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, -3.51119, 5.98768, 4.44573)
+use_collision = true
+size = Vector3(3, 0.1, 10)
+material = SubResource("StandardMaterial3D_qeigf")
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.52875, 8.46261, 11.8001)
+use_collision = true
+size = Vector3(3, 0.1, 6)
+material = SubResource("StandardMaterial3D_h5gew")
+
+[node name="CSGBox3D5" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.04599, 8.5, 17.816)
+use_collision = true
+size = Vector3(42, 0.1, 6)
+material = SubResource("StandardMaterial3D_mwihf")
+
+[node name="CSGBox3D6" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00195312, 8.5, -18)
+use_collision = true
+size = Vector3(42, 0.1, 6)
+material = SubResource("StandardMaterial3D_mwihf")
+
+[node name="CSGBox3D7" type="CSGBox3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 18, 8.5, -0.184)
+use_collision = true
+size = Vector3(30, 0.1, 6)
+material = SubResource("StandardMaterial3D_mwihf")
+
+[node name="CSGBox3D10" type="CSGBox3D" parent="."]
+transform = Transform3D(1.91069e-15, -1, 4.37114e-08, -4.37114e-08, -4.37114e-08, -1, 1, 0, -4.37114e-08, 14.95, 9.70271, -0.184)
+use_collision = true
+size = Vector3(30, 0.1, 2.5)
+material = SubResource("StandardMaterial3D_mwihf")
+
+[node name="CSGBox3D8" type="CSGBox3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -18, 8.5, -0.184)
+use_collision = true
+size = Vector3(30, 0.1, 6)
+material = SubResource("StandardMaterial3D_mwihf")
+
+[node name="CSGBox3D9" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.5, 8.75, 0)
+use_collision = true
+size = Vector3(1, 0.5, 2)
+material = SubResource("StandardMaterial3D_oull8")
+
+[node name="CrateButton" parent="." instance=ExtResource("3_l1san")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.5, 9, 0)
+action_name = "CrateSpawner"
+action_display = "spawn crates"
+num_spawns = 10
+spawn_x_max = 14.0
+spawn_z_max = 15.0
+spawn_y_max = 30.0
+spawn_y_min = 15.0
+
+[node name="HumanButton" parent="." instance=ExtResource("3_l1san")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.5, 9, -0.6)
+action_name = "HumanSpawner"
+spawn_x_max = 14.0
+spawn_x_min = -14.0
+spawn_z_max = 14.0
+spawn_z_min = 1.0
+
+[node name="RatButton" parent="." instance=ExtResource("3_l1san")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.5, 9, 0.6)
+action_name = "RatSpawner"
+action_display = "spawn rats"
+spawn_x_max = 14.0
+spawn_x_min = -14.0
+spawn_z_max = 14.0
+spawn_z_min = 1.0
