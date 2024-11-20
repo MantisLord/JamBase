@@ -32,6 +32,26 @@ func toggle_fullscreen(toggled_on):
 		var new_position = screen_position + (screen_size - window_size) / 2
 		DisplayServer.window_set_position(new_position)
 
+func handle_physics_collision(raycast, attacker, collider, velocity, weapon):
+	var impulse = -raycast.get_collision_normal() * velocity.length() *  weapon.physics_impulse_strength
+	var should_log = false
+	if collider is RigidBody3D:
+		collider.apply_impulse(impulse, raycast.get_collision_point())
+		should_log = true
+	if collider is BodyPart:
+		var topmost_parent = collider
+		while topmost_parent.get_parent() != null:
+			topmost_parent = topmost_parent.get_parent()
+			if topmost_parent is PhysicalBoneSimulator3D:
+				if topmost_parent.is_simulating_physics():
+					collider.apply_impulse(impulse, raycast.get_collision_point())
+					should_log = true
+			if topmost_parent is Unit:
+				var final_dmg = randf_range(weapon.damage_min, weapon.damage_max) * collider.damage_multiplier
+				topmost_parent.hit(final_dmg, attacker, collider.part_name)
+	if should_log:
+		log_out("Programmed collision occurred, impulse %s [%s's %s -> %s]" % [impulse, attacker.name, weapon.name, collider.name])
+
 func log_out(text) -> void:
 	if Game.debug_mode:
 		if get_tree().current_scene != null:

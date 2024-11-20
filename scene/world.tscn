@@ -31,14 +31,13 @@ sky = SubResource("Sky_yoc1e")
 [sub_resource type="BoxShape3D" id="BoxShape3D_l7hj5"]
 size = Vector3(0.714, 0.435, 0.12)
 
-[sub_resource type="Resource" id="Resource_h7ce6"]
+[sub_resource type="Resource" id="Resource_mv0r7"]
 script = ExtResource("5_70kdu")
 max_clip_size = 12
 left_in_clip = 12
 total_ammo = 36
 is_automatic = false
 fire_rate = 0.3
-shoot_sound = "shoot_pistol"
 clip_empty_sound = "clip_empty"
 reload_sound = "reload_pistol"
 projectile_speed = 40.0
@@ -54,7 +53,7 @@ physics_box_shape = SubResource("BoxShape3D_l7hj5")
 pickup_physics_box_position = Vector3(0.231, 0.065, 0)
 pickup_sound = "item_pickup"
 equip_sound = "item_equip"
-use_sound = ""
+use_sound = "shoot_pistol"
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xldo6"]
 albedo_color = Color(1, 0, 0, 1)
@@ -177,7 +176,7 @@ item_res = ExtResource("3_afoy2")
 
 [node name="Pistol2ItemPickup" parent="." instance=ExtResource("2_mlqrx")]
 transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 17.2839, 14.5378, -2.85778)
-item_res = SubResource("Resource_h7ce6")
+item_res = SubResource("Resource_mv0r7")
 
 [node name="SledgeItemPickup" parent="." instance=ExtResource("2_mlqrx")]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 18.2501, 13.7279, -2.5344)

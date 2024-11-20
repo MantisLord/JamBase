@@ -1306,7 +1306,6 @@ item_res = ExtResource("7_02rui")
 
 [node name="rat" parent="." instance=ExtResource("8_ciq6y")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 7.66205, 0.310799, 14.9653)
-state = "Wander"
 
 [node name="PistolItemPickup" parent="." instance=ExtResource("6_pr4q2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.33368, 1.97022, -16.3755)

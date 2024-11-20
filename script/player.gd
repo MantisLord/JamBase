@@ -145,9 +145,12 @@ func _use(item):
 					emitter.emitting = true
 
 func _shoot(weapon):
-	if weapon.left_in_clip > 0:
+	if weapon.max_clip_size == 0: # melee
+		equipped_item_instance.get_node("AnimationPlayer").play("swing")
+		AudioManager.play_sfx_by_name(weapon.use_sound)
+	elif weapon.left_in_clip > 0:
 		equipped_item_instance.get_node("AnimationPlayer").play("fire")
-		AudioManager.play_sfx_by_name(weapon.shoot_sound)
+		AudioManager.play_sfx_by_name(weapon.use_sound)
 		weapon.left_in_clip -= 1
 		
 		var bullet_instance = bullet.instantiate()
@@ -227,6 +230,14 @@ func _process(_delta):
 		if equipped_item_res is Weapon:
 			%EquipLabel.text += "\r\nCurrent Clip (%d/%d)" % [equipped_item_res.left_in_clip, equipped_item_res.max_clip_size]
 			%EquipLabel.text += "\r\nAmmo: %d" % equipped_item_res.total_ammo
+			if equipped_item_res.max_clip_size == 0:
+				var melee_area = equipped_item_instance.find_child("MeleeArea3D")
+				if melee_area.monitoring:
+					var overlaps = melee_area.get_overlapping_bodies()
+					for overlap in overlaps:
+						var swing_velocity = global_position.direction_to(overlap.global_position)
+						Game.handle_physics_collision(%InteractRayCast3D, self, overlap, swing_velocity, equipped_item_res)
+						melee_area.monitoring = false
 		if !%Menu.visible && Input.is_action_just_pressed("drop"):
 			_drop_item(equipped_item_res)
 		if !%AnimationPlayer.is_playing() && !%Menu.visible:
@@ -234,6 +245,7 @@ func _process(_delta):
 				_use(equipped_item_res)
 			if equipped_item_res is Weapon && Input.is_action_just_pressed("reload"):
 				_reload(equipped_item_res)
+		
 	else:
 		%EquipLabel.text = ""
 	
