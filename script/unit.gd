@@ -144,7 +144,8 @@ func _process(_delta):
 				_reset()
 			if !anim_player.is_playing():
 				anim_player.play("Attack")
-			#look_at(Vector3(chase_target.global_position.x, global_position.y, chase_target.global_position.z), Vector3.UP)
+				look_at(Vector3(chase_target.global_position.x, global_position.y, chase_target.global_position.z), Vector3.UP)
+				rotate_y(PI) # why are they backwards/flipped 180 after look_at?
 		"Chase":
 			if _target_dead(chase_target):
 				_reset()
@@ -205,6 +206,8 @@ func _detect_target():
 			if overlap is Player:
 				root_target = overlap
 			if root_target != null:
+				if state == "Attack" && root_target != chase_target:
+					continue
 				%VisionRayCast3D.look_at(overlap.global_transform.origin, Vector3.UP)
 				%VisionRayCast3D.force_raycast_update()
 				if %VisionRayCast3D.is_colliding():

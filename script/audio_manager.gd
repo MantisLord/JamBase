@@ -71,10 +71,10 @@ func _ready() -> void:
 	sound_library["button_success1"] = preload("res://sound/button_success_1.wav")
 	sound_library["button_success2"] = preload("res://sound/button_success_2.wav")
 
-func adjust_vol(volume, is_sfx: bool = true, audio_name: String = "") -> int:
+func adjust_vol(volume, is_sfx: bool = true, _audio_name: String = "") -> int:
 	var new_vol = linear2db(volume * (Game.sfx_volume if is_sfx else Game.music_volume) * Game.master_volume)
 	if new_vol == 0: new_vol = -80
-	Game.log_out("playing audio (%s) %f db" % [audio_name, new_vol])
+	#Game.log_out("playing audio (%s) %f db" % [_audio_name, new_vol])
 	return new_vol
 
 func adjust_playing_audio():
