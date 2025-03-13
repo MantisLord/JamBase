@@ -1,6 +1,6 @@
 [gd_scene load_steps=15 format=3 uid="uid://cq7jn8ibk56a"]
 
-[ext_resource type="Script" path="res://script/player.gd" id="1_0aebm"]
+[ext_resource type="Script" uid="uid://o00nif28jffg" path="res://script/player.gd" id="1_0aebm"]
 [ext_resource type="PackedScene" uid="uid://dhf0yu2i6obb0" path="res://scene/menu.tscn" id="2_b1yb2"]
 [ext_resource type="Texture2D" uid="uid://drug5w86ewv2k" path="res://image/crosshair001.png" id="2_ijvjw"]
 
@@ -75,9 +75,9 @@ tracks/0/keys = PackedFloat32Array(0, 1, 2, -2, -1, 0.5, 1, 0.5, -0.5, -1)
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ulrgn"]
 _data = {
-"RESET": SubResource("Animation_gp7g2"),
-"lower": SubResource("Animation_l7vvt"),
-"raise": SubResource("Animation_2pcmr")
+&"RESET": SubResource("Animation_gp7g2"),
+&"lower": SubResource("Animation_l7vvt"),
+&"raise": SubResource("Animation_2pcmr")
 }
 
 [node name="Player" type="CharacterBody3D"]
@@ -104,6 +104,9 @@ mesh = SubResource("CapsuleMesh_xo4fh")
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 
+[node name="AltBulletStartPoint" type="Node3D" parent="Head"]
+unique_name_in_owner = true
+
 [node name="Cam" type="Camera3D" parent="Head"]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.5)
@@ -117,7 +120,6 @@ debug_shape_thickness = 1
 
 [node name="AimRayCast3D" type="RayCast3D" parent="Head/Cam"]
 unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
 target_position = Vector3(0, 0, -100)
 collision_mask = 3
 collide_with_areas = true
@@ -253,5 +255,5 @@ layout_mode = 2
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 unique_name_in_owner = true
 libraries = {
-"": SubResource("AnimationLibrary_ulrgn")
+&"": SubResource("AnimationLibrary_ulrgn")
 }

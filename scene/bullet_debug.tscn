@@ -1,0 +1,29 @@
+[gd_scene load_steps=5 format=3 uid="uid://vvcbbtbyrr88"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_83o0f"]
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_83o0f"]
+material = SubResource("StandardMaterial3D_83o0f")
+radius = 0.1
+height = 0.2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sql4y"]
+albedo_color = Color(0, 1, 0, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_3o4do"]
+material = SubResource("StandardMaterial3D_sql4y")
+radius = 0.1
+height = 0.2
+
+[node name="BulletDebug" type="Node3D"]
+
+[node name="EndMeshInstance3D" type="MeshInstance3D" parent="."]
+unique_name_in_owner = true
+visible = false
+mesh = SubResource("SphereMesh_83o0f")
+
+[node name="StartMeshInstance3D" type="MeshInstance3D" parent="."]
+unique_name_in_owner = true
+visible = false
+mesh = SubResource("SphereMesh_3o4do")

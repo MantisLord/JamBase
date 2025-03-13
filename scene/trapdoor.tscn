@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://dncckx5mgo358"]
 
-[ext_resource type="Script" path="res://script/trapdoor.gd" id="1_7txip"]
+[ext_resource type="Script" uid="uid://d0gy8sgsobq6w" path="res://script/trapdoor.gd" id="1_7txip"]
 [ext_resource type="Material" uid="uid://coe1l4y83ye5e" path="res://image/texture/wood46/wood46.tres" id="1_cowon"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_cmfg0"]

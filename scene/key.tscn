@@ -49,8 +49,8 @@ tracks/1/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_58vrg"]
 _data = {
-"RESET": SubResource("Animation_mnphn"),
-"use": SubResource("Animation_badon")
+&"RESET": SubResource("Animation_mnphn"),
+&"use": SubResource("Animation_badon")
 }
 
 [node name="Key" instance=ExtResource("1_55ed1")]

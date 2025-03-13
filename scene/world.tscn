@@ -7,7 +7,7 @@
 [ext_resource type="Resource" uid="uid://d0ngofqqrc4mc" path="res://resource/pistol.tres" id="3_afoy2"]
 [ext_resource type="PackedScene" uid="uid://b0gc43cqpyuuw" path="res://scene/button.tscn" id="3_l1san"]
 [ext_resource type="PackedScene" uid="uid://cwtj13g6520ye" path="res://scene/crate.tscn" id="4_s2meq"]
-[ext_resource type="Script" path="res://script/weapon.gd" id="5_70kdu"]
+[ext_resource type="Script" uid="uid://ch6jewqlb58ly" path="res://script/weapon.gd" id="5_70kdu"]
 [ext_resource type="Resource" uid="uid://dvytm8jnxnxaj" path="res://resource/key.tres" id="5_bitgo"]
 [ext_resource type="PackedScene" uid="uid://co1jhl6faiaf2" path="res://scene/door.tscn" id="6_mdl7e"]
 [ext_resource type="Resource" uid="uid://cqa5s4mikctu0" path="res://resource/sledge.tres" id="9_60dtm"]

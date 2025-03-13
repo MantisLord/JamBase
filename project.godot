@@ -12,8 +12,8 @@ config_version=5
 
 config/name="JamBase"
 config/version="0.0.1"
-run/main_scene="res://scene/menu.tscn"
-config/features=PackedStringArray("4.3", "Forward Plus")
+run/main_scene="uid://dhf0yu2i6obb0"
+config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
 run/vsync/vsync_mode=0
 
@@ -132,4 +132,5 @@ drop={
 
 [physics]
 
-3d/physics_engine="JoltPhysics3D"
+common/physics_ticks_per_second=120
+3d/physics_engine="Jolt Physics"

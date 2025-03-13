@@ -1,0 +1,51 @@
+[gd_scene load_steps=8 format=3 uid="uid://cld4cyoj4i88b"]
+
+[ext_resource type="Script" uid="uid://dtvarca6000rr" path="res://script/test_land.gd" id="1_lcumd"]
+[ext_resource type="PackedScene" uid="uid://cq7jn8ibk56a" path="res://scene/player.tscn" id="1_meica"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lcumd"]
+albedo_color = Color(0.39709, 0.245173, 0.101785, 1)
+metallic_specular = 0.25
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_ue6sw"]
+
+[sub_resource type="Sky" id="Sky_e21kr"]
+sky_material = SubResource("ProceduralSkyMaterial_ue6sw")
+
+[sub_resource type="Environment" id="Environment_tebbe"]
+background_mode = 2
+sky = SubResource("Sky_e21kr")
+ambient_light_source = 3
+reflected_light_source = 2
+
+[sub_resource type="SphereMesh" id="SphereMesh_ue6sw"]
+radius = 0.1
+height = 0.2
+
+[node name="TestLand" type="Node3D"]
+script = ExtResource("1_lcumd")
+
+[node name="FloorCSGBox3D" type="CSGBox3D" parent="."]
+use_collision = true
+size = Vector3(10, 0.01, 10)
+material = SubResource("StandardMaterial3D_lcumd")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_tebbe")
+
+[node name="Player" parent="." instance=ExtResource("1_meica")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.380534, 1, -0.292359)
+
+[node name="VisualNode3D" type="Node3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 2, -6)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VisualNode3D"]
+mesh = SubResource("SphereMesh_ue6sw")
+
+[node name="VisualNode3D2" type="Node3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 2, -6)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VisualNode3D2"]
+mesh = SubResource("SphereMesh_ue6sw")

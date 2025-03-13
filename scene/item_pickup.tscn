@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://c0kjrmt0ol4ur"]
 
-[ext_resource type="Script" path="res://script/item_pickup.gd" id="1_231g1"]
+[ext_resource type="Script" uid="uid://bdpiht3n4gf2" path="res://script/item_pickup.gd" id="1_231g1"]
 [ext_resource type="PackedScene" uid="uid://beptuprgjdevk" path="res://scene/pistol.tscn" id="2_e7w83"]
 [ext_resource type="PackedScene" uid="uid://bl06hvbjdpbl2" path="res://scene/key.tscn" id="3_ln78f"]
 [ext_resource type="PackedScene" uid="uid://cytq7m77lul32" path="res://scene/torch.tscn" id="4_lxja8"]

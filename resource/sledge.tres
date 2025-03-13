@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="Weapon" load_steps=3 format=3 uid="uid://cqa5s4mikctu0"]
 
-[ext_resource type="Script" path="res://script/weapon.gd" id="1_u7qhb"]
+[ext_resource type="Script" uid="uid://ch6jewqlb58ly" path="res://script/weapon.gd" id="1_u7qhb"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_udq2r"]
 size = Vector3(0.194, 0.969, 0.025)

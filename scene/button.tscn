@@ -1,6 +1,6 @@
 [gd_scene load_steps=10 format=3 uid="uid://b0gc43cqpyuuw"]
 
-[ext_resource type="Script" path="res://script/button.gd" id="1_8282v"]
+[ext_resource type="Script" uid="uid://bwdg3f2mphen8" path="res://script/button.gd" id="1_8282v"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gmvie"]
 albedo_color = Color(0.180005, 0.180005, 0.180005, 1)
@@ -58,8 +58,8 @@ tracks/1/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_i76a1"]
 _data = {
-"RESET": SubResource("Animation_pv3us"),
-"press": SubResource("Animation_ox5u6")
+&"RESET": SubResource("Animation_pv3us"),
+&"press": SubResource("Animation_ox5u6")
 }
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_77i3q"]

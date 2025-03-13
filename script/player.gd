@@ -37,6 +37,8 @@ var item_pickup = preload("res://scene/item_pickup.tscn")
 
 var bullet = preload("res://scene/bullet.tscn")
 
+var bullet_debug = preload("res://scene/bullet_debug.tscn")
+
 func hit(damage, attacker):
 	current_health -= damage
 	Game.log_out("%s hit player for %d damage. Player has %d HP remaining." % [attacker.name, damage, current_health])
@@ -153,13 +155,38 @@ func _shoot(weapon):
 		AudioManager.play_sfx_by_name(weapon.use_sound)
 		weapon.left_in_clip -= 1
 		
+		var barrel_pos = equipped_item_instance.get_node("BarrelNode3D").global_position
+		
 		var bullet_instance = bullet.instantiate()
-		bullet_instance.position = equipped_item_instance.get_node("BarrelNode3D").global_position
+		bullet_instance.position = barrel_pos
+		
+		var debug_instance_start = bullet_debug.instantiate()
+		debug_instance_start.get_node("StartMeshInstance3D").visible = true
+		debug_instance_start.position = barrel_pos
+		
+		if Game.debug_mode:
+			get_tree().root.add_child(debug_instance_start)
+		
 		get_tree().root.add_child(bullet_instance)
-		if %AimRayCast3D.is_colliding():
-			bullet_instance.setup(%AimRayCast3D.get_collision_point(), self, weapon)
-		else:
-			bullet_instance.setup(%AimRayEndNode3D.global_position, self, weapon)
+		
+		var debug_instance_end = bullet_debug.instantiate()
+		debug_instance_end.get_node("EndMeshInstance3D").visible = true
+		
+		var end_point = %AimRayCast3D.get_collision_point() if %AimRayCast3D.is_colliding() else %AimRayEndNode3D.global_position
+		
+		# fix the start or end point here if something is wrong?
+		# like the gun pointing through a wall - collision point closer to player than the start point
+		if global_transform.origin.distance_to(end_point) < global_transform.origin.distance_to(barrel_pos):
+			bullet_instance.position = %AltBulletStartPoint.global_transform.origin # end_point
+			debug_instance_start.position = %AltBulletStartPoint.global_transform.origin # end_point
+			Game.log_out("corrected start pos of bullet due to some issue")
+		
+		debug_instance_end.position = end_point
+		bullet_instance.setup(end_point, self, weapon)
+		
+		if Game.debug_mode:
+			get_tree().root.add_child(debug_instance_end)
+		
 	else:
 		AudioManager.play_sfx_by_name(weapon.clip_empty_sound)
 

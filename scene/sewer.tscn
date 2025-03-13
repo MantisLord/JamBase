@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://c7dhxe1hhf85r" path="res://model/Sewer Tile Scene_0.png" id="1_3t4wb"]
 [ext_resource type="Texture2D" uid="uid://bcjvt3gqappi4" path="res://model/Sewer Tile Scene_1.png" id="2_g3ohg"]
-[ext_resource type="Shader" path="res://shader/water.gdshader" id="3_1njux"]
+[ext_resource type="Shader" uid="uid://di01kgde8r6ba" path="res://shader/water.gdshader" id="3_1njux"]
 [ext_resource type="PackedScene" uid="uid://cq7jn8ibk56a" path="res://scene/player.tscn" id="4_hcxfv"]
 [ext_resource type="PackedScene" uid="uid://cytq7m77lul32" path="res://scene/torch.tscn" id="5_2ewxr"]
 [ext_resource type="PackedScene" uid="uid://c0kjrmt0ol4ur" path="res://scene/item_pickup.tscn" id="6_pr4q2"]
@@ -969,7 +969,7 @@ data = PackedVector3Array(-2.6659, 2.545, -3, -2.6659, 2.545, 2.9999, -2.5185, 2
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ahyau"]
 render_priority = 0
 shader = ExtResource("3_1njux")
-shader_parameter/water_color = null
+shader_parameter/water_color = Color(0, 0, 0, 1)
 shader_parameter/uv_scale = 1.0
 shader_parameter/time_scale = 1.0
 

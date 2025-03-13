@@ -210,6 +210,7 @@ func _detect_target():
 					continue
 				%VisionRayCast3D.look_at(overlap.global_transform.origin, Vector3.UP)
 				%VisionRayCast3D.force_raycast_update()
+				
 				if %VisionRayCast3D.is_colliding():
 					var collider = %VisionRayCast3D.get_collider()
 					if collider is BodyPart:

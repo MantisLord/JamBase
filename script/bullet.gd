@@ -11,14 +11,6 @@ var source_weapon
 
 func _physics_process(delta: float) -> void:
 	position += controlled_velocity * delta
-	
-func setup(target: Vector3, bullet_owner, weapon: Weapon) -> void:
-	source_weapon = weapon 
-	shooter = bullet_owner
-	look_at(target)
-	controlled_velocity = position.direction_to(target) * speed
-
-func _process(_delta: float) -> void:
 	if $RayCast3D.is_colliding():
 		var collider = $RayCast3D.get_collider()
 		$MeshInstance3D.visible = false
@@ -27,6 +19,13 @@ func _process(_delta: float) -> void:
 		Game.handle_physics_collision($RayCast3D, shooter, collider, controlled_velocity, source_weapon)
 		await get_tree().create_timer(1.0).timeout
 		queue_free()
+
+func setup(target: Vector3, bullet_owner, weapon: Weapon) -> void:
+	source_weapon = weapon 
+	shooter = bullet_owner
+	look_at(target)
+	controlled_velocity = position.direction_to(target) * speed
+	Game.log_out("bullet fired at " + str(target) + ", distance: " + str(position.distance_to(target)))
 
 func _on_despawn_timer_timeout() -> void:
 	queue_free()

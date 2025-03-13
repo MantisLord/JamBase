@@ -114,8 +114,8 @@ tracks/1/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_rybcg"]
 _data = {
-"RESET": SubResource("Animation_oejta"),
-"swing": SubResource("Animation_s3m1t")
+&"RESET": SubResource("Animation_oejta"),
+&"swing": SubResource("Animation_s3m1t")
 }
 
 [node name="Sledge" type="Node3D"]
