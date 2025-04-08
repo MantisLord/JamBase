@@ -1,7 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://c0kjrmt0ol4ur"]
+[gd_scene load_steps=9 format=3 uid="uid://c0kjrmt0ol4ur"]
 
 [ext_resource type="Script" uid="uid://bdpiht3n4gf2" path="res://script/item_pickup.gd" id="1_231g1"]
 [ext_resource type="PackedScene" uid="uid://beptuprgjdevk" path="res://scene/pistol.tscn" id="2_e7w83"]
+[ext_resource type="PackedScene" uid="uid://bj7ciuduqc4eh" path="res://scene/pistol_es.tscn" id="3_jhfsj"]
 [ext_resource type="PackedScene" uid="uid://bl06hvbjdpbl2" path="res://scene/key.tscn" id="3_ln78f"]
 [ext_resource type="PackedScene" uid="uid://cytq7m77lul32" path="res://scene/torch.tscn" id="4_lxja8"]
 [ext_resource type="PackedScene" uid="uid://ch4hl8l0c0ypj" path="res://scene/sledge.tscn" id="5_r0p7k"]
@@ -28,6 +29,10 @@ transform = Transform3D(1, 0, 0, 0, 1, -3.23297e-13, 0, 3.23297e-13, 1, -0.00039
 shape = SubResource("BoxShape3D_3hs10")
 
 [node name="Pistol" parent="RigidBody3D" instance=ExtResource("2_e7w83")]
+visible = false
+
+[node name="Pistol ES" parent="RigidBody3D" instance=ExtResource("3_jhfsj")]
+transform = Transform3D(-1.74846e-07, 0, 4, 0, 4, 0, -4, 0, -1.74846e-07, 0, 0, 0)
 visible = false
 
 [node name="Key" parent="RigidBody3D" instance=ExtResource("3_ln78f")]

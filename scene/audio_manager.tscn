@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://c30oyit3fjbso"]
+[gd_scene load_steps=23 format=3 uid="uid://c30oyit3fjbso"]
 
 [ext_resource type="Script" uid="uid://bghudw5cktrvb" path="res://script/audio_manager.gd" id="1_nxs1i"]
 [ext_resource type="AudioStream" uid="uid://crv2yi16qk1nj" path="res://sound/button_down.wav" id="3_5yfu5"]
@@ -19,6 +19,8 @@
 [ext_resource type="AudioStream" uid="uid://cif5rv4vntrx7" path="res://sound/damage1.wav" id="17_cora2"]
 [ext_resource type="AudioStream" uid="uid://blk0frehj0kj1" path="res://sound/damage2.wav" id="18_yenie"]
 [ext_resource type="AudioStream" uid="uid://c2ntb03q0rtp5" path="res://sound/damage3.wav" id="19_l2gxk"]
+[ext_resource type="AudioStream" uid="uid://y8lf1piam3ax" path="res://sound/deagle-1.wav" id="20_pe84c"]
+[ext_resource type="AudioStream" uid="uid://baqms8qtllgyg" path="res://sound/de_clipoutin_combined.wav" id="21_hbotp"]
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_m46fy"]
 streams_count = 3
@@ -78,3 +80,9 @@ pitch_scale = 3.0
 
 [node name="TakeDamageAudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = SubResource("AudioStreamRandomizer_m46fy")
+
+[node name="ShootPistolESAudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("20_pe84c")
+
+[node name="ReloadPistolESAudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("21_hbotp")

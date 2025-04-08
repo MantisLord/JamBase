@@ -112,7 +112,7 @@ draw_pass_1 = SubResource("BoxMesh_mieaj")
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." index="1"]
 unique_name_in_owner = true
 libraries = {
-"": SubResource("AnimationLibrary_r66rn")
+&"": SubResource("AnimationLibrary_r66rn")
 }
 
 [node name="BarrelNode3D" type="Node3D" parent="." index="2"]

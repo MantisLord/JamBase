@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://n0wmlukh4m02"]
+[gd_scene load_steps=25 format=3 uid="uid://n0wmlukh4m02"]
 
 [ext_resource type="Material" uid="uid://defyr25bd2mhr" path="res://image/texture/tiles133a/tiles133a.tres" id="1_4qmqp"]
 [ext_resource type="PackedScene" uid="uid://cq7jn8ibk56a" path="res://scene/player.tscn" id="1_yw80t"]
@@ -7,10 +7,10 @@
 [ext_resource type="Resource" uid="uid://d0ngofqqrc4mc" path="res://resource/pistol.tres" id="3_afoy2"]
 [ext_resource type="PackedScene" uid="uid://b0gc43cqpyuuw" path="res://scene/button.tscn" id="3_l1san"]
 [ext_resource type="PackedScene" uid="uid://cwtj13g6520ye" path="res://scene/crate.tscn" id="4_s2meq"]
-[ext_resource type="Script" uid="uid://ch6jewqlb58ly" path="res://script/weapon.gd" id="5_70kdu"]
 [ext_resource type="Resource" uid="uid://dvytm8jnxnxaj" path="res://resource/key.tres" id="5_bitgo"]
 [ext_resource type="PackedScene" uid="uid://co1jhl6faiaf2" path="res://scene/door.tscn" id="6_mdl7e"]
 [ext_resource type="Resource" uid="uid://cqa5s4mikctu0" path="res://resource/sledge.tres" id="9_60dtm"]
+[ext_resource type="Resource" uid="uid://c3cfmx08cma7k" path="res://resource/pistol_es.tres" id="9_bqa5m"]
 [ext_resource type="PackedScene" uid="uid://njqw58hhiq4x" path="res://scene/rat.tscn" id="9_widyg"]
 [ext_resource type="PackedScene" uid="uid://dncckx5mgo358" path="res://scene/trapdoor.tscn" id="10_i0t8t"]
 [ext_resource type="PackedScene" uid="uid://7v5l100fworu" path="res://scene/human.tscn" id="11_m7hvv"]
@@ -27,33 +27,6 @@ sky_material = SubResource("ProceduralSkyMaterial_vyugs")
 [sub_resource type="Environment" id="Environment_nkv7t"]
 background_mode = 2
 sky = SubResource("Sky_yoc1e")
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_l7hj5"]
-size = Vector3(0.714, 0.435, 0.12)
-
-[sub_resource type="Resource" id="Resource_mv0r7"]
-script = ExtResource("5_70kdu")
-max_clip_size = 12
-left_in_clip = 12
-total_ammo = 36
-is_automatic = false
-fire_rate = 0.3
-clip_empty_sound = "clip_empty"
-reload_sound = "reload_pistol"
-projectile_speed = 40.0
-damage_min = 2.0
-damage_max = 2.0
-physics_impulse_strength = 0.01
-name = "Pistol"
-icon = "res://image/pistol.png"
-equip_rotation_y_offset = 90
-equip_position = Vector3(0, 0, 0)
-scene_path = "res://scene/pistol.tscn"
-physics_box_shape = SubResource("BoxShape3D_l7hj5")
-pickup_physics_box_position = Vector3(0.231, 0.065, 0)
-pickup_sound = "item_pickup"
-equip_sound = "item_equip"
-use_sound = "shoot_pistol"
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xldo6"]
 albedo_color = Color(1, 0, 0, 1)
@@ -170,13 +143,13 @@ locked = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.93132, 2, -10.9218)
 item_res = ExtResource("5_bitgo")
 
-[node name="Pistol1ItemPickup" parent="." instance=ExtResource("2_mlqrx")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 6, 7)
+[node name="PistolItemPickup" parent="." instance=ExtResource("2_mlqrx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17.6676, 13, -2.80385)
 item_res = ExtResource("3_afoy2")
 
-[node name="Pistol2ItemPickup" parent="." instance=ExtResource("2_mlqrx")]
+[node name="PistolESItemPickup" parent="." instance=ExtResource("2_mlqrx")]
 transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 17.2839, 14.5378, -2.85778)
-item_res = SubResource("Resource_mv0r7")
+item_res = ExtResource("9_bqa5m")
 
 [node name="SledgeItemPickup" parent="." instance=ExtResource("2_mlqrx")]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 18.2501, 13.7279, -2.5344)

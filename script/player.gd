@@ -26,8 +26,8 @@ var play_footsteps_sfx = false
 var speed = 0.0
 var head_bob_time = 0.0
 
-var max_health = 100
-var current_health = 100
+var max_health: int = 100
+var current_health: int = 100
 
 var inventory = []
 var equipped_item_index = -1
@@ -151,9 +151,16 @@ func _shoot(weapon):
 		equipped_item_instance.get_node("AnimationPlayer").play("swing")
 		AudioManager.play_sfx_by_name(weapon.use_sound)
 	elif weapon.left_in_clip > 0:
+		
+		# can't fire if already firing
+		if %ShootCooldownTimer.time_left > 0:
+			return
+		
 		equipped_item_instance.get_node("AnimationPlayer").play("fire")
 		AudioManager.play_sfx_by_name(weapon.use_sound)
 		weapon.left_in_clip -= 1
+		%ShootCooldownTimer.wait_time = weapon.fire_rate
+		%ShootCooldownTimer.start()
 		
 		var barrel_pos = equipped_item_instance.get_node("BarrelNode3D").global_position
 		
@@ -196,6 +203,9 @@ func _reload(weapon):
 	var needed = weapon.max_clip_size - weapon.left_in_clip
 	var reload_amount = min(needed, weapon.total_ammo)
 	if reload_amount > 0:
+		var wep_anim = equipped_item_instance.get_node("AnimationPlayer")
+		if wep_anim.has_animation("reload"):
+			wep_anim.play("reload")
 		AudioManager.play_sfx_by_name(weapon.reload_sound)
 	weapon.left_in_clip += reload_amount
 	weapon.total_ammo -= reload_amount
@@ -206,7 +216,7 @@ func _ready():
 	%Menu.get_node("%MainPanelContainer").size_flags_vertical = Control.SIZE_SHRINK_CENTER + Control.SIZE_EXPAND
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
-func _process(_delta):
+func _handle_primary_actions():
 	if Input.is_action_just_pressed("menu"):
 		%Menu.visible = !%Menu.visible
 		%CrosshairTextureRect.visible = !%Menu.visible
@@ -243,6 +253,8 @@ func _process(_delta):
 					new_index = equipped_item_index - 1
 				if new_index != equipped_item_index:
 					_equip_item(new_index)
+
+func _update_ui():
 	if Game.debug_mode:
 		%DebugLabel.text = "FPS: %f" % Engine.get_frames_per_second()
 		%DebugLabel.text += "\r\nmouse_sensitivity: %f" % Game.mouse_sensitivity
@@ -251,12 +263,21 @@ func _process(_delta):
 		%DebugLabel.text = ""
 	%ScrollContainer.visible = Game.debug_mode
 	
+	%StatusLabel.text = "HP: %d/%d" % [current_health, max_health]
+	
 	if equipped_item_index != -1:
 		var equipped_item_res = inventory[equipped_item_index];
 		%EquipLabel.text = "%s (%d)" % [equipped_item_res.name, equipped_item_index]
 		if equipped_item_res is Weapon:
 			%EquipLabel.text += "\r\nCurrent Clip (%d/%d)" % [equipped_item_res.left_in_clip, equipped_item_res.max_clip_size]
 			%EquipLabel.text += "\r\nAmmo: %d" % equipped_item_res.total_ammo
+	else:
+		%EquipLabel.text = ""
+
+func _handle_items():
+	if equipped_item_index != -1:
+		var equipped_item_res = inventory[equipped_item_index];
+		if equipped_item_res is Weapon:
 			if equipped_item_res.max_clip_size == 0:
 				var melee_area = equipped_item_instance.find_child("MeleeArea3D")
 				if melee_area.monitoring:
@@ -272,10 +293,17 @@ func _process(_delta):
 				_use(equipped_item_res)
 			if equipped_item_res is Weapon && Input.is_action_just_pressed("reload"):
 				_reload(equipped_item_res)
-		
-	else:
-		%EquipLabel.text = ""
+
+func _process(_delta):
+	_handle_primary_actions()
 	
+	_update_ui()
+	
+	_handle_items()
+	
+	_interaction_check()
+	
+func _interaction_check():
 	if !%Menu.visible:
 		if %InteractRayCast3D.is_colliding():
 			var collider = %InteractRayCast3D.get_collider()

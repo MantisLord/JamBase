@@ -13,6 +13,9 @@ extends Node
 @onready var sfx_clip_empty = { "audio_player": $ClipEmptyAudioStreamPlayer, "volume": 2.0, "name": "clip_empty" }
 @onready var sfx_reload_pistol = { "audio_player": $ReloadPistolAudioStreamPlayer, "volume": 2.0, "name": "reload_pistol" }
 
+@onready var sfx_shoot_pistol_es = { "audio_player": $ShootPistolESAudioStreamPlayer, "volume": 0.2, "name": "shoot_pistol_es" }
+@onready var sfx_reload_pistol_es = { "audio_player": $ReloadPistolESAudioStreamPlayer, "volume": 2.0, "name": "reload_pistol_es" }
+
 @onready var sfx_use_key = { "audio_player": $UseKeyAudioStreamPlayer, "volume": 0.5, "name": "use_key" }
 @onready var sfx_equip_key = { "audio_player": $EquipKeyAudioStreamPlayer, "volume": 0.1, "name": "equip_key" }
 @onready var sfx_pickup_key = { "audio_player": $PickupKeyAudioStreamPlayer, "volume": 0.1, "name": "pickup_key" }
@@ -41,6 +44,8 @@ func _ready() -> void:
 	audio_list.append(sfx_pickup_key)
 	audio_list.append(sfx_menu_open)
 	audio_list.append(sfx_menu_close)
+	audio_list.append(sfx_shoot_pistol_es)
+	audio_list.append(sfx_reload_pistol_es)
 	sound_library["flesh_impact_bullet1"] = preload("res://sound/flesh_impact_bullet1.wav")
 	sound_library["flesh_impact_bullet2"] = preload("res://sound/flesh_impact_bullet2.wav")
 	sound_library["flesh_impact_bullet3"] = preload("res://sound/flesh_impact_bullet3.wav")
