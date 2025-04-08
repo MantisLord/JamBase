@@ -214,7 +214,6 @@ func _ready():
 	%Menu.visible = false
 	%Menu.get_node("%TitleMarginContainer").visible = false
 	%Menu.get_node("%MainPanelContainer").size_flags_vertical = Control.SIZE_SHRINK_CENTER + Control.SIZE_EXPAND
-	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
 func _handle_primary_actions():
 	if Input.is_action_just_pressed("menu"):
@@ -257,8 +256,9 @@ func _handle_primary_actions():
 func _update_ui():
 	if Game.debug_mode:
 		%DebugLabel.text = "FPS: %f" % Engine.get_frames_per_second()
-		%DebugLabel.text += "\r\nmouse_sensitivity: %f" % Game.mouse_sensitivity
-		%DebugLabel.text += "\r\nPlayer Position: %s" % str(position)
+		%DebugLabel.text += "\r\nmouse sensitivity: %f" % Game.mouse_sensitivity
+		%DebugLabel.text += "\r\nplayer position: %s" % str(position)
+		%DebugLabel.text += "\r\ninput mouse mode: %s" % Input.mouse_mode
 	else:
 		%DebugLabel.text = ""
 	%ScrollContainer.visible = Game.debug_mode
@@ -344,6 +344,11 @@ func _input(event):
 		$Head.rotate_y(deg_to_rad(-event.relative.x * Game.mouse_sensitivity))
 		%Cam.rotate_x(deg_to_rad(-event.relative.y * Game.mouse_sensitivity))
 		%Cam.rotation.x = clamp(%Cam.rotation.x, deg_to_rad(MIN_ANGLE_VIEW), deg_to_rad(MAX_ANGLE_VIEW))
+		
+func _unhandled_input(event):
+	if OS.get_name() == "Web":
+		if event is InputEventMouseButton and event.pressed and %Menu.visible == false:
+			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
 func _physics_process(delta):
 	# Add the gravity.

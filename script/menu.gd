@@ -10,9 +10,11 @@ func _ready():
 	var control_buttons = get_tree().get_nodes_in_group("control_buttons")
 	for button in control_buttons:
 		button.connect("pressed", Callable(self, "_on_control_button_remap_pressed").bind(button))
+	if OS.get_name() == "Web":
+		%QuitButton.visible = false
 
 func _initialize_settings_from_config():
-	var sensitivity = Config.get_config("options", Game.MOUSE_SENSITIVITY_CONFIG_NAME)
+	var sensitivity = Config.get_config("options", Game.MOUSE_SENSITIVITY_CONFIG_NAME, 0.05)
 	%SensitivityHSlider.value = sensitivity
 	Game.mouse_sensitivity = sensitivity
 	
@@ -37,6 +39,7 @@ func _initialize_settings_from_config():
 	Game.debug_mode = debug_mode
 
 func _on_start_button_pressed():
+	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	Game.change_scene("world")
 
 func _on_button_down():
