@@ -1,9 +1,10 @@
-[gd_scene load_steps=25 format=3 uid="uid://n0wmlukh4m02"]
+[gd_scene load_steps=26 format=3 uid="uid://n0wmlukh4m02"]
 
 [ext_resource type="Material" uid="uid://defyr25bd2mhr" path="res://image/texture/tiles133a/tiles133a.tres" id="1_4qmqp"]
 [ext_resource type="PackedScene" uid="uid://cq7jn8ibk56a" path="res://scene/player.tscn" id="1_yw80t"]
 [ext_resource type="PackedScene" uid="uid://c0kjrmt0ol4ur" path="res://scene/item_pickup.tscn" id="2_mlqrx"]
 [ext_resource type="Material" uid="uid://djj5m2cx2rruh" path="res://image/texture/bricks85/bricks85.tres" id="2_sdf2w"]
+[ext_resource type="Texture2D" uid="uid://bxuu0blfr4xe1" path="res://image/texture/table_mountain_1_puresky_4k.hdr" id="3_a0bac"]
 [ext_resource type="Resource" uid="uid://d0ngofqqrc4mc" path="res://resource/pistol.tres" id="3_afoy2"]
 [ext_resource type="PackedScene" uid="uid://b0gc43cqpyuuw" path="res://scene/button.tscn" id="3_l1san"]
 [ext_resource type="PackedScene" uid="uid://cwtj13g6520ye" path="res://scene/crate.tscn" id="4_s2meq"]
@@ -19,10 +20,12 @@
 vertices = PackedVector3Array(-5.625, 0.999999, -10.375, -5.125, 0.999999, -10.625, -5.125, 0.999999, -14.125, -14.125, 0.999999, -14.125, -14.125, 0.999999, -1.375, -5.625, 0.999999, -1.375, -0.625001, 0.999999, -10.625, -0.375001, 0.999999, -9.875, 0.374999, 0.999999, -9.875, 0.624999, 0.999999, -10.625, 5.375, 0.999999, -14.125, 5.375, 0.999999, -10.625, 5.875, 0.999999, -10.375, 14.375, 0.999999, -14.125, 5.875, 0.999999, -1.625, 14.375, 0.999999, -1.625, -0.625001, 0.999999, -9.125, 0.624999, 0.999999, -9.125, -4.125, 0.999999, -0.625001, 4.375, 0.999999, -0.625001, -4.125, 0.999999, -9.125, 4.375, 0.999999, -9.125, 5.875, 0.999999, 0.374999, 5.375, 0.999999, 0.874999, 3.375, 0.999999, 14.375, 14.375, 0.999999, 14.375, 3.375, 0.999999, 0.874999, -5.625, 0.999999, 0.624999, -3.375, 0.999999, 14.375, -3.375, 0.999999, 0.874999, -14.125, 0.999999, 14.375)
 polygons = [PackedInt32Array(1, 0, 2), PackedInt32Array(2, 0, 3), PackedInt32Array(5, 4, 0), PackedInt32Array(0, 4, 3), PackedInt32Array(7, 6, 8), PackedInt32Array(8, 6, 9), PackedInt32Array(6, 2, 9), PackedInt32Array(9, 2, 10), PackedInt32Array(6, 1, 2), PackedInt32Array(10, 11, 9), PackedInt32Array(11, 10, 12), PackedInt32Array(12, 10, 13), PackedInt32Array(14, 12, 15), PackedInt32Array(15, 12, 13), PackedInt32Array(8, 17, 7), PackedInt32Array(7, 17, 16), PackedInt32Array(16, 17, 18), PackedInt32Array(18, 17, 19), PackedInt32Array(18, 20, 16), PackedInt32Array(17, 21, 19), PackedInt32Array(22, 14, 15), PackedInt32Array(22, 15, 23), PackedInt32Array(23, 15, 25), PackedInt32Array(23, 25, 24), PackedInt32Array(24, 26, 23), PackedInt32Array(4, 5, 27), PackedInt32Array(27, 29, 28), PackedInt32Array(4, 27, 30), PackedInt32Array(30, 27, 28), PackedInt32Array(29, 26, 28), PackedInt32Array(28, 26, 24)]
 
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_vyugs"]
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_tmyho"]
+panorama = ExtResource("3_a0bac")
+energy_multiplier = 0.5
 
 [sub_resource type="Sky" id="Sky_yoc1e"]
-sky_material = SubResource("ProceduralSkyMaterial_vyugs")
+sky_material = SubResource("PanoramaSkyMaterial_tmyho")
 
 [sub_resource type="Environment" id="Environment_nkv7t"]
 background_mode = 2
@@ -116,6 +119,10 @@ size = Vector3(30, 3, 0.25)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_nkv7t")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="WorldEnvironment"]
+transform = Transform3D(0.707107, 0.5, -0.5, 0, 0.707107, 0.707107, 0.707107, -0.5, 0.5, -150, 150, 150)
+shadow_enabled = true
 
 [node name="Player" parent="." instance=ExtResource("1_yw80t")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17, 9.5, 3)
