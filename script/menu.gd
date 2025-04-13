@@ -37,6 +37,10 @@ func _initialize_settings_from_config():
 	var debug_mode = Config.get_config("options", Game.DEBUG_MODE_CONFIG_NAME, false)
 	%DebugModeCheckBox.button_pressed = debug_mode
 	Game.debug_mode = debug_mode
+	
+	var cam_mode = Config.get_config("options", Game.CAM_MODE_CONFIG_NAME, 0)
+	%CamModeOptionButton.selected = cam_mode
+	Game.cam_mode = cam_mode
 
 func _on_start_button_pressed():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
@@ -103,6 +107,10 @@ func _on_fullscreen_check_box_toggled(toggled_on):
 func _on_debug_mode_check_box_toggled(toggled_on: bool) -> void:
 	Config.set_config("options", Game.DEBUG_MODE_CONFIG_NAME, toggled_on)
 	Game.debug_mode = toggled_on
+
+func _on_cam_mode_option_button_item_selected(index: int) -> void:
+	Config.set_config("options", Game.CAM_MODE_CONFIG_NAME, index)
+	Game.cam_mode = index
 
 func _on_master_volume_h_slider_value_changed(value):
 	Config.set_config("options", Game.MASTER_VOLUME_CONFIG_NAME, value / 100)

@@ -46,7 +46,7 @@ length = 0.001
 tracks/0/type = "position_3d"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Head/Cam/EquippedItemNode3D")
+tracks/0/path = NodePath("Head/FirstCamera3D/EquippedItemNode3D")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = PackedFloat32Array(0, 1, 2, -2, -1)
@@ -57,7 +57,7 @@ length = 0.5
 tracks/0/type = "position_3d"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Head/Cam/EquippedItemNode3D")
+tracks/0/path = NodePath("Head/FirstCamera3D/EquippedItemNode3D")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = PackedFloat32Array(0, 1, 0.5, -0.5, -1, 0.5, 1, 2, -2, -1)
@@ -68,7 +68,7 @@ length = 0.5
 tracks/0/type = "position_3d"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Head/Cam/EquippedItemNode3D")
+tracks/0/path = NodePath("Head/FirstCamera3D/EquippedItemNode3D")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = PackedFloat32Array(0, 1, 2, -2, -1, 0.5, 1, 0.5, -0.5, -1)
@@ -107,40 +107,41 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 [node name="AltBulletStartPoint" type="Node3D" parent="Head"]
 unique_name_in_owner = true
 
-[node name="Cam" type="Camera3D" parent="Head"]
+[node name="FirstCamera3D" type="Camera3D" parent="Head"]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.5)
 
-[node name="InteractRayCast3D" type="RayCast3D" parent="Head/Cam"]
+[node name="InteractRayCast3D" type="RayCast3D" parent="Head/FirstCamera3D"]
 unique_name_in_owner = true
 target_position = Vector3(0, 0, -3)
 collision_mask = 2
 collide_with_areas = true
 debug_shape_thickness = 1
 
-[node name="AimRayCast3D" type="RayCast3D" parent="Head/Cam"]
+[node name="AimRayCast3D" type="RayCast3D" parent="Head/FirstCamera3D"]
 unique_name_in_owner = true
 target_position = Vector3(0, 0, -100)
 collision_mask = 3
 collide_with_areas = true
 
-[node name="AimRayEndNode3D" type="Node3D" parent="Head/Cam"]
+[node name="AimRayEndNode3D" type="Node3D" parent="Head/FirstCamera3D"]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -101.5)
 
-[node name="EquippedItemNode3D" type="Node3D" parent="Head/Cam"]
+[node name="EquippedItemNode3D" type="Node3D" parent="Head/FirstCamera3D"]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, -2, -1)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Head/Cam/EquippedItemNode3D"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Head/FirstCamera3D/EquippedItemNode3D"]
 mesh = SubResource("SphereMesh_t37ui")
 surface_material_override/0 = SubResource("StandardMaterial3D_7xmvg")
 
-[node name="DropItemNode3D" type="Node3D" parent="Head/Cam"]
+[node name="DropItemNode3D" type="Node3D" parent="Head/FirstCamera3D"]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.499785)
 
-[node name="Camera3D" type="Camera3D" parent="Head"]
+[node name="ThirdCamera3D" type="Camera3D" parent="Head"]
+unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, 1.5, 2)
 
 [node name="UI" type="Control" parent="."]

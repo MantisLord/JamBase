@@ -6,12 +6,14 @@ const MUSIC_VOLUME_CONFIG_NAME = "music_volume"
 const SFX_VOLUME_CONFIG_NAME = "sfx_volume"
 const FULLSCREEN_CONFIG_NAME = "fullscreen"
 const DEBUG_MODE_CONFIG_NAME = "debug_mode"
+const CAM_MODE_CONFIG_NAME = "cam_mode"
 
 var mouse_sensitivity
 var sfx_volume
 var music_volume
 var master_volume
 var debug_mode
+var cam_mode
 
 func get_rand_str(string_array: Array[String]) -> String:
 	return string_array[int(randf() * string_array.size())]

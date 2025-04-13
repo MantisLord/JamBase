@@ -176,6 +176,27 @@ max_value = 0.3
 step = 0.01
 value = 0.15
 
+[node name="CamModeHBoxContainer" type="HBoxContainer" parent="OverallVBoxContainer/MainPanelContainer/MainVBoxContainer" groups=["options"]]
+visible = false
+layout_mode = 2
+
+[node name="CamModeLabel" type="Label" parent="OverallVBoxContainer/MainPanelContainer/MainVBoxContainer/CamModeHBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "cam mode"
+
+[node name="CamModeOptionButton" type="OptionButton" parent="OverallVBoxContainer/MainPanelContainer/MainVBoxContainer/CamModeHBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+selected = 0
+item_count = 3
+popup/item_0/text = "First"
+popup/item_0/id = 0
+popup/item_1/text = "Third"
+popup/item_1/id = 1
+popup/item_2/text = "TopDown"
+popup/item_2/id = 2
+
 [node name="ControlsButton" type="Button" parent="OverallVBoxContainer/MainPanelContainer/MainVBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 0)
@@ -439,6 +460,7 @@ text = "quit"
 [connection signal="value_changed" from="OverallVBoxContainer/MainPanelContainer/MainVBoxContainer/MusicVolumeHBoxContainer/MusicVolumeHSlider" to="." method="_on_music_volume_h_slider_value_changed"]
 [connection signal="value_changed" from="OverallVBoxContainer/MainPanelContainer/MainVBoxContainer/SFXVolumeHBoxContainer/SFXVolumeHSlider" to="." method="_on_sfx_volume_h_slider_value_changed"]
 [connection signal="drag_ended" from="OverallVBoxContainer/MainPanelContainer/MainVBoxContainer/SensitivityHBoxContainer/SensitivityHSlider" to="." method="_on_sensitivity_volume_h_slider_drag_ended"]
+[connection signal="item_selected" from="OverallVBoxContainer/MainPanelContainer/MainVBoxContainer/CamModeHBoxContainer/CamModeOptionButton" to="." method="_on_cam_mode_option_button_item_selected"]
 [connection signal="button_down" from="OverallVBoxContainer/MainPanelContainer/MainVBoxContainer/ControlsButton" to="." method="_on_button_down"]
 [connection signal="button_up" from="OverallVBoxContainer/MainPanelContainer/MainVBoxContainer/ControlsButton" to="." method="_on_button_up"]
 [connection signal="toggled" from="OverallVBoxContainer/MainPanelContainer/MainVBoxContainer/ControlsButton" to="." method="_on_controls_button_toggled"]

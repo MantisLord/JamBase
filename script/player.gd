@@ -39,6 +39,9 @@ var bullet = preload("res://scene/bullet.tscn")
 
 var bullet_debug = preload("res://scene/bullet_debug.tscn")
 
+@onready var current_cam: Camera3D = %FirstCamera3D
+var current_cam_index: int = 0
+
 func hit(damage, attacker):
 	current_health -= damage
 	Game.log_out("%s hit player for %d damage. Player has %d HP remaining." % [attacker.name, damage, current_health])
@@ -294,15 +297,38 @@ func _handle_items():
 			if equipped_item_res is Weapon && Input.is_action_just_pressed("reload"):
 				_reload(equipped_item_res)
 
+func _check_cams():
+	if %FirstCamera3D.current:
+		current_cam_index = 0
+	if %ThirdCamera3D.current:
+		current_cam_index = 1
+	var top_down_cam =  get_parent().get_node("TopDownCamera3D")
+	if top_down_cam != null and top_down_cam.current:
+		current_cam_index = 2
+	if Game.cam_mode != current_cam_index:
+		%FirstCamera3D.current = false
+		%ThirdCamera3D.current = false
+		if top_down_cam != null:
+			top_down_cam.current = false
+		if Game.cam_mode == 0:
+			%FirstCamera3D.current = true
+		if Game.cam_mode == 1:
+			%ThirdCamera3D.current = true
+		if Game.cam_mode == 2 and top_down_cam != null:
+			top_down_cam.current = true
+		current_cam_index = Game.cam_mode
+
 func _process(_delta):
 	_handle_primary_actions()
-	
+
+	_check_cams()
+
 	_update_ui()
-	
+
 	_handle_items()
-	
+
 	_interaction_check()
-	
+
 func _interaction_check():
 	if !%Menu.visible:
 		if %InteractRayCast3D.is_colliding():
@@ -342,9 +368,10 @@ func _interaction_check():
 func _input(event):
 	if event is InputEventMouseMotion and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
 		$Head.rotate_y(deg_to_rad(-event.relative.x * Game.mouse_sensitivity))
-		%Cam.rotate_x(deg_to_rad(-event.relative.y * Game.mouse_sensitivity))
-		%Cam.rotation.x = clamp(%Cam.rotation.x, deg_to_rad(MIN_ANGLE_VIEW), deg_to_rad(MAX_ANGLE_VIEW))
-		
+		current_cam.rotate_x(deg_to_rad(-event.relative.y * Game.mouse_sensitivity))
+		current_cam.rotation.x = clamp(current_cam.rotation.x, deg_to_rad(MIN_ANGLE_VIEW), deg_to_rad(MAX_ANGLE_VIEW))
+
+# try to fix focus issues on web (unsucessfully)
 func _unhandled_input(event):
 	if OS.get_name() == "Web":
 		if event is InputEventMouseButton and event.pressed and %Menu.visible == false:
@@ -403,7 +430,7 @@ func _physics_process(delta):
 	var pos = Vector3.ZERO
 	pos.y = sin(head_bob_time * HEAD_BOB_FREQ) * HEAD_BOB_AMP
 	pos.x = cos(head_bob_time * HEAD_BOB_FREQ / 2) * HEAD_BOB_AMP
-	%Cam.transform.origin = pos
+	current_cam.transform.origin = pos
 	
 	if !play_footsteps_sfx:
 		AudioManager.sfx_footsteps.audio_player.stop()
@@ -413,7 +440,7 @@ func _physics_process(delta):
 	# FOV
 	var velocity_clamped = clamp(velocity.length(), 0.5, SPEED_SPRINT * 2.0)
 	var target_fov = FOV_BASE + FOV_CHANGE * velocity_clamped
-	%Cam.fov = lerp(%Cam.fov, target_fov, delta * SPEED_CAMERA)
+	current_cam.fov = lerp(current_cam.fov, target_fov, delta * SPEED_CAMERA)
 
 	move_and_slide()
 	var collision_info = get_last_slide_collision()
