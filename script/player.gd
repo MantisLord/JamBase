@@ -42,6 +42,7 @@ var bullet_debug = preload("res://scene/bullet_debug.tscn")
 var current_cam_index: int = 0
 
 var is_crouching: bool = false
+var need_landing_anim: bool = false
 
 func hit(damage, attacker):
 	current_health -= damage
@@ -387,12 +388,17 @@ func _physics_process(delta):
 	if not is_on_floor():
 		velocity.y -= gravity * delta
 		play_footsteps_sfx = false
+	elif need_landing_anim:
+		%AnimationPlayer.play("jump_end")
+		need_landing_anim = false
 
 	# Handle jump.
 	if Input.is_action_just_pressed("jump") and is_on_floor() and !is_crouching:
 		velocity.y = JUMP_VELOCITY
 		AudioManager.play_sfx(AudioManager.sfx_jump)
 		play_footsteps_sfx = false
+		%AnimationPlayer.play("jump_start")
+		need_landing_anim = true
 
 	# Get the input direction.
 	var input_dir = Input.get_vector("left", "right", "forward", "backward")

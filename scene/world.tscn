@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://n0wmlukh4m02"]
+[gd_scene load_steps=23 format=3 uid="uid://n0wmlukh4m02"]
 
 [ext_resource type="Material" uid="uid://defyr25bd2mhr" path="res://image/texture/tiles133a/tiles133a.tres" id="1_4qmqp"]
 [ext_resource type="PackedScene" uid="uid://cq7jn8ibk56a" path="res://scene/player.tscn" id="1_yw80t"]
@@ -16,6 +16,7 @@
 [ext_resource type="PackedScene" uid="uid://dncckx5mgo358" path="res://scene/trapdoor.tscn" id="10_i0t8t"]
 [ext_resource type="PackedScene" uid="uid://7v5l100fworu" path="res://scene/human.tscn" id="11_m7hvv"]
 [ext_resource type="Material" uid="uid://dwsxg5tyx05yd" path="res://resource/glass.tres" id="15_tmyho"]
+[ext_resource type="PackedScene" uid="uid://384y0fmx3tn7" path="res://scene/robot.tscn" id="17_hnm4a"]
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_hdxwv"]
 vertices = PackedVector3Array(-5.625, 0.999999, -10.375, -5.125, 0.999999, -10.625, -5.125, 0.999999, -14.125, -14.125, 0.999999, -14.125, -14.125, 0.999999, -1.375, -5.625, 0.999999, -1.375, -0.625001, 0.999999, -10.625, -0.375001, 0.999999, -9.875, 0.374999, 0.999999, -9.875, 0.624999, 0.999999, -10.625, 5.375, 0.999999, -14.125, 5.375, 0.999999, -10.625, 5.875, 0.999999, -10.375, 14.375, 0.999999, -14.125, 5.875, 0.999999, -1.625, 14.375, 0.999999, -1.625, -0.625001, 0.999999, -9.125, 0.624999, 0.999999, -9.125, -4.125, 0.999999, -0.625001, 4.375, 0.999999, -0.625001, -4.125, 0.999999, -9.125, 4.375, 0.999999, -9.125, 5.875, 0.999999, 0.374999, 5.375, 0.999999, 0.874999, 3.375, 0.999999, 14.375, 14.375, 0.999999, 14.375, 3.375, 0.999999, 0.874999, -5.625, 0.999999, 0.624999, -3.375, 0.999999, 14.375, -3.375, 0.999999, 0.874999, -14.125, 0.999999, 14.375)
@@ -240,3 +241,6 @@ spawn_x_max = 14.0
 spawn_x_min = -14.0
 spawn_z_max = 14.0
 spawn_z_min = 1.0
+
+[node name="Robot6_8" parent="." instance=ExtResource("17_hnm4a")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19.3591, 8.55, -4.78172)
