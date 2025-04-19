@@ -7,12 +7,11 @@ const SPEED_CROUCH = 3.0
 const SPEED_AIR = 0.5
 const SPEED_GROUND_ACCEL = 10.0
 const SPEED_GROUND_DECCEL = 7.0
-const SPEED_HEAD = 10.0
+const SPEED_HEAD = 7.0
 const SPEED_CAMERA = 8.0
 const JUMP_VELOCITY = 4.5
-const MIN_ANGLE_VIEW = -60
-const MAX_ANGLE_VIEW = 60
-const CROUCH_DEPTH = -0.5
+const MIN_ANGLE_VIEW = -75
+const MAX_ANGLE_VIEW = 75
 const HEAD_BOB_FREQ = 2.4
 const HEAD_BOB_AMP = 0.08
 const FOV_BASE = 75.0
@@ -41,6 +40,8 @@ var bullet_debug = preload("res://scene/bullet_debug.tscn")
 
 @onready var current_cam: Camera3D = %FirstCamera3D
 var current_cam_index: int = 0
+
+var is_crouching: bool = false
 
 func hit(damage, attacker):
 	current_health -= damage
@@ -221,7 +222,7 @@ func _ready():
 func _handle_primary_actions():
 	if Input.is_action_just_pressed("menu"):
 		%Menu.visible = !%Menu.visible
-		%CrosshairTextureRect.visible = !%Menu.visible
+		%ReticleCenterContainer.visible = !%Menu.visible
 		if %Menu.visible:
 			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 			AudioManager.play_sfx(AudioManager.sfx_menu_open)
@@ -262,9 +263,11 @@ func _update_ui():
 		%DebugLabel.text += "\r\nmouse sensitivity: %f" % Game.mouse_sensitivity
 		%DebugLabel.text += "\r\nplayer position: %s" % str(position)
 		%DebugLabel.text += "\r\ninput mouse mode: %s" % Input.mouse_mode
+		%DebugLabel.text += "\r\nis_crouching: %s" % is_crouching
 	else:
 		%DebugLabel.text = ""
-	%ScrollContainer.visible = Game.debug_mode
+	%DebugMarginContainer.visible = Game.debug_mode
+	%DebugLogMarginContainer.visible = Game.debug_mode
 	
 	%StatusLabel.text = "HP: %d/%d" % [current_health, max_health]
 	
@@ -302,9 +305,11 @@ func _check_cams():
 		current_cam_index = 0
 	if %ThirdCamera3D.current:
 		current_cam_index = 1
-	var top_down_cam =  get_parent().get_node("TopDownCamera3D")
-	if top_down_cam != null and top_down_cam.current:
-		current_cam_index = 2
+	var top_down_cam = null
+	if get_parent().has_node("TopDownCamera3D"):
+		top_down_cam = get_parent().get_node("TopDownCamera3D")
+		if top_down_cam != null and top_down_cam.current:
+			current_cam_index = 2
 	if Game.cam_mode != current_cam_index:
 		%FirstCamera3D.current = false
 		%ThirdCamera3D.current = false
@@ -337,33 +342,33 @@ func _interaction_check():
 				collider = collider.get_parent()
 			if collider is ItemPickup:
 				%InteractLabel.text = "Press %s to pick up %s." % [%Menu.get_key_name_from_action("interact"), collider.item_res.name]
-				%CrosshairTextureRect.visible = false
+				%ReticleCenterContainer.visible = false
 				if Input.is_action_just_pressed("interact"):
 					_pick_up_item(collider.item_res)
 					collider.queue_free()
 			elif collider is Door:
 				if collider.locked:
-					%CrosshairTextureRect.visible = false
+					%ReticleCenterContainer.visible = false
 					%InteractLabel.text = "Locked."
 				else:
-					%CrosshairTextureRect.visible = true
+					%ReticleCenterContainer.visible = true
 					%InteractLabel.text = ""
 			elif collider is Trapdoor:
 				%InteractLabel.text = "Press %s to travel to %s." % [%Menu.get_key_name_from_action("interact"), collider.teleport_scene_name]
-				%CrosshairTextureRect.visible = false
+				%ReticleCenterContainer.visible = false
 				if Input.is_action_just_pressed("interact"):
 					Game.change_scene("sewer")
 			elif collider is InteractButton:
 				%InteractLabel.text = "Press %s to %s." % [%Menu.get_key_name_from_action("interact"), collider.action_display]
-				%CrosshairTextureRect.visible = false
+				%ReticleCenterContainer.visible = false
 				if Input.is_action_just_pressed("interact"):
 					collider.start_press()
 		else:
 			%InteractLabel.text = ""
-			%CrosshairTextureRect.visible = true
+			%ReticleCenterContainer.visible = true
 	else:
 		%InteractLabel.text = ""
-		%CrosshairTextureRect.visible = false
+		%ReticleCenterContainer.visible = false
 
 func _input(event):
 	if event is InputEventMouseMotion and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
@@ -384,7 +389,7 @@ func _physics_process(delta):
 		play_footsteps_sfx = false
 
 	# Handle jump.
-	if Input.is_action_just_pressed("jump") and is_on_floor():
+	if Input.is_action_just_pressed("jump") and is_on_floor() and !is_crouching:
 		velocity.y = JUMP_VELOCITY
 		AudioManager.play_sfx(AudioManager.sfx_jump)
 		play_footsteps_sfx = false
@@ -395,15 +400,15 @@ func _physics_process(delta):
 
 	# Handle move speed.
 	if Input.is_action_pressed("crouch"):
-		$Head.position.y = lerp($Head.position.y, CROUCH_DEPTH, delta * SPEED_HEAD)
 		speed = SPEED_CROUCH
 		AudioManager.sfx_footsteps.audio_player.pitch_scale = 0.6
-		%CrouchCollisionShape3D.disabled = false;
-		%StandCollisionShape3D.disabled = true;
+		if !is_crouching:
+			%AnimationPlayer.play("crouch", -1, SPEED_HEAD)
+			is_crouching = true
 	elif !%HeadCollisionRayCast3D.is_colliding():
-		%CrouchCollisionShape3D.disabled = true;
-		%StandCollisionShape3D.disabled = false;
-		$Head.position.y = lerp($Head.position.y, 0.5, delta * SPEED_HEAD)
+		if is_crouching:
+			%AnimationPlayer.play("crouch", -1, -SPEED_HEAD, true)
+			is_crouching = false
 		if Input.is_action_pressed("sprint"):
 			speed = SPEED_SPRINT
 			AudioManager.sfx_footsteps.audio_player.pitch_scale = 1.6

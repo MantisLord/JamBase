@@ -59,8 +59,8 @@ func log_out(text) -> void:
 		if get_tree().current_scene != null:
 			var player = get_tree().current_scene.get_node_or_null("Player")
 			if player != null:
-				var scroll_container = player.get_node("UI/ScrollContainer")
-				scroll_container.get_node("DevLogLabel").text += "\r\n%s" % text
+				var scroll_container = player.get_node("UI/DebugLogMarginContainer/DebugLogPanelContainer/DebugLogInnerMarginContainer/DebugLogScrollContainer")
+				scroll_container.get_node("DebugLogLabel").text += "\r\n%s" % text
 				await get_tree().process_frame
 				scroll_container.scroll_vertical = scroll_container.get_v_scroll_bar().max_value
 	print(text)

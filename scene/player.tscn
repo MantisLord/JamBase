@@ -2,15 +2,13 @@
 
 [ext_resource type="Script" uid="uid://o00nif28jffg" path="res://script/player.gd" id="1_0aebm"]
 [ext_resource type="PackedScene" uid="uid://dhf0yu2i6obb0" path="res://scene/menu.tscn" id="2_b1yb2"]
-[ext_resource type="Texture2D" uid="uid://drug5w86ewv2k" path="res://image/crosshair001.png" id="2_ijvjw"]
+[ext_resource type="Script" uid="uid://b5q4gm74h2b1f" path="res://script/reticle.gd" id="2_ct4mp"]
+[ext_resource type="Theme" uid="uid://dlsdo8yt3uv62" path="res://resource/debug_theme.tres" id="2_s4jxa"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_v13iy"]
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_qqblw"]
-height = 1.2
-
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fvtld"]
-albedo_color = Color(1, 0, 0, 1)
+albedo_color = Color(0, 0, 0, 1)
 roughness = 0.4
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_xo4fh"]
@@ -22,21 +20,6 @@ height = 0.1
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7xmvg"]
 albedo_color = Color(1, 0.0823529, 1, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yumv1"]
-content_margin_left = 5.0
-content_margin_top = 5.0
-content_margin_right = 5.0
-content_margin_bottom = 5.0
-bg_color = Color(0, 0, 0, 0.294118)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_54vpr"]
 bg_color = Color(0, 0, 0, 0.196078)
@@ -55,6 +38,81 @@ tracks/0/path = NodePath("Head/FirstCamera3D/EquippedItemNode3D")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = PackedFloat32Array(0, 1, 2, -2, -1)
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CollisionShape3D:shape:height")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [2.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Head:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0.5, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("CollisionShape3D/BodyMeshInstance3D:mesh:height")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [2.0]
+}
+
+[sub_resource type="Animation" id="Animation_fvtld"]
+resource_name = "crouch"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CollisionShape3D:shape:height")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [2.0, 1.5]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Head:position")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0.5, 0), Vector3(0, 0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("CollisionShape3D/BodyMeshInstance3D:mesh:height")
+tracks/2/interp = 2
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [2.0, 1.5]
+}
 
 [sub_resource type="Animation" id="Animation_l7vvt"]
 resource_name = "lower"
@@ -81,6 +139,7 @@ tracks/0/keys = PackedFloat32Array(0, 1, 2, -2, -1, 0.5, 1, 0.5, -0.5, -1)
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ulrgn"]
 _data = {
 &"RESET": SubResource("Animation_gp7g2"),
+&"crouch": SubResource("Animation_fvtld"),
 &"lower": SubResource("Animation_l7vvt"),
 &"raise": SubResource("Animation_2pcmr")
 }
@@ -90,20 +149,16 @@ script = ExtResource("1_0aebm")
 
 [node name="HeadCollisionRayCast3D" type="RayCast3D" parent="."]
 unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
-target_position = Vector3(0, 2, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
+target_position = Vector3(0, 0.25, 0)
 
-[node name="StandCollisionShape3D" type="CollisionShape3D" parent="."]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 unique_name_in_owner = true
 shape = SubResource("CapsuleShape3D_v13iy")
 
-[node name="CrouchCollisionShape3D" type="CollisionShape3D" parent="."]
-unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.4, 0)
-shape = SubResource("CapsuleShape3D_qqblw")
-
-[node name="BodyMeshInstance3D" type="MeshInstance3D" parent="."]
+[node name="BodyMeshInstance3D" type="MeshInstance3D" parent="CollisionShape3D"]
 mesh = SubResource("CapsuleMesh_xo4fh")
+skeleton = NodePath("../..")
 
 [node name="Head" type="Node3D" parent="."]
 unique_name_in_owner = true
@@ -156,12 +211,27 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 
-[node name="DebugLabel" type="Label" parent="UI"]
+[node name="DebugMarginContainer" type="MarginContainer" parent="UI"]
 unique_name_in_owner = true
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 23.0
+layout_mode = 1
+offset_right = 296.0
+offset_bottom = 69.0
+theme = ExtResource("2_s4jxa")
+
+[node name="DebugPanelContainer" type="PanelContainer" parent="UI/DebugMarginContainer"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+theme = ExtResource("2_s4jxa")
+
+[node name="DebugInnerMarginContainer" type="MarginContainer" parent="UI/DebugMarginContainer/DebugPanelContainer"]
+layout_mode = 2
+
+[node name="DebugLabel" type="Label" parent="UI/DebugMarginContainer/DebugPanelContainer/DebugInnerMarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
 text = "
 "
 
@@ -210,7 +280,7 @@ grow_vertical = 2
 text = "
 "
 
-[node name="CrosshairTextureRect" type="TextureRect" parent="UI"]
+[node name="ReticleCenterContainer" type="CenterContainer" parent="UI" node_paths=PackedStringArray("RETICLE_LINES", "PLAYER_CONTROLLER")]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 8
@@ -218,36 +288,58 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -64.0
-offset_top = -64.0
-offset_right = 64.0
-offset_bottom = 64.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("2_ijvjw")
-stretch_mode = 5
+script = ExtResource("2_ct4mp")
+RETICLE_LINES = [NodePath("Top"), NodePath("Right"), NodePath("Bottom"), NodePath("Left")]
+PLAYER_CONTROLLER = NodePath("../..")
 
-[node name="ScrollContainer" type="ScrollContainer" parent="UI"]
+[node name="Top" type="Line2D" parent="UI/ReticleCenterContainer"]
+points = PackedVector2Array(0, -5, 0, -15)
+width = 2.0
+
+[node name="Right" type="Line2D" parent="UI/ReticleCenterContainer"]
+points = PackedVector2Array(5, 0, 15, 0)
+width = 2.0
+
+[node name="Bottom" type="Line2D" parent="UI/ReticleCenterContainer"]
+points = PackedVector2Array(0, 5, 0, 15)
+width = 2.0
+
+[node name="Left" type="Line2D" parent="UI/ReticleCenterContainer"]
+points = PackedVector2Array(-5, 0, -15, 0)
+width = 2.0
+
+[node name="DebugLogMarginContainer" type="MarginContainer" parent="UI"]
 unique_name_in_owner = true
-visible = false
-custom_minimum_size = Vector2(250, 100)
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -18.0
-offset_bottom = 18.0
+offset_left = -250.0
+offset_bottom = 100.0
 grow_horizontal = 0
+theme = ExtResource("2_s4jxa")
+
+[node name="DebugLogPanelContainer" type="PanelContainer" parent="UI/DebugLogMarginContainer"]
+layout_mode = 2
+
+[node name="DebugLogInnerMarginContainer" type="MarginContainer" parent="UI/DebugLogMarginContainer/DebugLogPanelContainer"]
+layout_mode = 2
+
+[node name="DebugLogScrollContainer" type="ScrollContainer" parent="UI/DebugLogMarginContainer/DebugLogPanelContainer/DebugLogInnerMarginContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(250, 100)
+layout_mode = 2
 focus_mode = 1
 mouse_filter = 0
-theme_override_styles/panel = SubResource("StyleBoxFlat_yumv1")
+theme = ExtResource("2_s4jxa")
 horizontal_scroll_mode = 0
 vertical_scroll_mode = 2
 
-[node name="DevLogLabel" type="Label" parent="UI/ScrollContainer"]
+[node name="DebugLogLabel" type="Label" parent="UI/DebugLogMarginContainer/DebugLogPanelContainer/DebugLogInnerMarginContainer/DebugLogScrollContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/font_size = 10
 text = "This is the super secret dev log :)"
 
 [node name="Menu" parent="UI" instance=ExtResource("2_b1yb2")]
