@@ -32,6 +32,19 @@ window/vsync/vsync_mode=0
 
 project/assembly_name="JamBase"
 
+[file_customization]
+
+folder_colors={
+"res://export/": "red",
+"res://image/": "orange",
+"res://model/": "yellow",
+"res://resource/": "green",
+"res://scene/": "teal",
+"res://script/": "blue",
+"res://shader/": "purple",
+"res://sound/": "pink"
+}
+
 [input]
 
 forward={

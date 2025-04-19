@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://cq7jn8ibk56a"]
+[gd_scene load_steps=16 format=3 uid="uid://cq7jn8ibk56a"]
 
 [ext_resource type="Script" uid="uid://o00nif28jffg" path="res://script/player.gd" id="1_0aebm"]
 [ext_resource type="PackedScene" uid="uid://dhf0yu2i6obb0" path="res://scene/menu.tscn" id="2_b1yb2"]
@@ -9,7 +9,12 @@
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_qqblw"]
 height = 1.2
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fvtld"]
+albedo_color = Color(1, 0, 0, 1)
+roughness = 0.4
+
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_xo4fh"]
+material = SubResource("StandardMaterial3D_fvtld")
 
 [sub_resource type="SphereMesh" id="SphereMesh_t37ui"]
 radius = 0.05

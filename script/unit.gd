@@ -208,9 +208,10 @@ func _detect_target():
 			if root_target != null:
 				if state == "Attack" && root_target != chase_target:
 					continue
+				if root_target is Unit && root_target.state == "Dead":
+					continue
 				%VisionRayCast3D.look_at(overlap.global_transform.origin, Vector3.UP)
 				%VisionRayCast3D.force_raycast_update()
-				
 				if %VisionRayCast3D.is_colliding():
 					var collider = %VisionRayCast3D.get_collider()
 					if collider is BodyPart:
