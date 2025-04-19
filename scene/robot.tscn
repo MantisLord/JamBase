@@ -13807,10 +13807,10 @@ skin = SubResource("Skin_8vfaf")
 [node name="PhysicalBoneSimulator3D" type="PhysicalBoneSimulator3D" parent="godot_rig/Skeleton3D"]
 
 [node name="Physical Bone DEF-head" type="PhysicalBone3D" parent="godot_rig/Skeleton3D/PhysicalBoneSimulator3D"]
-transform = Transform3D(-1, 1.34109e-08, -5.13473e-09, 1.37612e-08, 0.997128, -0.0757386, 4.10427e-09, -0.0757386, -0.997128, -6.13503e-06, 1.57968, 0.0388059)
+transform = Transform3D(-1, 1.34109e-08, -5.13473e-09, 1.37612e-08, 0.997128, -0.0757386, 4.10427e-09, -0.0757386, -0.997128, -6.10321e-06, 1.57968, 0.0388059)
 joint_type = 1
-joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.13527e-06, 1.99005e-05, 0.0476045)
-body_offset = Transform3D(-1, 5.37411e-08, 2.29848e-07, 1.40862e-08, 0.985589, -0.169157, -2.35626e-07, -0.169157, -0.985589, -6.14622e-06, 0.00803304, 0.0469219)
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.10346e-06, 1.99005e-05, 0.0476045)
+body_offset = Transform3D(-1, 5.37411e-08, 2.29848e-07, 1.40862e-08, 0.985589, -0.169157, -2.35626e-07, -0.169157, -0.985589, -6.1144e-06, 0.00803304, 0.0469219)
 bone_name = "DEF-head"
 joint_constraints/bias = 0.3
 joint_constraints/damping = 1.0
@@ -13956,5 +13956,6 @@ autostart = true
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0.5)
 target_position = Vector3(0, 0, -100)
+hit_from_inside = true
 
 [connection signal="timeout" from="ResumeWanderTimer" to="." method="_on_resume_wander_timer_timeout"]
