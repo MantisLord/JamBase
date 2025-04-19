@@ -20,6 +20,7 @@ class_name Unit
 @export_enum("Humanity", "SewerBeasts", "Passive", "Defensive", "Aggressive") var faction: String = "Aggressive"
 
 @onready var anim_player: AnimationPlayer = get_node("AnimationPlayer")
+var anim_player2: AnimationPlayer
 @onready var nav_agent: NavigationAgent3D = get_node("NavigationAgent3D")
 
 var chase_target
@@ -53,6 +54,8 @@ func _target_in_range(leeway = 0.0) -> bool:
 	return global_position.distance_to(target) < attack_range + leeway
 
 func _ready():
+	if has_node("AnimationPlayer2"):
+		anim_player2 = get_node("AnimationPlayer2")
 	_set_state(state)
 	spawn_state = state
 	first_spawned = false
@@ -65,11 +68,15 @@ func _set_state(new_state):
 	match new_state:
 		"Idle":
 			anim_player.stop()
+			if anim_player2 != null:
+				anim_player2.stop()
 			if anim_player.has_animation("Idle"):
 				anim_player.play("Idle")
 		"Chase":
 			anim_player.speed_scale = 2
 			anim_player.play("Walk")
+			if anim_player2 != null:
+				anim_player2.play("Walk")
 		"Dead":
 			Game.log_out("%s died." % self.name)
 			if sounds_death.size() > 0:
@@ -83,8 +90,12 @@ func _set_state(new_state):
 		"Wander":
 			wander_target = null
 			anim_player.play("Walk")
+			if anim_player2 != null:
+				anim_player2.play("Walk")
 		"Attack":
 			anim_player.stop()
+			if anim_player2 != null:
+				anim_player2.stop()
 	state = new_state
 
 func hit(damage, attacker = null, body_part: String = ""):
