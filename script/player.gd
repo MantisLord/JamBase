@@ -129,7 +129,11 @@ func _equip_item(new_index) -> void:
 			item_mesh.set_surface_override_material(1, item_res.equip_shader_material1)
 		if (surface_count > 2):
 			item_mesh.set_surface_override_material(2, item_res.equip_shader_material2)
-		
+	
+	idle_sway_adjustment = item_res.idle_sway_adjustment
+	idle_sway_rotation_strength = item_res.idle_sway_rotation_strength
+	random_sway_amount = item_res.random_sway_amount
+	
 	var rotation_parent = Node3D.new()
 	rotation_parent.name = "weapon_rot_tracker"
 	%EquippedItemNode3D.add_child(rotation_parent)
@@ -405,15 +409,46 @@ func _unhandled_input(event):
 		if event is InputEventMouseButton and event.pressed and %Menu.visible == false:
 			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
+var random_sway_x
+var random_sway_y
+var random_sway_amount: float
+var time: float = 0.0
+var idle_sway_adjustment
+var idle_sway_rotation_strength
+@onready var sway_noise: NoiseTexture2D = NoiseTexture2D.new()
+
 func _sway_item(delta) -> void:
 	if equipped_item_index != -1:
 		var equipped_item_res = inventory[equipped_item_index];
+		if sway_noise.noise == null:
+			sway_noise.noise = FastNoiseLite.new()
 		mouse_movement = mouse_movement.clamp(equipped_item_res.sway_min, equipped_item_res.sway_max)
-		equipped_item_instance.position.x = lerp(equipped_item_instance.position.x, equipped_item_res.equip_position.x - (mouse_movement.x * equipped_item_res.sway_amount_position) * delta, equipped_item_res.sway_speed_position)
-		equipped_item_instance.position.y = lerp(equipped_item_instance.position.y, equipped_item_res.equip_position.y + (mouse_movement.y * equipped_item_res.sway_amount_position) * delta, equipped_item_res.sway_speed_position)
+		if !play_footsteps_sfx:
+			var sway_random: float = sway_noise.noise.get_noise_2d(global_position.x, global_position.y)
+			var sway_random_adjusted: float = sway_random * idle_sway_adjustment
+			time += delta * (equipped_item_res.idle_sway_speed * sway_random)
+			random_sway_x = sin(time * 1.5 + sway_random_adjusted) / random_sway_amount
+			random_sway_y = sin(time - sway_random_adjusted) / random_sway_amount
+		else:
+			random_sway_x = 0.0
+			random_sway_y = 0.0
+			match (speed):
+				SPEED_RUN:
+					_bob_item(delta, equipped_item_res.bob_speed_run, equipped_item_res.hbob_amount_run, equipped_item_res.vbob_amount_run)
+				SPEED_SPRINT:
+					_bob_item(delta, equipped_item_res.bob_speed_sprint, equipped_item_res.hbob_amount_sprint, equipped_item_res.vbob_amount_sprint)
+				SPEED_CROUCH:
+					_bob_item(delta, equipped_item_res.bob_speed_crouch, equipped_item_res.hbob_amount_crouch, equipped_item_res.vbob_amount_crouch)
+		equipped_item_instance.position.x = lerp(equipped_item_instance.position.x, equipped_item_res.equip_position.x - (mouse_movement.x * equipped_item_res.sway_amount_position + random_sway_x) * delta, equipped_item_res.sway_speed_position)
+		equipped_item_instance.position.y = lerp(equipped_item_instance.position.y, equipped_item_res.equip_position.y + (mouse_movement.y * equipped_item_res.sway_amount_position + random_sway_y) * delta, equipped_item_res.sway_speed_position)
+		equipped_item_instance.get_parent().rotation_degrees.y = lerp(equipped_item_instance.get_parent().rotation_degrees.y, equipped_item_res.equip_rotation.y + (mouse_movement.x * equipped_item_res.sway_amount_rotation + (random_sway_y * idle_sway_rotation_strength)) * delta, equipped_item_res.sway_speed_rotation)
+		equipped_item_instance.rotation_degrees.x = lerp(equipped_item_instance.rotation_degrees.x, equipped_item_res.equip_rotation.x - (mouse_movement.y * equipped_item_res.sway_amount_rotation + (random_sway_x * idle_sway_rotation_strength)) * delta, equipped_item_res.sway_speed_rotation)
 
-		equipped_item_instance.get_parent().rotation_degrees.y = lerp(equipped_item_instance.get_parent().rotation_degrees.y, equipped_item_res.equip_rotation.y + (mouse_movement.x * equipped_item_res.sway_amount_rotation) * delta, equipped_item_res.sway_speed_rotation)
-		equipped_item_instance.rotation_degrees.x = lerp(equipped_item_instance.rotation_degrees.x, equipped_item_res.equip_rotation.x - (mouse_movement.y * equipped_item_res.sway_amount_rotation) * delta, equipped_item_res.sway_speed_rotation)
+func _bob_item(delta, bob_speed: float, hbob_amount: float, vbob_amount: float) -> void:
+	if equipped_item_index != -1 and is_on_floor():
+		time += delta
+		equipped_item_instance.position.x = sin(time  * bob_speed) * hbob_amount
+		equipped_item_instance.position.y = abs(cos(time * bob_speed) * vbob_amount)
 
 func _physics_process(delta):
 	_sway_item(delta)

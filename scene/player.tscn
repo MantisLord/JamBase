@@ -260,6 +260,7 @@ unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, -2, -1)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Head/FirstCamera3D/EquippedItemNode3D"]
+visible = false
 mesh = SubResource("SphereMesh_t37ui")
 surface_material_override/0 = SubResource("StandardMaterial3D_7xmvg")
 
