@@ -44,6 +44,8 @@ var current_cam_index: int = 0
 var is_crouching: bool = false
 var need_landing_anim: bool = false
 
+var mouse_movement: Vector2
+
 func hit(damage, attacker):
 	current_health -= damage
 	Game.log_out("%s hit player for %d damage. Player has %d HP remaining." % [attacker.name, damage, current_health])
@@ -131,8 +133,9 @@ func _equip_item(new_index) -> void:
 	var rotation_parent = Node3D.new()
 	rotation_parent.name = "weapon_rot_tracker"
 	%EquippedItemNode3D.add_child(rotation_parent)
-	rotation_parent.rotation_degrees.y = %Head.rotation.y + item_res.equip_rotation_y_offset
+	rotation_parent.rotation_degrees.y = %Head.rotation.y + item_res.equip_rotation.y
 	equipped_item_instance.position = item_res.equip_position
+	#equipped_item_instance.rotation_degrees = item_res.equip_rotation
 	rotation_parent.add_child(equipped_item_instance)
 	%AnimationPlayer.play("raise")
 	AudioManager.play_sfx_by_name(inventory[new_index].equip_sound)
@@ -394,6 +397,7 @@ func _input(event):
 		$Head.rotate_y(deg_to_rad(-event.relative.x * Game.mouse_sensitivity))
 		current_cam.rotate_x(deg_to_rad(-event.relative.y * Game.mouse_sensitivity))
 		current_cam.rotation.x = clamp(current_cam.rotation.x, deg_to_rad(MIN_ANGLE_VIEW), deg_to_rad(MAX_ANGLE_VIEW))
+		mouse_movement = event.relative
 
 # try to fix focus issues on web (unsucessfully)
 func _unhandled_input(event):
@@ -401,7 +405,19 @@ func _unhandled_input(event):
 		if event is InputEventMouseButton and event.pressed and %Menu.visible == false:
 			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
+func _sway_item(delta) -> void:
+	if equipped_item_index != -1:
+		var equipped_item_res = inventory[equipped_item_index];
+		mouse_movement = mouse_movement.clamp(equipped_item_res.sway_min, equipped_item_res.sway_max)
+		equipped_item_instance.position.x = lerp(equipped_item_instance.position.x, equipped_item_res.equip_position.x - (mouse_movement.x * equipped_item_res.sway_amount_position) * delta, equipped_item_res.sway_speed_position)
+		equipped_item_instance.position.y = lerp(equipped_item_instance.position.y, equipped_item_res.equip_position.y + (mouse_movement.y * equipped_item_res.sway_amount_position) * delta, equipped_item_res.sway_speed_position)
+
+		equipped_item_instance.get_parent().rotation_degrees.y = lerp(equipped_item_instance.get_parent().rotation_degrees.y, equipped_item_res.equip_rotation.y + (mouse_movement.x * equipped_item_res.sway_amount_rotation) * delta, equipped_item_res.sway_speed_rotation)
+		equipped_item_instance.rotation_degrees.x = lerp(equipped_item_instance.rotation_degrees.x, equipped_item_res.equip_rotation.x - (mouse_movement.y * equipped_item_res.sway_amount_rotation) * delta, equipped_item_res.sway_speed_rotation)
+
 func _physics_process(delta):
+	_sway_item(delta)
+	
 	# Add the gravity.
 	if not is_on_floor():
 		velocity.y -= gravity * delta

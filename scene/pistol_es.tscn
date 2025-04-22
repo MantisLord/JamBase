@@ -90,7 +90,9 @@ _data = {
 transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0)
 
 [node name="Skeleton3D" parent="Gun Rig" index="0"]
-bones/2/rotation = Quaternion(0.999887, 3.27115e-08, -2.7036e-07, 0.0150267)
+bones/1/position = Vector3(0, 0.0489247, 0.0364222)
+bones/2/rotation = Quaternion(0.999887, 3.27115e-08, -2.70359e-07, 0.0150267)
+bones/3/position = Vector3(0, -0.0287116, -0.00807955)
 bones/3/rotation = Quaternion(0.134828, 1.18121e-07, 1.60728e-08, 0.990869)
 
 [node name="AnimationPlayer" parent="." index="1"]
