@@ -1,6 +1,7 @@
-[gd_resource type="Resource" script_class="Item" load_steps=3 format=3 uid="uid://dvytm8jnxnxaj"]
+[gd_resource type="Resource" script_class="Item" load_steps=4 format=3 uid="uid://dvytm8jnxnxaj"]
 
 [ext_resource type="Script" uid="uid://sgav612bb5vr" path="res://script/item.gd" id="1_64kt6"]
+[ext_resource type="Material" uid="uid://belk36kprmdvi" path="res://resource/key_surface0.tres" id="1_jeovi"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_8n4mi"]
 size = Vector3(0.052, 0.108, 0.275)
@@ -11,6 +12,7 @@ name = "Key"
 icon = "res://image/key.png"
 equip_rotation_y_offset = 180
 equip_position = Vector3(0, 0, 0)
+equip_shader_material0 = ExtResource("1_jeovi")
 scene_path = "res://scene/key.tscn"
 physics_box_shape = SubResource("BoxShape3D_8n4mi")
 pickup_physics_box_position = Vector3(0, 0, 0)

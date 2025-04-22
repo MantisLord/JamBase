@@ -1,0 +1,27 @@
+[gd_resource type="ShaderMaterial" load_steps=5 format=3 uid="uid://belk36kprmdvi"]
+
+[ext_resource type="Shader" uid="uid://qhcnlpdu1863" path="res://shader/key.gdshader" id="1_l62wq"]
+[ext_resource type="Texture2D" uid="uid://dwer4uvnr11mx" path="res://model/low_poly_key_0.png" id="1_rcxph"]
+[ext_resource type="Texture2D" uid="uid://cev37pa5u7igq" path="res://model/low_poly_key_1.png" id="2_l62wq"]
+[ext_resource type="Texture2D" uid="uid://cco8ykw8x1o2r" path="res://model/low_poly_key_2.png" id="3_may7u"]
+
+[resource]
+resource_name = "M_Key"
+render_priority = 0
+shader = ExtResource("1_l62wq")
+shader_parameter/albedo = Color(1, 1, 1, 1)
+shader_parameter/texture_albedo = ExtResource("1_rcxph")
+shader_parameter/albedo_texture_size = Vector2i(1024, 1024)
+shader_parameter/point_size = 1.0
+shader_parameter/roughness = 1.0
+shader_parameter/texture_metallic = ExtResource("2_l62wq")
+shader_parameter/metallic_texture_channel = Vector4(0, 0, 1, 0)
+shader_parameter/texture_roughness = ExtResource("2_l62wq")
+shader_parameter/specular = 0.5
+shader_parameter/metallic = 1.0
+shader_parameter/texture_normal = ExtResource("3_may7u")
+shader_parameter/normal_scale = 1.0
+shader_parameter/uv1_scale = Vector3(1, 1, 1)
+shader_parameter/uv1_offset = Vector3(0, 0, 0)
+shader_parameter/uv2_scale = Vector3(1, 1, 1)
+shader_parameter/uv2_offset = Vector3(0, 0, 0)

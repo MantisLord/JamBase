@@ -102,6 +102,14 @@ func _unequip_item() -> void:
 		equipped_item_instance = null
 		equipped_item_index = -1
 
+func get_all_mesh_instance3ds(root: Node) -> Array:
+	var mesh_instances: Array = []
+	for child in root.get_children():
+		if child is MeshInstance3D:
+			mesh_instances.append(child)
+		mesh_instances += get_all_mesh_instance3ds(child)
+	return mesh_instances
+
 func _equip_item(new_index) -> void:
 	if %AnimationPlayer.is_playing():
 		return
@@ -110,6 +118,16 @@ func _equip_item(new_index) -> void:
 	var item_res = inventory[new_index]
 	var item_scene = load(item_res.scene_path)
 	equipped_item_instance = item_scene.instantiate()
+	
+	var mesh_nodes = get_all_mesh_instance3ds(equipped_item_instance)
+	for item_mesh in mesh_nodes:
+		var surface_count = item_mesh.mesh.get_surface_count();
+		item_mesh.set_surface_override_material(0, item_res.equip_shader_material0)
+		if (surface_count > 1):
+			item_mesh.set_surface_override_material(1, item_res.equip_shader_material1)
+		if (surface_count > 2):
+			item_mesh.set_surface_override_material(2, item_res.equip_shader_material2)
+		
 	var rotation_parent = Node3D.new()
 	rotation_parent.name = "weapon_rot_tracker"
 	%EquippedItemNode3D.add_child(rotation_parent)
@@ -388,6 +406,8 @@ func _physics_process(delta):
 	if not is_on_floor():
 		velocity.y -= gravity * delta
 		play_footsteps_sfx = false
+		if !need_landing_anim:
+			need_landing_anim = true
 	elif need_landing_anim:
 		%AnimationPlayer.play("jump_end")
 		need_landing_anim = false

@@ -137,5 +137,5 @@ shape = SubResource("ConcavePolygonShape3D_v0x0h")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_rybcg")
+&"": SubResource("AnimationLibrary_rybcg")
 }
