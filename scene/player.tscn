@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://cq7jn8ibk56a"]
+[gd_scene load_steps=17 format=3 uid="uid://cq7jn8ibk56a"]
 
 [ext_resource type="Script" uid="uid://o00nif28jffg" path="res://script/player.gd" id="1_0aebm"]
 [ext_resource type="PackedScene" uid="uid://dhf0yu2i6obb0" path="res://scene/menu.tscn" id="2_b1yb2"]
@@ -20,14 +20,6 @@ height = 0.1
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7xmvg"]
 albedo_color = Color(1, 0.0823529, 1, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_54vpr"]
-bg_color = Color(0, 0, 0, 0.196078)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(0.8, 0.8, 0.8, 0.392157)
 
 [sub_resource type="Animation" id="Animation_gp7g2"]
 length = 0.001
@@ -259,7 +251,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -101.5)
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, -2, -1)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Head/FirstCamera3D/EquippedItemNode3D"]
+[node name="HandMeshInstance3D" type="MeshInstance3D" parent="Head/FirstCamera3D/EquippedItemNode3D"]
+unique_name_in_owner = true
 visible = false
 mesh = SubResource("SphereMesh_t37ui")
 surface_material_override/0 = SubResource("StandardMaterial3D_7xmvg")
@@ -303,33 +296,37 @@ layout_mode = 2
 text = "
 "
 
-[node name="EquipLabel" type="Label" parent="UI"]
-unique_name_in_owner = true
+[node name="StatusMarginContainer" type="MarginContainer" parent="UI"]
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_top = -23.0
-offset_right = 100.0
+offset_top = -40.0
+offset_right = 40.0
 grow_vertical = 0
-text = "
-"
+theme = ExtResource("2_s4jxa")
 
-[node name="StatusLabel" type="Label" parent="UI"]
+[node name="StatusPanelContainer" type="PanelContainer" parent="UI/StatusMarginContainer"]
+custom_minimum_size = Vector2(125, 85)
+layout_mode = 2
+theme = ExtResource("2_s4jxa")
+
+[node name="StatusVBoxContainer" type="VBoxContainer" parent="UI/StatusMarginContainer/StatusPanelContainer"]
+layout_mode = 2
+
+[node name="HealthLabel" type="Label" parent="UI/StatusMarginContainer/StatusPanelContainer/StatusVBoxContainer"]
 unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -100.0
-offset_top = -49.0
-grow_horizontal = 0
-grow_vertical = 0
+layout_mode = 2
 text = "
 "
+horizontal_alignment = 1
 vertical_alignment = 2
+
+[node name="EquipLabel" type="Label" parent="UI/StatusMarginContainer/StatusPanelContainer/StatusVBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "
+"
 
 [node name="InteractLabel" type="Label" parent="UI"]
 unique_name_in_owner = true
@@ -414,9 +411,7 @@ text = "This is the super secret dev log :)"
 unique_name_in_owner = true
 layout_mode = 1
 
-[node name="InventoryPanelContainer" type="PanelContainer" parent="UI"]
-unique_name_in_owner = true
-visible = false
+[node name="InventoryMarginContainer" type="MarginContainer" parent="UI"]
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -428,9 +423,15 @@ offset_top = -40.0
 offset_right = 20.0
 grow_horizontal = 2
 grow_vertical = 0
-theme_override_styles/panel = SubResource("StyleBoxFlat_54vpr")
+theme = ExtResource("2_s4jxa")
 
-[node name="InventoryHBoxContainer" type="HBoxContainer" parent="UI/InventoryPanelContainer"]
+[node name="InventoryPanelContainer" type="PanelContainer" parent="UI/InventoryMarginContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme = ExtResource("2_s4jxa")
+
+[node name="InventoryHBoxContainer" type="HBoxContainer" parent="UI/InventoryMarginContainer/InventoryPanelContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 

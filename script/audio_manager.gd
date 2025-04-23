@@ -25,6 +25,8 @@ extends Node
 
 @onready var sfx_take_damage = { "audio_player": $TakeDamageAudioStreamPlayer, "volume": 1.0, "name": "take_damage" }
 
+@onready var sfx_shoot_assault_rifle = { "audio_player": $ShootAssaultRifleAudioStreamPlayer, "volume": 0.2, "name": "shoot_assault_rifle" }
+
 var audio_list = []
 var sound_library: Dictionary = {}
 
@@ -46,6 +48,7 @@ func _ready() -> void:
 	audio_list.append(sfx_menu_close)
 	audio_list.append(sfx_shoot_pistol_es)
 	audio_list.append(sfx_reload_pistol_es)
+	audio_list.append(sfx_shoot_assault_rifle)
 	sound_library["flesh_impact_bullet1"] = preload("res://sound/flesh_impact_bullet1.wav")
 	sound_library["flesh_impact_bullet2"] = preload("res://sound/flesh_impact_bullet2.wav")
 	sound_library["flesh_impact_bullet3"] = preload("res://sound/flesh_impact_bullet3.wav")

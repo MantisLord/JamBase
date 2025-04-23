@@ -26,7 +26,6 @@ Game="*res://script/game.gd"
 
 window/size/viewport_width=800
 window/size/viewport_height=600
-window/vsync/vsync_mode=0
 
 [dotnet]
 

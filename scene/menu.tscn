@@ -1,14 +1,13 @@
 [gd_scene load_steps=4 format=3 uid="uid://dhf0yu2i6obb0"]
 
 [ext_resource type="Script" uid="uid://b6nlc5odpuefa" path="res://script/menu.gd" id="1_svnde"]
+[ext_resource type="Theme" uid="uid://dlsdo8yt3uv62" path="res://resource/debug_theme.tres" id="2_8hxod"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_a8r7b"]
 font_size = 100
 shadow_size = 15
 shadow_color = Color(0, 0, 0, 0.666667)
 shadow_offset = Vector2(3, 3)
-
-[sub_resource type="LabelSettings" id="LabelSettings_wgg0m"]
 
 [node name="Menu" type="Control"]
 layout_mode = 3
@@ -50,6 +49,7 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 2
+theme = ExtResource("2_8hxod")
 
 [node name="MainVBoxContainer" type="VBoxContainer" parent="OverallVBoxContainer/MainPanelContainer"]
 unique_name_in_owner = true
@@ -85,7 +85,6 @@ custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 text = "fullscreen"
-label_settings = SubResource("LabelSettings_wgg0m")
 
 [node name="FullscreenCheckBox" type="CheckBox" parent="OverallVBoxContainer/MainPanelContainer/MainVBoxContainer/FullscreenHBoxContainer"]
 unique_name_in_owner = true
@@ -102,7 +101,6 @@ custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 text = "debug mode"
-label_settings = SubResource("LabelSettings_wgg0m")
 
 [node name="DebugModeCheckBox" type="CheckBox" parent="OverallVBoxContainer/MainPanelContainer/MainVBoxContainer/DebugModeHBoxContainer"]
 unique_name_in_owner = true

@@ -129,11 +129,7 @@ func _equip_item(new_index) -> void:
 			item_mesh.set_surface_override_material(1, item_res.equip_shader_material1)
 		if (surface_count > 2):
 			item_mesh.set_surface_override_material(2, item_res.equip_shader_material2)
-	
-	idle_sway_adjustment = item_res.idle_sway_adjustment
-	idle_sway_rotation_strength = item_res.idle_sway_rotation_strength
-	random_sway_amount = item_res.random_sway_amount
-	
+
 	var rotation_parent = Node3D.new()
 	rotation_parent.name = "weapon_rot_tracker"
 	%EquippedItemNode3D.add_child(rotation_parent)
@@ -177,23 +173,20 @@ func _use(item):
 					emitter.emitting = true
 
 func _shoot(weapon):
+	# can't fire if already firing
+	if %ShootCooldownTimer.time_left > 0:
+		return
+	%ShootCooldownTimer.wait_time = weapon.fire_rate
+	%ShootCooldownTimer.start()
 	if weapon.max_clip_size == 0: # melee
 		equipped_item_instance.get_node("AnimationPlayer").play("swing")
 		AudioManager.play_sfx_by_name(weapon.use_sound)
 	elif weapon.left_in_clip > 0:
-		
-		# can't fire if already firing
-		if %ShootCooldownTimer.time_left > 0:
-			return
-		
 		equipped_item_instance.get_node("AnimationPlayer").play("fire")
 		AudioManager.play_sfx_by_name(weapon.use_sound)
 		weapon.left_in_clip -= 1
-		%ShootCooldownTimer.wait_time = weapon.fire_rate
-		%ShootCooldownTimer.start()
 		
 		var barrel_pos = equipped_item_instance.get_node("BarrelNode3D").global_position
-		
 		var bullet_instance = bullet.instantiate()
 		bullet_instance.position = barrel_pos
 		
@@ -294,8 +287,9 @@ func _update_ui():
 		%DebugLabel.text = ""
 	%DebugMarginContainer.visible = Game.debug_mode
 	%DebugLogMarginContainer.visible = Game.debug_mode
+	%HandMeshInstance3D.visible = Game.debug_mode
 	
-	%StatusLabel.text = "HP: %d/%d" % [current_health, max_health]
+	%HealthLabel.text = "HP: %d/%d" % [current_health, max_health]
 	
 	if equipped_item_index != -1:
 		var equipped_item_res = inventory[equipped_item_index];
@@ -321,7 +315,9 @@ func _handle_items():
 		if !%Menu.visible && Input.is_action_just_pressed("drop"):
 			_drop_item(equipped_item_res)
 		if !%AnimationPlayer.is_playing() && !%Menu.visible:
-			if Input.is_action_just_pressed("useitem"):
+			if equipped_item_res is Weapon && equipped_item_res.is_automatic && Input.is_action_pressed("useitem"):
+				_use(equipped_item_res)
+			elif Input.is_action_just_pressed("useitem"):
 				_use(equipped_item_res)
 			if equipped_item_res is Weapon && Input.is_action_just_pressed("reload"):
 				_reload(equipped_item_res)
@@ -411,10 +407,7 @@ func _unhandled_input(event):
 
 var random_sway_x
 var random_sway_y
-var random_sway_amount: float
 var time: float = 0.0
-var idle_sway_adjustment
-var idle_sway_rotation_strength
 @onready var sway_noise: NoiseTexture2D = NoiseTexture2D.new()
 
 func _sway_item(delta) -> void:
@@ -425,10 +418,10 @@ func _sway_item(delta) -> void:
 		mouse_movement = mouse_movement.clamp(equipped_item_res.sway_min, equipped_item_res.sway_max)
 		if !play_footsteps_sfx:
 			var sway_random: float = sway_noise.noise.get_noise_2d(global_position.x, global_position.y)
-			var sway_random_adjusted: float = sway_random * idle_sway_adjustment
+			var sway_random_adjusted: float = sway_random * equipped_item_res.idle_sway_adjustment
 			time += delta * (equipped_item_res.idle_sway_speed * sway_random)
-			random_sway_x = sin(time * 1.5 + sway_random_adjusted) / random_sway_amount
-			random_sway_y = sin(time - sway_random_adjusted) / random_sway_amount
+			random_sway_x = sin(time * 1.5 + sway_random_adjusted) / equipped_item_res.idle_random_sway_amount
+			random_sway_y = sin(time - sway_random_adjusted) / equipped_item_res.idle_random_sway_amount
 		else:
 			random_sway_x = 0.0
 			random_sway_y = 0.0
@@ -441,8 +434,8 @@ func _sway_item(delta) -> void:
 					_bob_item(delta, equipped_item_res.bob_speed_crouch, equipped_item_res.hbob_amount_crouch, equipped_item_res.vbob_amount_crouch)
 		equipped_item_instance.position.x = lerp(equipped_item_instance.position.x, equipped_item_res.equip_position.x - (mouse_movement.x * equipped_item_res.sway_amount_position + random_sway_x) * delta, equipped_item_res.sway_speed_position)
 		equipped_item_instance.position.y = lerp(equipped_item_instance.position.y, equipped_item_res.equip_position.y + (mouse_movement.y * equipped_item_res.sway_amount_position + random_sway_y) * delta, equipped_item_res.sway_speed_position)
-		equipped_item_instance.get_parent().rotation_degrees.y = lerp(equipped_item_instance.get_parent().rotation_degrees.y, equipped_item_res.equip_rotation.y + (mouse_movement.x * equipped_item_res.sway_amount_rotation + (random_sway_y * idle_sway_rotation_strength)) * delta, equipped_item_res.sway_speed_rotation)
-		equipped_item_instance.rotation_degrees.x = lerp(equipped_item_instance.rotation_degrees.x, equipped_item_res.equip_rotation.x - (mouse_movement.y * equipped_item_res.sway_amount_rotation + (random_sway_x * idle_sway_rotation_strength)) * delta, equipped_item_res.sway_speed_rotation)
+		equipped_item_instance.get_parent().rotation_degrees.y = lerp(equipped_item_instance.get_parent().rotation_degrees.y, equipped_item_res.equip_rotation.y + (mouse_movement.x * equipped_item_res.sway_amount_rotation + (random_sway_y * equipped_item_res.idle_sway_rotation_strength)) * delta, equipped_item_res.sway_speed_rotation)
+		equipped_item_instance.rotation_degrees.x = lerp(equipped_item_instance.rotation_degrees.x, equipped_item_res.equip_rotation.x - (mouse_movement.y * equipped_item_res.sway_amount_rotation + (random_sway_x * equipped_item_res.idle_sway_rotation_strength)) * delta, equipped_item_res.sway_speed_rotation)
 
 func _bob_item(delta, bob_speed: float, hbob_amount: float, vbob_amount: float) -> void:
 	if equipped_item_index != -1 and is_on_floor():
