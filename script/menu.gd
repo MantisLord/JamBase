@@ -34,6 +34,10 @@ func _initialize_settings_from_config():
 	%FullscreenCheckBox.button_pressed = fullscreen
 	Game.toggle_fullscreen(fullscreen)
 	
+	var vsync_mode = Config.get_config("options", Game.VSYNC_MODE_CONFIG_NAME, true)
+	%VerticalSyncCheckBox.button_pressed = vsync_mode
+	Game.toggle_vsync(vsync_mode)
+	
 	var debug_mode = Config.get_config("options", Game.DEBUG_MODE_CONFIG_NAME, false)
 	%DebugModeCheckBox.button_pressed = debug_mode
 	Game.debug_mode = debug_mode
@@ -104,6 +108,10 @@ func _on_fullscreen_check_box_toggled(toggled_on):
 	Config.set_config("options", Game.FULLSCREEN_CONFIG_NAME, toggled_on)
 	Game.toggle_fullscreen(toggled_on)
 
+func _on_vetical_sync_check_box_toggled(toggled_on: bool) -> void:
+	Config.set_config("options", Game.VSYNC_MODE_CONFIG_NAME, toggled_on)
+	Game.toggle_vsync(toggled_on)
+	
 func _on_debug_mode_check_box_toggled(toggled_on: bool) -> void:
 	Config.set_config("options", Game.DEBUG_MODE_CONFIG_NAME, toggled_on)
 	Game.debug_mode = toggled_on

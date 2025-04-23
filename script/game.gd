@@ -7,6 +7,7 @@ const SFX_VOLUME_CONFIG_NAME = "sfx_volume"
 const FULLSCREEN_CONFIG_NAME = "fullscreen"
 const DEBUG_MODE_CONFIG_NAME = "debug_mode"
 const CAM_MODE_CONFIG_NAME = "cam_mode"
+const VSYNC_MODE_CONFIG_NAME = "vsync_mode"
 
 var mouse_sensitivity
 var sfx_volume
@@ -33,6 +34,12 @@ func toggle_fullscreen(toggled_on):
 		var window_size = DisplayServer.window_get_size()
 		var new_position = screen_position + (screen_size - window_size) / 2
 		DisplayServer.window_set_position(new_position)
+
+func toggle_vsync(toggled_on):
+	if toggled_on:
+		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_ENABLED)
+	else:
+		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
 
 func handle_physics_collision(raycast, attacker, collider, velocity, weapon):
 	var impulse = -raycast.get_collision_normal() * velocity.length() *  weapon.physics_impulse_strength
