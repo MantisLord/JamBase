@@ -308,4 +308,4 @@ libraries = {
 }
 
 [node name="MuzzleNode3D" parent="." instance=ExtResource("2_2ar71")]
-transform = Transform3D(2, 0, 2.13163e-14, 0, 2, 0, -2.13163e-14, 0, 2, 1.78391, 0.648551, -0.155392)
+transform = Transform3D(2, 0, 2.13163e-14, 0, 2, 0, -2.13163e-14, 0, 2, 1.784, 0.65398, 0)
