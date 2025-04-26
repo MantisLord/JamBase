@@ -1,4 +1,7 @@
-[gd_scene load_steps=8 format=4 uid="uid://c6t2noesckg3x"]
+[gd_scene load_steps=10 format=4 uid="uid://c6t2noesckg3x"]
+
+[ext_resource type="PackedScene" uid="uid://dhfrrxr5hqk22" path="res://scene/muzzle.tscn" id="1_emf13"]
+[ext_resource type="Script" uid="uid://nacwkp3t88r" path="res://script/recoil_weapon.gd" id="1_l0k36"]
 
 [sub_resource type="Animation" id="Animation_ugl4s"]
 resource_name = "Shoot"
@@ -126,16 +129,18 @@ shadow_mesh = SubResource("ArrayMesh_lgroi")
 transform = Transform3D(-1.74846e-08, 0, 0.4, 0, 0.4, 0, -0.4, 0, -1.74846e-08, 0, 0, 0)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-root_node = NodePath("../AssaultRifle")
+root_node = NodePath("../RecoilWeaponControllerNode3D/AssaultRifle")
 libraries = {
 &"": SubResource("AnimationLibrary_ygh8x")
 }
 
-[node name="AssaultRifle" type="MeshInstance3D" parent="."]
+[node name="MuzzleNode3D" parent="." instance=ExtResource("1_emf13")]
+transform = Transform3D(1, 0, 1.06581e-14, 0, 1, 0, -1.06581e-14, 0, 1, 1.66349e-07, 0.693328, -3.67693)
+
+[node name="RecoilWeaponControllerNode3D" type="Node3D" parent="."]
+script = ExtResource("1_l0k36")
+
+[node name="AssaultRifle" type="MeshInstance3D" parent="RecoilWeaponControllerNode3D"]
 transform = Transform3D(-4.37114e-06, -100, -1.19209e-05, 6.21176e-20, -1.19209e-05, 100, -100, 4.37114e-06, 5.2108e-13, 0, 0, 0)
 mesh = SubResource("ArrayMesh_6010w")
 skeleton = NodePath("")
-
-[node name="BarrelNode3D" type="Node3D" parent="."]
-unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.63647e-07, 0.629175, -3.74382)

@@ -16,3 +16,6 @@ mouse squek.mp3 by FairCashew -- https://freesound.org/s/684866/ -- License: Cre
 https://freesound.org/people/F.M.Audio/
 
 https://github.com/godot-jolt/godot-jolt/pull/902 -- no longer necessary after 4.4 release
+
+https://opengameart.org/content/bullet-decal-bullethole0png
+https://pixabay.com/vectors/target-stand-shoot-1291636/

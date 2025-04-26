@@ -12,3 +12,20 @@ extends Item
 @export var damage_min: float = 2.0
 @export var damage_max: float = 2.0
 @export var physics_impulse_strength: float = 0.01
+@export var muzzle_flash_time: float = 0.05
+@export var muzzle_flash_color: Color = Color(0.92, 0.90, 0.47)
+@export var muzzle_flash_range: float = 6.5
+@export var muzzle_flash_energy: float = 3.0
+
+@export_subgroup("Recoil")
+@export var recoil_camera_amount: Vector3 = Vector3(0.15, 0.05, 0.0)
+@export var recoil_camera_snap_amount: float = 8.0
+@export var recoil_camera_speed: float = 4.0
+@export var recoil_weapon_amount_min_x: float = -0.05
+@export var recoil_weapon_amount_max_x: float = 0.05
+@export var recoil_weapon_amount_min_y: float = 0.05
+@export var recoil_weapon_amount_max_y: float = 0.15
+@export var recoil_weapon_amount_min_z: float = -0.25
+@export var recoil_weapon_amount_max_z: float = -0.1
+@export var recoil_weapon_snap_amount: float = 10.0
+@export var recoil_weapon_speed: float = 20.0

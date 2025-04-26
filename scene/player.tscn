@@ -1,8 +1,9 @@
-[gd_scene load_steps=17 format=3 uid="uid://cq7jn8ibk56a"]
+[gd_scene load_steps=18 format=3 uid="uid://cq7jn8ibk56a"]
 
 [ext_resource type="Script" uid="uid://o00nif28jffg" path="res://script/player.gd" id="1_0aebm"]
 [ext_resource type="PackedScene" uid="uid://dhf0yu2i6obb0" path="res://scene/menu.tscn" id="2_b1yb2"]
 [ext_resource type="Script" uid="uid://b5q4gm74h2b1f" path="res://script/reticle.gd" id="2_ct4mp"]
+[ext_resource type="Script" uid="uid://blr6w6qj1fj27" path="res://script/recoil_camera.gd" id="2_oh5ij"]
 [ext_resource type="Theme" uid="uid://dlsdo8yt3uv62" path="res://resource/debug_theme.tres" id="2_s4jxa"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_v13iy"]
@@ -26,7 +27,7 @@ length = 0.001
 tracks/0/type = "position_3d"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Head/FirstCamera3D/EquippedItemNode3D")
+tracks/0/path = NodePath("Head/RecoilCameraControllerNode3D/FirstCamera3D/EquippedItemNode3D")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = PackedFloat32Array(0, 1, 2, -2, -1)
@@ -177,7 +178,7 @@ length = 0.5
 tracks/0/type = "position_3d"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Head/FirstCamera3D/EquippedItemNode3D")
+tracks/0/path = NodePath("Head/RecoilCameraControllerNode3D/FirstCamera3D/EquippedItemNode3D")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = PackedFloat32Array(0, 1, 0.5, -0.5, -1, 0.5, 1, 2, -2, -1)
@@ -188,7 +189,7 @@ length = 0.5
 tracks/0/type = "position_3d"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Head/FirstCamera3D/EquippedItemNode3D")
+tracks/0/path = NodePath("Head/RecoilCameraControllerNode3D/FirstCamera3D/EquippedItemNode3D")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = PackedFloat32Array(0, 1, 2, -2, -1, 0.5, 1, 0.5, -0.5, -1)
@@ -226,38 +227,42 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 [node name="AltBulletStartPoint" type="Node3D" parent="Head"]
 unique_name_in_owner = true
 
-[node name="FirstCamera3D" type="Camera3D" parent="Head"]
+[node name="RecoilCameraControllerNode3D" type="Node3D" parent="Head"]
+unique_name_in_owner = true
+script = ExtResource("2_oh5ij")
+
+[node name="FirstCamera3D" type="Camera3D" parent="Head/RecoilCameraControllerNode3D"]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.5)
 
-[node name="InteractRayCast3D" type="RayCast3D" parent="Head/FirstCamera3D"]
+[node name="InteractRayCast3D" type="RayCast3D" parent="Head/RecoilCameraControllerNode3D/FirstCamera3D"]
 unique_name_in_owner = true
 target_position = Vector3(0, 0, -3)
 collision_mask = 2
 collide_with_areas = true
 debug_shape_thickness = 1
 
-[node name="AimRayCast3D" type="RayCast3D" parent="Head/FirstCamera3D"]
+[node name="AimRayCast3D" type="RayCast3D" parent="Head/RecoilCameraControllerNode3D/FirstCamera3D"]
 unique_name_in_owner = true
 target_position = Vector3(0, 0, -100)
 collision_mask = 3
 collide_with_areas = true
 
-[node name="AimRayEndNode3D" type="Node3D" parent="Head/FirstCamera3D"]
+[node name="AimRayEndNode3D" type="Node3D" parent="Head/RecoilCameraControllerNode3D/FirstCamera3D"]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -101.5)
 
-[node name="EquippedItemNode3D" type="Node3D" parent="Head/FirstCamera3D"]
+[node name="EquippedItemNode3D" type="Node3D" parent="Head/RecoilCameraControllerNode3D/FirstCamera3D"]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, -2, -1)
 
-[node name="HandMeshInstance3D" type="MeshInstance3D" parent="Head/FirstCamera3D/EquippedItemNode3D"]
+[node name="HandMeshInstance3D" type="MeshInstance3D" parent="Head/RecoilCameraControllerNode3D/FirstCamera3D/EquippedItemNode3D"]
 unique_name_in_owner = true
 visible = false
 mesh = SubResource("SphereMesh_t37ui")
 surface_material_override/0 = SubResource("StandardMaterial3D_7xmvg")
 
-[node name="DropItemNode3D" type="Node3D" parent="Head/FirstCamera3D"]
+[node name="DropItemNode3D" type="Node3D" parent="Head/RecoilCameraControllerNode3D/FirstCamera3D"]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.499785)
 

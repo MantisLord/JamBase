@@ -46,6 +46,8 @@ var need_landing_anim: bool = false
 
 var mouse_movement: Vector2
 
+var raycast_debug = preload("res://scene/raycast_test.tscn")
+
 func hit(damage, attacker):
 	current_health -= damage
 	Game.log_out("%s hit player for %d damage. Player has %d HP remaining." % [attacker.name, damage, current_health])
@@ -182,41 +184,71 @@ func _shoot(weapon):
 		equipped_item_instance.get_node("AnimationPlayer").play("swing")
 		AudioManager.play_sfx_by_name(weapon.use_sound)
 	elif weapon.left_in_clip > 0:
+		%RecoilCameraControllerNode3D.add_recoil(weapon)
+		if equipped_item_instance.has_node("RecoilWeaponControllerNode3D"):
+			var recoil_wep = equipped_item_instance.get_node("RecoilWeaponControllerNode3D")
+			recoil_wep.add_recoil(weapon)
+		if equipped_item_instance.has_node("MuzzleNode3D"):
+			var muzzle = equipped_item_instance.get_node("MuzzleNode3D")
+			muzzle.add_flash(weapon)
+			
 		equipped_item_instance.get_node("AnimationPlayer").play("fire")
 		AudioManager.play_sfx_by_name(weapon.use_sound)
 		weapon.left_in_clip -= 1
 		
-		var barrel_pos = equipped_item_instance.get_node("BarrelNode3D").global_position
-		var bullet_instance = bullet.instantiate()
-		bullet_instance.position = barrel_pos
-		
-		var debug_instance_start = bullet_debug.instantiate()
-		debug_instance_start.get_node("StartMeshInstance3D").visible = true
-		debug_instance_start.position = barrel_pos
-		
-		if Game.debug_mode:
-			get_tree().root.add_child(debug_instance_start)
-		
-		get_tree().root.add_child(bullet_instance)
-		
-		var debug_instance_end = bullet_debug.instantiate()
-		debug_instance_end.get_node("EndMeshInstance3D").visible = true
-		
-		var end_point = %AimRayCast3D.get_collision_point() if %AimRayCast3D.is_colliding() else %AimRayEndNode3D.global_position
-		
-		# fix the start or end point here if something is wrong?
-		# like the gun pointing through a wall - collision point closer to player than the start point
-		if global_transform.origin.distance_to(end_point) < global_transform.origin.distance_to(barrel_pos):
-			bullet_instance.position = %AltBulletStartPoint.global_transform.origin # end_point
-			debug_instance_start.position = %AltBulletStartPoint.global_transform.origin # end_point
-			Game.log_out("corrected start pos of bullet due to some issue")
-		
-		debug_instance_end.position = end_point
-		bullet_instance.setup(end_point, self, weapon)
-		
-		if Game.debug_mode:
-			get_tree().root.add_child(debug_instance_end)
-		
+		var raycast_mode = true
+		if raycast_mode:
+			var space_state = %FirstCamera3D.get_world_3d().direct_space_state
+			var screen_center = get_viewport().size / 2
+			var origin = %FirstCamera3D.project_ray_origin(screen_center)
+			var end = origin + %FirstCamera3D.project_ray_normal(screen_center) * 1000
+			var query = PhysicsRayQueryParameters3D.create(origin, end)
+			query.collide_with_bodies = true
+			var result = space_state.intersect_ray(query)
+			
+			if result:
+				var instance = raycast_debug.instantiate()
+				get_tree().root.add_child(instance)
+				instance.global_position = result.get("position")
+				
+				var normal = result.get("normal")
+				if normal == Vector3.UP or normal == Vector3.DOWN:
+					instance.rotation = Vector3.ZERO
+				else:
+					instance.look_at(instance.global_transform.origin + normal, Vector3.UP)
+					instance.rotate_object_local(Vector3.RIGHT, deg_to_rad(90))
+				
+				# await get_tree().create_timer(5).timeout	
+				# REMOVE: await get_tree().create_timer(2).timeout
+				var fade_tween: Tween = get_tree().create_tween()
+				fade_tween.tween_interval(30.0)
+				fade_tween.tween_property(instance, "modulate:a", 0, 2.0)
+				await fade_tween.finished
+				instance.queue_free()
+		else: # projectile based approach
+			var barrel_pos = equipped_item_instance.get_node("MuzzleNode3D").global_position
+			var bullet_instance = bullet.instantiate()
+			bullet_instance.position = barrel_pos
+			var end_point = %AimRayCast3D.get_collision_point() if %AimRayCast3D.is_colliding() else %AimRayEndNode3D.global_position
+			# fix the start or end point here if something is wrong?
+			# like the gun pointing through a wall - collision point closer to player than the start point
+			if global_transform.origin.distance_to(end_point) < global_transform.origin.distance_to(barrel_pos):
+				bullet_instance.position = %AltBulletStartPoint.global_transform.origin # end_point
+				Game.log_out("corrected start pos of bullet due to some issue")
+			get_tree().root.add_child(bullet_instance)
+			bullet_instance.setup(end_point, self, weapon)
+			if Game.debug_mode:
+				var debug_instance_start = bullet_debug.instantiate()
+				debug_instance_start.get_node("StartMeshInstance3D").visible = true
+				debug_instance_start.position = bullet_instance.position
+				var debug_instance_end = bullet_debug.instantiate()
+				debug_instance_end.get_node("EndMeshInstance3D").visible = true
+				debug_instance_end.position = end_point
+				get_tree().root.add_child(debug_instance_start)
+				get_tree().root.add_child(debug_instance_end)
+				await get_tree().create_timer(5).timeout
+				debug_instance_end.queue_free()
+				debug_instance_start.queue_free()
 	else:
 		AudioManager.play_sfx_by_name(weapon.clip_empty_sound)
 

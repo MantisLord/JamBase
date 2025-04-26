@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dngmoigxyunjv" path="res://script/door.gd" id="1_uwwl0"]
 [ext_resource type="Material" uid="uid://coe1l4y83ye5e" path="res://image/texture/wood46/wood46.tres" id="2_bcm5o"]
+[ext_resource type="Material" uid="uid://cjkmysjjyrrfj" path="res://image/texture/metal55a/metal55a.tres" id="3_psa10"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_pj23o"]
 size = Vector3(2, 3, 0.25)
@@ -10,12 +11,7 @@ size = Vector3(2, 3, 0.25)
 material = ExtResource("2_bcm5o")
 size = Vector3(2, 3, 0.25)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_i7qj5"]
-albedo_color = Color(0.195102, 0.189352, 0.188586, 1)
-metallic = 0.5
-
 [sub_resource type="CylinderMesh" id="CylinderMesh_hobio"]
-material = SubResource("StandardMaterial3D_i7qj5")
 top_radius = 0.2
 bottom_radius = 0.2
 height = 3.0
@@ -48,6 +44,7 @@ node_b = NodePath("..")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.21093, -0.0126941, 0.00603914)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
+material_override = ExtResource("3_psa10")
 mesh = SubResource("CylinderMesh_hobio")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]

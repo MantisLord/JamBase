@@ -1,0 +1,53 @@
+[gd_scene load_steps=7 format=3 uid="uid://dhfrrxr5hqk22"]
+
+[ext_resource type="Script" uid="uid://x0s4tavu7btd" path="res://scene/muzzle_flash.gd" id="1_un3eb"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ug365"]
+angle_min = -75.0
+angle_max = 75.0
+direction = Vector3(0, 1, 1)
+flatness = 1.0
+initial_velocity_min = 0.04
+initial_velocity_max = 0.1
+gravity = Vector3(0, 0, 0)
+
+[sub_resource type="Gradient" id="Gradient_ug365"]
+offsets = PackedFloat32Array(0.00406504, 1)
+colors = PackedColorArray(0.875, 0.68103, 0.0991211, 1, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_yksup"]
+gradient = SubResource("Gradient_ug365")
+fill = 2
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yksup"]
+transparency = 1
+blend_mode = 1
+albedo_texture = SubResource("GradientTexture2D_yksup")
+roughness = 0.0
+emission_enabled = true
+emission_energy_multiplier = 16.0
+emission_texture = SubResource("GradientTexture2D_yksup")
+billboard_mode = 3
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="QuadMesh" id="QuadMesh_gwgvp"]
+material = SubResource("StandardMaterial3D_yksup")
+size = Vector2(0.1, 0.1)
+
+[node name="MuzzleNode3D" type="Node3D"]
+script = ExtResource("1_un3eb")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+visible = false
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+emitting = false
+lifetime = 0.05
+one_shot = true
+explosiveness = 0.93
+process_material = SubResource("ParticleProcessMaterial_ug365")
+draw_pass_1 = SubResource("QuadMesh_gwgvp")
