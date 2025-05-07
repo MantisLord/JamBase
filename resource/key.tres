@@ -1,7 +1,6 @@
-[gd_resource type="Resource" script_class="Item" load_steps=4 format=3 uid="uid://dvytm8jnxnxaj"]
+[gd_resource type="Resource" script_class="Item" load_steps=3 format=3 uid="uid://dvytm8jnxnxaj"]
 
 [ext_resource type="Script" uid="uid://sgav612bb5vr" path="res://script/item.gd" id="1_64kt6"]
-[ext_resource type="Material" uid="uid://belk36kprmdvi" path="res://resource/key_surface0.tres" id="1_jeovi"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_8n4mi"]
 size = Vector3(0.052, 0.108, 0.275)
@@ -12,7 +11,6 @@ name = "Key"
 icon = "res://image/key.png"
 equip_rotation = Vector3(0, 180, 0)
 equip_position = Vector3(0, 0, 0)
-equip_shader_material0 = ExtResource("1_jeovi")
 scene_path = "res://scene/key.tscn"
 physics_box_shape = SubResource("BoxShape3D_8n4mi")
 pickup_physics_box_position = Vector3(0, 0, 0)
@@ -25,3 +23,16 @@ sway_speed_position = 0.07
 sway_speed_rotation = 0.1
 sway_amount_position = 0.1
 sway_amount_rotation = 30.0
+idle_sway_adjustment = 10.0
+idle_sway_rotation_strength = 300.0
+idle_random_sway_amount = 5.0
+idle_sway_speed = 1.2
+bob_speed_run = 7.5
+bob_speed_sprint = 11.0
+bob_speed_crouch = 4.6
+hbob_amount_run = 0.1
+hbob_amount_sprint = 0.2
+hbob_amount_crouch = 0.2
+vbob_amount_run = 0.05
+vbob_amount_sprint = 0.1
+vbob_amount_crouch = 0.1

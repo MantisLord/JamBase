@@ -1,10 +1,5 @@
 extends Node3D
 
-var speed = 40.0
-var physics_impulse_strength = 0.01
-var min_damage = 2.0
-var max_damage = 2.0
-
 var controlled_velocity = Vector3.ZERO
 var shooter
 var source_weapon
@@ -16,7 +11,7 @@ func _physics_process(delta: float) -> void:
 		$MeshInstance3D.visible = false
 		$GPUParticles3D.emitting = true
 		$RayCast3D.enabled = false
-		Game.handle_physics_collision($RayCast3D, shooter, collider, controlled_velocity, source_weapon)
+		Game.handle_collision(collider, $RayCast3D.get_collision_normal(), $RayCast3D.get_collision_point(), shooter, source_weapon)
 		await get_tree().create_timer(1.0).timeout
 		queue_free()
 
@@ -24,7 +19,7 @@ func setup(target: Vector3, bullet_owner, weapon: Weapon) -> void:
 	source_weapon = weapon 
 	shooter = bullet_owner
 	look_at(target)
-	controlled_velocity = position.direction_to(target) * speed
+	controlled_velocity = position.direction_to(target) * weapon.projectile_speed
 	Game.log_out("bullet fired at " + str(target) + ", distance: " + str(position.distance_to(target)))
 
 func _on_despawn_timer_timeout() -> void:

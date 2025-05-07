@@ -1,17 +1,36 @@
-[gd_scene load_steps=9 format=4 uid="uid://ch4hl8l0c0ypj"]
+[gd_scene load_steps=10 format=4 uid="uid://ch4hl8l0c0ypj"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nyg0w"]
+[ext_resource type="Shader" uid="uid://cvmxtn0y3n44" path="res://shader/viewmodel.gdshader" id="1_y45uu"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_raqp7"]
 resource_name = "Material.001"
-cull_mode = 2
-albedo_color = Color(1, 0.903714, 0.470682, 1)
-roughness = 0.4
+render_priority = 0
+shader = ExtResource("1_y45uu")
+shader_parameter/disable_effect = true
+shader_parameter/albedo = Color(1, 0.903714, 0.470682, 1)
+shader_parameter/specular = 0.5
+shader_parameter/metallic = 0.0
+shader_parameter/roughness = 0.4
+shader_parameter/metallic_texture_channel = Vector4(1, 0, 0, 0)
+shader_parameter/roughness_texture_channel = Vector4(1, 0, 0, 0)
+shader_parameter/normal_scale = 0.5
+shader_parameter/uv1_scale = Vector3(1, 1, 1)
+shader_parameter/uv1_offset = Vector3(0, 0, 0)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fdvlf"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2wsxm"]
 resource_name = "Material.002"
-cull_mode = 2
-albedo_color = Color(0.439992, 0.439992, 0.439992, 1)
-metallic = 0.201794
-roughness = 0.588341
+render_priority = 0
+shader = ExtResource("1_y45uu")
+shader_parameter/disable_effect = true
+shader_parameter/albedo = Color(0.439992, 0.439992, 0.439992, 1)
+shader_parameter/specular = 0.5
+shader_parameter/metallic = 0.201794
+shader_parameter/roughness = 0.588341
+shader_parameter/metallic_texture_channel = Vector4(1, 0, 0, 0)
+shader_parameter/roughness_texture_channel = Vector4(1, 0, 0, 0)
+shader_parameter/normal_scale = 0.5
+shader_parameter/uv1_scale = Vector3(1, 1, 1)
+shader_parameter/uv1_offset = Vector3(0, 0, 0)
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_pngc2"]
 _surfaces = [{
@@ -48,7 +67,7 @@ _surfaces = [{
 "index_count": 168,
 "index_data": PackedByteArray("BgAmAAgABgAeACYABQAfAAcAHwAYACEAGAAFABwAHwAFABgAFQAIADAAFQAGAAgATwBLADwATwBZAEsACgA9AAAACgBMAD0AEQAzAC0AEQAUADMAGwAJACgAGwAEAAkADwAWABIAFgAFAAcABQAPAA0AFgAPAAUAIwArACUAIwAaACsAUwA5AEIAUwBVADkAWgACAEYAWgALAAIACwBDAAIACwBQAEMASQA+ADoAPgADAAEAAwBJAEcAPgBJAAMAVgAAADQAVgAKAAAADgAsAC8ADgAQACwAMQATABcAMQAyABMAJAAgACIAJAAnACAAKQAZAB0AKQAqABkABAAuAAkABAAMAC4ASABYAFsASABKAFgAOwBNAE4AOwA/AE0ANgBUAFcANgA4AFQAUQBBAEUAUQBSAEEAAwA1AAEANQBAADcAQAADAEQANQADAEAA"),
 "lods": [0.0254716, PackedByteArray("XgAmAAgAXgBgACYAXgAIAGgAaABpAF4AXwBpAGcADgBfAGcADgBnAC8AcAB3AGoAagBvAHAACgBvAD0AVgAKAD0AcQA9AG4AYQAJAGUAYQAuAAkAYQAMAC4AZQBmAGEAYgBmAGMAYwBkAGIAGAASAA0AcwB0AGsAcgBzAGsAawB4AHoAXQBtAGsAeQBcAGsACwBQAEMAbAB1AHYA")],
-"material": SubResource("StandardMaterial3D_nyg0w"),
+"material": SubResource("ShaderMaterial_raqp7"),
 "name": "Material.001",
 "primitive": 3,
 "uv_scale": Vector4(0, 0, 0, 0),
@@ -61,7 +80,7 @@ _surfaces = [{
 "index_count": 972,
 "index_data": PackedByteArray("HgCuAV0CbQFWAnEBbQFgAlYCSgBCAnwASgA+AkICewBDAoYAewBBAkMCMQE7AiIBMQFIAjsC5gCNANsAMgD0AJUAMgDJAPQARAIkATgCRAIwACQBBAAjAXgCWABfAGoAjQC4ANsAjQCOALgARgBlAEAARwBrAGYARwBZAGsAPAJ4AiMBbQIGAG4CGwBLAHEAGwBAAksAcgBMAFIANwJsADkANwIXAGwAPwAQAD0CPwBkABAAOwBtADQAbgBTADUAbgBzAFMAxwCMAIsAxwCsAIwAPgIsAEICPgIiACwAQQIuAEMCQQIqAC4AMwCmAMoAMwBRAKYAVAB+AHgAVABNAH4AdwCJAIMAdwB9AIkA1gBXAEUA1gC6AFcAhABgAFoAhACKAGAApQB2ABYBpQBQAHYAFQGAAAIBFQF1AIAAoADVAEQAoADoANUAAwFWALkAAwGBAFYAjAAIAY4AjAATAQgBiwCOAI0AiwCMAI4AlADnAJ8AlADzAOcAjgAIAbcAyACLAPkA+QCNAOYA+QCLAI0ANQKQAEYCNQI4AJAAPACYAJMAPAA2AJgARQKaAEcCRQKPAJoAkgChAJwAkgCXAKEASAI+ADsCSAKbAD4AnQBIAEEAnQCiAEgAhAGpAVwBhAEvAqkBZwGsAQgAZwFdAawBQQFkAqgBQQFjAWQCJwBGAi0BJwA1AkYCCwBpAmcAKwFHAi8BKwFFAkcC9wDPAMUA9wAAAc8A/gDTAM0A/gD8ANMA+gDLANEA+gD1AMsAFwGtAKcAFwEdAa0AHwGxAK8AHwEZAbEAGwGpALMAGwERAakA2QDtAOQA2QDiAO0A4ADxAOsA4ADeAPEA3ADpAO8A3ADXAOkA5QABAfgA5QDuAAEB7AD9AP8A7ADyAP0A8AD2APsA8ADqAPYAuwAJAQQBuwDBAAkBwwANAQsBwwC9AA0BvwAGAQ8BvwC1AAYBBQEeARgBBQEKAR4BDAEaASABDAEOARoBEAESARwBEAEHARIB2ADCALwA2ADdAMIA3wC+AMQA3wDhAL4A4wC2AMAA4wDaALYAqADSAMwAqACuANIAsADOANQAsACyAM4AtADGANAAtACqAMYAqwAUAYwAbwBKAnQAbwBTAkoC8QGKAeYBMgH/AZIBMgHUAf8BLwIhAakBLwIwASEBDwBiAHYCWAFfAWgBigHDAeYBigGLAcMBRwFkAUIBSAFpAWUBSAFZAWkBaAB3AmMAaABqAncCcAJiAnQCEwBNAW4BEwClAU0BbwFOAVMBrwFqATkBrwEfAGoBDQB4AjwCOwFrATQBbAFUATUBbAFwAVQB0gGJAYgB0gG3AYkBowEsAS0CowEmACwBLAIuAS4CLAIqAS4BMwGxAdUBMwFRAbEBVQF8AXcBVQFPAXwBdgGGAYABdgF7AYYB4QFXAUUB4QHFAVcBgQFgAVoBgQGHAWABsAFzASECsAFQAXMBIAJ9AQ0CIAJyAX0BnQHgAUQBnQHzAeABDgJWAcQBDgJ+AVYBiQETAosBiQEeAhMCiAGLAYoBiAGJAYsBkQHyAZwBkQH+AfIBiwETAsIB0wGIAQQCBAKKAfEBBAKIAYoBrQGNATECrQE4AY0BPAGVAZABPAE2AZUBMAKXATICMAKMAZcBjwGgAZoBjwGUAaABMwI+AaYBMwKYAT4BmwFJAUMBmwGhAUkBSgEtAnkBSgGjAS0CeAEuAoMBeAEsAi4CIwAxAi0AIwCtATECKwAyAi8AKwAwAjICFQBPAjQCMQCmASUBMQAzAqYBAgLaAdABAgILAtoBCQLeAdgBCQIHAt4BBQLWAdwBBQIAAtYBIgK4AbIBIgIoArgBKgK8AboBKgIkArwBJgK0Ab4BJgIcArQB5AH4Ae8B5AHtAfgB6wH8AfYB6wHpAfwB5wH0AfoB5wHiAfQB8AEMAgMC8AH5AQwC9wEIAgoC9wH9AQgC+wEBAgYC+wH1AQECxgEUAg8CxgHMARQCzgEYAhYCzgHIARgCygERAhoCygHAARECEAIpAiMCEAIVAikCFwIlAisCFwIZAiUCGwIdAicCGwISAh0C4wHNAccB4wHoAc0B6gHJAc8B6gHsAckB7gHBAcsB7gHlAcEBswHdAdcBswG5Ad0BuwHZAd8BuwG9AdkBvwHRAdsBvwG1AdEBtgEfAokBSQCkAEMAWwGCAWEBQgCjAJ4AXgF/AYUBRgGfAUABWwCFAGEAPwGeAZkBegBPAFUAXgCCAIgAeQB/AE4AlgE9ATcBkwGOAToBdQFMAVIBdAF6AUsBmQA9ADcAlgCRADoAaQA6AgwAaQBdADoChwA4AlwAhwBEAjgCpAFaAigAogFXAhEASQIZAE0CUAIWAFICVQISAFgCXAIdAF4CdQIOAHkCZwIKAGgCawIjAQQAawKqASMBbAKrAQUAcQJmAW8CcQJiAWYBBwBvAmYBYgFxAmMCYQJyAqcBOQJlAgkAJgFlAjkCpwFyAicBcwIpAQMAZgIDACgBGgBOAj8CPwJOAiQATAIhAAAAAAAhAFsCJABdAq4BIABfAm0BFABxAVYCHAB0AEsCVAIYAHAANgIpAFECTwIBACUAKQBZAgIA"),
 "lods": [0.0134799, PackedByteArray("HgCuAV0CJABdAq4BPwJOAiQAGgBOAj8CHgBfAmoBrgEfAGoBrgFqATkBOQFqATMBMwG3Aq8CMwFRAbcCagFRATMBagFuAVEBagFWAm4BagFgAlYCFABuAVYCbgFNAVMBEwBNAW4BEwClAU0BfgI+AnsAgAJ+AnsAPgIqAHsAPgIiACoAgAJ7AIMClgKAAoMCewAqAIYAgwJ7AIYAhgAqACQBhgAkATgChgA4AoECgwKGAIUChQKGAIEClAKDAoUChQKBAlYAlAKFAlYAlAJWAIwCKwE7AiIBKwE+ADsCKwGJAj4AiQJ9Aj4AjwCJAisBJwCPACsBiQKKAn0CigKSAn0CjwCKAokCJwA1Ao8ANQI4AI8AOACUAI8AjwCUAIoClACQAooCMgCQApQAMgCOApACegIyAIcCBAAjAXgCawIjAQQAawKqASMBPAJ4AiMBDQB4AjwCPwAQADwCPwBkABAARgBkAD8ARQBnAGQARQBXAGcAkwJXAEUAkwKNAlcAVwBdAGcAZwBdADoCZwA6AgwACQBpAmcAZwBpAncCZwB3AmIADwBiAHYCOQJlAgkAJgFlAjkC7ACOAL4A7ACRAs0A7ADNAIsAiwCOAOwAiwAaAY4AzgAaAYsAvQCOABoBlQK9ABoBbQIGAG4CGwBLAHEAGwBAAksAcQBLAFIAGgBxAEsCbABKAnEAbABTAkoCbABxAFEAbABRADMAMwBRAJcCMwCXAo8COQBsADMANwJsADkANwIXAGwAGQF1ABUBnwDnAOsAgwGpAaACgwEhAakBgwEqASEBpQKDAaACpQKgAlYBtAKlAlYBtAJWAawCtAKiAqUCogKDAaUCowEmACoBSgGjASoBpAIqAYMBSgEqAaQCogKkAoMBnwJKAaQCnwKkAqICtgKfAqICZwGsAQgAZwFdAawBVwFdAWcBRQFXAWcBRQFnAWMBswJXAUUBswKtAlcBRwFjAUEBQQFjAWQCQQFkAqgBmAKwAqgCmAKuArACmQKYAqgCqAKwAqoCjAGoAqoCOAGoAowBrQE4AYwBIwCtAYwBIwCMASsAjAGqApcBKwCMAZcBlwGqAp0CqgKyAp0ClwGdApsClwGbAqYBKwCXAaYBKwCmASUB9wGLAckB9wGxAtgB9wHYAYgBiAGLAfcBiAElAosB2QElAogByAGLASUCtQLIASUCcAJiAnQCJAJyASACnAHyAfYBFQBPAjQCTwIBACUASQCLAnwCWwGmAqECoQKmAqcCQgCjAJ4ARgGrApwCWwCGAoICggKGAogAPwGeAZkBhAJ/AlUAeQB/AE4AqQKaAjcBqQKOAZoCowKeAlIBdAF6AUsBiAJ7AjcAlgCRADoApAFaAigAogFXAhEAVQISAFcCSQIZAE0CUAIWAFICXAIdAF4CdQIOAHkCZwIKAGgCbAKrAQUAcQJmAW8CBwBvAmYBcQJiAWYBYgFxAmMCYQJyAqcBpwFyAicBcwIpAQMAZgIDACgBTAIhAAAAAAAhAFsCVAIYAHAANgIpAFECKQBZAgIA")],
-"material": SubResource("StandardMaterial3D_fdvlf"),
+"material": SubResource("ShaderMaterial_2wsxm"),
 "name": "Material.002",
 "primitive": 3,
 "uv_scale": Vector4(0, 0, 0, 0),
@@ -79,7 +98,7 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sledge/MeleeArea3D:monitoring")
+tracks/0/path = NodePath("MeshInstance3D/MeleeArea3D:monitoring")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -102,7 +121,7 @@ tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0, 1, 1, 1, 0.239118, -0.369644, 
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Sledge/MeleeArea3D:monitoring")
+tracks/1/path = NodePath("MeshInstance3D/MeleeArea3D:monitoring")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -120,17 +139,17 @@ _data = {
 
 [node name="Sledge" type="Node3D"]
 
-[node name="Sledge" type="MeshInstance3D" parent="."]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("ArrayMesh_13cis")
 skeleton = NodePath("")
 
-[node name="MeleeArea3D" type="Area3D" parent="Sledge"]
+[node name="MeleeArea3D" type="Area3D" parent="MeshInstance3D"]
 unique_name_in_owner = true
 transform = Transform3D(1, 2.84217e-14, -2.84217e-14, -2.84217e-14, 1, -3.38813e-21, 2.84217e-14, -1.69407e-21, 1, 0, 0, 0)
 monitoring = false
 monitorable = false
 
-[node name="MeleeCollisionShape3D" type="CollisionShape3D" parent="Sledge/MeleeArea3D"]
+[node name="MeleeCollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D/MeleeArea3D"]
 unique_name_in_owner = true
 transform = Transform3D(1, -3.97911e-21, 0, -3.97911e-21, 1, 0, 0, -3.38813e-21, 1, 0, 0, 0)
 shape = SubResource("ConcavePolygonShape3D_v0x0h")

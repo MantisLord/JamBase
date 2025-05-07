@@ -1,5 +1,5 @@
-extends Node3D
 class_name ItemPickup
+extends Interactable
 
 @export var item_res: Item
 

@@ -1,20 +1,41 @@
-[gd_scene load_steps=12 format=3 uid="uid://cytq7m77lul32"]
+[gd_scene load_steps=13 format=3 uid="uid://cytq7m77lul32"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gxic0"]
-albedo_color = Color(0.531512, 0.35597, 0.288277, 1)
+[ext_resource type="Shader" uid="uid://cvmxtn0y3n44" path="res://shader/viewmodel.gdshader" id="1_lf4n2"]
 
-[sub_resource type="BoxMesh" id="BoxMesh_a4iw5"]
-material = SubResource("StandardMaterial3D_gxic0")
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6wjlc"]
+render_priority = 0
+shader = ExtResource("1_lf4n2")
+shader_parameter/disable_effect = true
+shader_parameter/albedo = Color(0.531512, 0.35597, 0.288277, 1)
+shader_parameter/specular = 0.5
+shader_parameter/metallic = 0.0
+shader_parameter/roughness = 1.0
+shader_parameter/metallic_texture_channel = Vector4(1, 0, 0, 0)
+shader_parameter/roughness_texture_channel = Vector4(1, 0, 0, 0)
+shader_parameter/normal_scale = 0.5
+shader_parameter/uv1_scale = Vector3(1, 1, 1)
+shader_parameter/uv1_offset = Vector3(0, 0, 0)
+
+[sub_resource type="BoxMesh" id="BoxMesh_icg1l"]
+material = SubResource("ShaderMaterial_6wjlc")
 size = Vector3(0.025, 0.5, 0.025)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_h7io0"]
-albedo_color = Color(0.576471, 0.227451, 0.192157, 1)
-emission_enabled = true
-emission = Color(1, 0.67451, 0, 1)
-emission_energy_multiplier = 0.01
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_36k3j"]
+render_priority = 0
+shader = ExtResource("1_lf4n2")
+shader_parameter/disable_effect = true
+shader_parameter/albedo = Color(0.576471, 0.227451, 0.192157, 1)
+shader_parameter/specular = 0.5
+shader_parameter/metallic = 0.0
+shader_parameter/roughness = 1.0
+shader_parameter/metallic_texture_channel = Vector4(1, 0, 0, 0)
+shader_parameter/roughness_texture_channel = Vector4(1, 0, 0, 0)
+shader_parameter/normal_scale = 0.5
+shader_parameter/uv1_scale = Vector3(1, 1, 1)
+shader_parameter/uv1_offset = Vector3(0, 0, 0)
 
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_8uyd1"]
-material = SubResource("StandardMaterial3D_h7io0")
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_fskki"]
+material = SubResource("ShaderMaterial_36k3j")
 radius = 0.02
 height = 0.08
 
@@ -61,12 +82,12 @@ height = 0.1
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
 cast_shadow = 0
-mesh = SubResource("BoxMesh_a4iw5")
+mesh = SubResource("BoxMesh_icg1l")
 
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0284755, 0)
 cast_shadow = 0
-mesh = SubResource("CapsuleMesh_8uyd1")
+mesh = SubResource("CapsuleMesh_fskki")
 
 [node name="GPUParticles3D" type="GPUParticles3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000452191, -0.0324103, -0.00119574)
@@ -83,6 +104,5 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.054575, 0)
 light_color = Color(1, 0.772549, 0.356863, 1)
 light_energy = 2.0
 light_size = 0.05
-light_cull_mask = 4294967293
 shadow_enabled = true
 omni_range = 10.0

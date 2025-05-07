@@ -1,6 +1,6 @@
 [gd_scene load_steps=10 format=3 uid="uid://b0gc43cqpyuuw"]
 
-[ext_resource type="Script" uid="uid://bwdg3f2mphen8" path="res://script/button.gd" id="1_8282v"]
+[ext_resource type="Script" uid="uid://bwdg3f2mphen8" path="res://script/push_button.gd" id="1_8282v"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gmvie"]
 albedo_color = Color(0.180005, 0.180005, 0.180005, 1)
@@ -79,7 +79,7 @@ mesh = SubResource("CylinderMesh_ngv1k")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_i76a1")
+&"": SubResource("AnimationLibrary_i76a1")
 }
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]

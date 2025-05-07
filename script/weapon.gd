@@ -4,18 +4,20 @@ extends Item
 @export var max_clip_size: int = 12
 @export var left_in_clip: int = 12
 @export var total_ammo: int = 36
+@export var projectile_based: bool = false
+@export var projectile_speed: float = 40.0
 @export var is_automatic: bool = false
 @export var fire_rate = 0.3
 @export var clip_empty_sound: String = "clip_empty"
 @export var reload_sound: String = "reload_pistol"
-@export var projectile_speed: float = 40.0
 @export var damage_min: float = 2.0
 @export var damage_max: float = 2.0
-@export var physics_impulse_strength: float = 0.01
+@export var physics_impulse_strength: float = 0.02
 @export var muzzle_flash_time: float = 0.05
 @export var muzzle_flash_color: Color = Color(0.92, 0.90, 0.47)
 @export var muzzle_flash_range: float = 6.5
 @export var muzzle_flash_energy: float = 3.0
+@export var muzzle_flash_position: Vector3 = Vector3.ZERO
 
 @export_subgroup("Recoil")
 @export var recoil_camera_amount: Vector3 = Vector3(0.15, 0.05, 0.0)

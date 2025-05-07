@@ -1,7 +1,6 @@
-[gd_resource type="Resource" script_class="Weapon" load_steps=4 format=3 uid="uid://c3cfmx08cma7k"]
+[gd_resource type="Resource" script_class="Weapon" load_steps=3 format=3 uid="uid://c3cfmx08cma7k"]
 
 [ext_resource type="Script" uid="uid://ch6jewqlb58ly" path="res://script/weapon.gd" id="1_4qcfo"]
-[ext_resource type="Material" uid="uid://dmjanrfosvlcd" path="res://resource/pistol_es_surface0.tres" id="1_bpcq1"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_l7hj5"]
 size = Vector3(0.714, 0.435, 0.12)
@@ -11,25 +10,34 @@ script = ExtResource("1_4qcfo")
 max_clip_size = 6
 left_in_clip = 6
 total_ammo = 36
+projectile_based = true
+projectile_speed = 55.0
 is_automatic = false
 fire_rate = 0.835
 clip_empty_sound = "clip_empty"
 reload_sound = "reload_pistol_es"
-projectile_speed = 55.0
 damage_min = 10.0
 damage_max = 15.0
-physics_impulse_strength = 0.02
+physics_impulse_strength = 0.07
+muzzle_flash_time = 0.05
+muzzle_flash_color = Color(0.92, 0.9, 0.47, 1)
+muzzle_flash_range = 6.5
+muzzle_flash_energy = 3.0
 recoil_camera_amount = Vector3(0.15, 0.05, 0)
 recoil_camera_snap_amount = 8.0
 recoil_camera_speed = 4.0
-recoil_weapon_amount = Vector3(0.01, 0.05, 0.01)
+recoil_weapon_amount_min_x = -0.05
+recoil_weapon_amount_max_x = 0.05
+recoil_weapon_amount_min_y = 0.05
+recoil_weapon_amount_max_y = 0.15
+recoil_weapon_amount_min_z = -0.25
+recoil_weapon_amount_max_z = -0.1
 recoil_weapon_snap_amount = 10.0
 recoil_weapon_speed = 20.0
 name = "Pistol ES"
 icon = "uid://dgjojwex7ior4"
 equip_rotation = Vector3(0, 180, 0)
 equip_position = Vector3(0, 0, 0)
-equip_shader_material0 = ExtResource("1_bpcq1")
 scene_path = "res://scene/pistol_es.tscn"
 physics_box_shape = SubResource("BoxShape3D_l7hj5")
 pickup_physics_box_position = Vector3(0.231, 0.065, 0)

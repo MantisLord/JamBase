@@ -6,7 +6,7 @@
 [ext_resource type="Material" uid="uid://djj5m2cx2rruh" path="res://image/texture/bricks85/bricks85.tres" id="2_sdf2w"]
 [ext_resource type="Texture2D" uid="uid://bxuu0blfr4xe1" path="res://image/texture/table_mountain_1_puresky_4k.hdr" id="3_a0bac"]
 [ext_resource type="Resource" uid="uid://d0ngofqqrc4mc" path="res://resource/pistol.tres" id="3_afoy2"]
-[ext_resource type="PackedScene" uid="uid://b0gc43cqpyuuw" path="res://scene/button.tscn" id="3_l1san"]
+[ext_resource type="PackedScene" uid="uid://b0gc43cqpyuuw" path="res://scene/push_button.tscn" id="3_l1san"]
 [ext_resource type="PackedScene" uid="uid://cwtj13g6520ye" path="res://scene/crate.tscn" id="4_s2meq"]
 [ext_resource type="Resource" uid="uid://dvytm8jnxnxaj" path="res://resource/key.tres" id="5_bitgo"]
 [ext_resource type="PackedScene" uid="uid://co1jhl6faiaf2" path="res://scene/door.tscn" id="6_mdl7e"]
@@ -242,7 +242,7 @@ use_collision = true
 size = Vector3(1, 0.5, 2)
 material = SubResource("StandardMaterial3D_oull8")
 
-[node name="CrateButton" parent="ButtonConsoleNode3D" instance=ExtResource("3_l1san")]
+[node name="CratePushButton" parent="ButtonConsoleNode3D" instance=ExtResource("3_l1san")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
 action_name = "CrateSpawner"
 action_display = "spawn crates"
@@ -252,7 +252,7 @@ spawn_z_max = 15.0
 spawn_y_max = 30.0
 spawn_y_min = 15.0
 
-[node name="HumanButton" parent="ButtonConsoleNode3D" instance=ExtResource("3_l1san")]
+[node name="HumanPushButton" parent="ButtonConsoleNode3D" instance=ExtResource("3_l1san")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, -0.6)
 action_name = "HumanSpawner"
 spawn_x_max = 14.0
@@ -260,7 +260,7 @@ spawn_x_min = -14.0
 spawn_z_max = 14.0
 spawn_z_min = 1.0
 
-[node name="RatButton" parent="ButtonConsoleNode3D" instance=ExtResource("3_l1san")]
+[node name="RatPushButton" parent="ButtonConsoleNode3D" instance=ExtResource("3_l1san")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0.6)
 action_name = "RatSpawner"
 action_display = "spawn rats"

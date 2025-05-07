@@ -42,6 +42,10 @@ func _initialize_settings_from_config():
 	%DebugModeCheckBox.button_pressed = debug_mode
 	Game.debug_mode = debug_mode
 	
+	var fov = Config.get_config("options", Game.FIELD_OF_VIEW_CONFIG_NAME, 75.0)
+	%FOVHSlider.value = fov
+	Game.set_fov(fov)
+	
 	var cam_mode = Config.get_config("options", Game.CAM_MODE_CONFIG_NAME, 0)
 	%CamModeOptionButton.selected = cam_mode
 	Game.cam_mode = cam_mode
@@ -72,11 +76,6 @@ func _on_controls_button_toggled(toggled_on):
 	if get_tree().get_first_node_in_group("options").visible:
 		_toggle_group(!toggled_on, "options")
 		%OptionsButton.button_pressed = !toggled_on
-
-func _on_sensitivity_volume_h_slider_drag_ended(value_changed):
-	if value_changed:
-		Config.set_config("options", Game.MOUSE_SENSITIVITY_CONFIG_NAME, %SensitivityHSlider.value)
-		Game.mouse_sensitivity = %SensitivityHSlider.value
 
 func _on_quit_button_pressed():
 	get_tree().quit()
@@ -134,6 +133,14 @@ func _on_sfx_volume_h_slider_value_changed(value):
 	Config.set_config("options", Game.SFX_VOLUME_CONFIG_NAME, value / 100)
 	Game.sfx_volume = value / 100
 	AudioManager.adjust_playing_audio()
+
+func _on_sensitivity_h_slider_value_changed(value: float) -> void:
+	Config.set_config("options", Game.MOUSE_SENSITIVITY_CONFIG_NAME, %SensitivityHSlider.value)
+	Game.mouse_sensitivity = %SensitivityHSlider.value
+
+func _on_fovh_slider_value_changed(value: float) -> void:
+	Config.set_config("options", Game.FIELD_OF_VIEW_CONFIG_NAME, %FOVHSlider.value)
+	Game.set_fov(%FOVHSlider.value)
 
 func get_mouse_button_string(button_index: int) -> String:
 	match button_index:

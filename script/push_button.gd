@@ -1,5 +1,5 @@
-extends Area3D
-class_name InteractButton
+extends Interactable
+class_name PushButton
 
 @export_enum("HumanSpawner","RatSpawner","CrateSpawner") var action_name: String
 @export var action_display: String = "spawn humans"

@@ -14,7 +14,7 @@ config/name="JamBase"
 config/version="0.0.1"
 run/main_scene="uid://dhf0yu2i6obb0"
 config/features=PackedStringArray("4.4", "Forward Plus")
-config/icon="res://icon.svg"
+config/icon="uid://bqdgvb47e2fq6"
 run/vsync/vsync_mode=0
 
 [autoload]
@@ -146,3 +146,10 @@ drop={
 
 common/physics_ticks_per_second=120
 3d/physics_engine="Jolt Physics"
+
+[shader_globals]
+
+viewmodel_fov={
+"type": "float",
+"value": 75.0
+}

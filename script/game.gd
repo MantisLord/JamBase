@@ -5,6 +5,7 @@ const MASTER_VOLUME_CONFIG_NAME = "master_volume"
 const MUSIC_VOLUME_CONFIG_NAME = "music_volume"
 const SFX_VOLUME_CONFIG_NAME = "sfx_volume"
 const FULLSCREEN_CONFIG_NAME = "fullscreen"
+const FIELD_OF_VIEW_CONFIG_NAME = "fov"
 const DEBUG_MODE_CONFIG_NAME = "debug_mode"
 const CAM_MODE_CONFIG_NAME = "cam_mode"
 const VSYNC_MODE_CONFIG_NAME = "vsync_mode"
@@ -15,6 +16,7 @@ var music_volume
 var master_volume
 var debug_mode
 var cam_mode
+var fov
 
 func get_rand_str(string_array: Array[String]) -> String:
 	return string_array[int(randf() * string_array.size())]
@@ -41,11 +43,11 @@ func toggle_vsync(toggled_on):
 	else:
 		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
 
-func handle_physics_collision(raycast, attacker, collider, velocity, weapon):
-	var impulse = -raycast.get_collision_normal() * velocity.length() *  weapon.physics_impulse_strength
+func handle_collision(collider, collision_normal, collision_point, attacker, weapon):
+	var impulse = -collision_normal * weapon.physics_impulse_strength
 	var should_log = false
 	if collider is RigidBody3D:
-		collider.apply_impulse(impulse, raycast.get_collision_point())
+		collider.apply_impulse(impulse, collision_point)
 		should_log = true
 	if collider is BodyPart:
 		var topmost_parent = collider
@@ -53,13 +55,20 @@ func handle_physics_collision(raycast, attacker, collider, velocity, weapon):
 			topmost_parent = topmost_parent.get_parent()
 			if topmost_parent is PhysicalBoneSimulator3D:
 				if topmost_parent.is_simulating_physics():
-					collider.apply_impulse(impulse, raycast.get_collision_point())
+					collider.apply_impulse(impulse, collision_point)
 					should_log = true
 			if topmost_parent is Unit:
 				var final_dmg = randf_range(weapon.damage_min, weapon.damage_max) * collider.damage_multiplier
 				topmost_parent.hit(final_dmg, attacker, collider.part_name)
 	if should_log:
-		log_out("Programmed collision occurred, impulse %s [%s's %s -> %s]" % [impulse, attacker.name, weapon.name, collider.name])
+		log_out("collision --- impulse %.2f [%s's %s -> %s]" % [impulse.length(), attacker.name, weapon.name, collider.name])
+
+func set_fov(value) -> void:
+	Game.fov = value
+	RenderingServer.global_shader_parameter_set("viewmodel_fov", value)
+	var player = get_tree().current_scene.get_node_or_null("Player")
+	if player != null:
+		player.find_child("FirstCamera3D").fov = value
 
 func log_out(text) -> void:
 	if Game.debug_mode:
@@ -71,3 +80,11 @@ func log_out(text) -> void:
 				await get_tree().process_frame
 				scroll_container.scroll_vertical = scroll_container.get_v_scroll_bar().max_value
 	print(text)
+
+func get_all_mesh_instance3ds(root: Node) -> Array:
+	var mesh_instances: Array = []
+	for child in root.get_children():
+		if child is MeshInstance3D:
+			mesh_instances.append(child)
+		mesh_instances += get_all_mesh_instance3ds(child)
+	return mesh_instances

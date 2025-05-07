@@ -5,9 +5,6 @@ extends Resource
 @export_file("*.png") var icon: String
 @export var equip_rotation: Vector3 = Vector3(0, 90, 0)
 @export var equip_position: Vector3 = Vector3(0, 0, 0)
-@export var equip_shader_material0: ShaderMaterial
-@export var equip_shader_material1: ShaderMaterial
-@export var equip_shader_material2: ShaderMaterial
 @export var scene_path: String
 @export var physics_box_shape: BoxShape3D
 @export var pickup_physics_box_position: Vector3 = Vector3(0.231, 0.065, 0)

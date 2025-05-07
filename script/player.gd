@@ -14,7 +14,6 @@ const MIN_ANGLE_VIEW = -75
 const MAX_ANGLE_VIEW = 75
 const HEAD_BOB_FREQ = 2.4
 const HEAD_BOB_AMP = 0.08
-const FOV_BASE = 75.0
 const FOV_CHANGE = 1.5
 const PHYSICS_IMPULSE_STRENGTH: float = 0.5
 
@@ -46,7 +45,7 @@ var need_landing_anim: bool = false
 
 var mouse_movement: Vector2
 
-var raycast_debug = preload("res://scene/raycast_test.tscn")
+var bullethole = preload("res://scene/bullethole.tscn")
 
 func hit(damage, attacker):
 	current_health -= damage
@@ -78,6 +77,8 @@ func _drop_item(item_res) -> void:
 	var pickup = item_pickup.instantiate()
 	pickup.item_res = item_res
 	get_tree().root.add_child(pickup)
+	for mesh_instance in pickup.find_children("*", "MeshInstance3D"):
+		set_shader_param_on_mesh(mesh_instance, "disable_effect", true)
 	pickup.global_position = %DropItemNode3D.global_position
 	inventory.remove_at(dropping_index)
 	var panel = %InventoryHBoxContainer.get_child(dropping_index)
@@ -106,14 +107,6 @@ func _unequip_item() -> void:
 		equipped_item_instance = null
 		equipped_item_index = -1
 
-func get_all_mesh_instance3ds(root: Node) -> Array:
-	var mesh_instances: Array = []
-	for child in root.get_children():
-		if child is MeshInstance3D:
-			mesh_instances.append(child)
-		mesh_instances += get_all_mesh_instance3ds(child)
-	return mesh_instances
-
 func _equip_item(new_index) -> void:
 	if %AnimationPlayer.is_playing():
 		return
@@ -123,15 +116,6 @@ func _equip_item(new_index) -> void:
 	var item_scene = load(item_res.scene_path)
 	equipped_item_instance = item_scene.instantiate()
 	
-	var mesh_nodes = get_all_mesh_instance3ds(equipped_item_instance)
-	for item_mesh in mesh_nodes:
-		var surface_count = item_mesh.mesh.get_surface_count();
-		item_mesh.set_surface_override_material(0, item_res.equip_shader_material0)
-		if (surface_count > 1):
-			item_mesh.set_surface_override_material(1, item_res.equip_shader_material1)
-		if (surface_count > 2):
-			item_mesh.set_surface_override_material(2, item_res.equip_shader_material2)
-
 	var rotation_parent = Node3D.new()
 	rotation_parent.name = "weapon_rot_tracker"
 	%EquippedItemNode3D.add_child(rotation_parent)
@@ -141,9 +125,20 @@ func _equip_item(new_index) -> void:
 	rotation_parent.add_child(equipped_item_instance)
 	%AnimationPlayer.play("raise")
 	AudioManager.play_sfx_by_name(inventory[new_index].equip_sound)
-	await %AnimationPlayer.animation_finished
+	for mesh_instance in equipped_item_instance.find_children("*", "MeshInstance3D"):
+		set_shader_param_on_mesh(mesh_instance, "disable_effect", false)
 	equipped_item_index = new_index
 	Game.log_out("equipped %s" % inventory[equipped_item_index].name)
+
+func set_shader_param_on_mesh(mesh_instance: MeshInstance3D, param_name: String, value):
+	var mesh = mesh_instance.mesh
+	if mesh == null:
+		return
+	var surface_count = mesh.get_surface_count()
+	for i in range(surface_count):
+		var material = mesh.surface_get_material(i)
+		if material is ShaderMaterial:
+			material.set_shader_parameter(param_name, value)
 
 func _use(item):
 	if item is Weapon:
@@ -191,13 +186,11 @@ func _shoot(weapon):
 		if equipped_item_instance.has_node("MuzzleNode3D"):
 			var muzzle = equipped_item_instance.get_node("MuzzleNode3D")
 			muzzle.add_flash(weapon)
-			
 		equipped_item_instance.get_node("AnimationPlayer").play("fire")
 		AudioManager.play_sfx_by_name(weapon.use_sound)
 		weapon.left_in_clip -= 1
-		
-		var raycast_mode = true
-		if raycast_mode:
+
+		if !weapon.projectile_based:
 			var space_state = %FirstCamera3D.get_world_3d().direct_space_state
 			var screen_center = get_viewport().size / 2
 			var origin = %FirstCamera3D.project_ray_origin(screen_center)
@@ -205,27 +198,26 @@ func _shoot(weapon):
 			var query = PhysicsRayQueryParameters3D.create(origin, end)
 			query.collide_with_bodies = true
 			var result = space_state.intersect_ray(query)
-			
 			if result:
-				var instance = raycast_debug.instantiate()
-				get_tree().root.add_child(instance)
-				instance.global_position = result.get("position")
-				
+				var collider = result.get("collider")
+				var collision_point = result.get("position")
 				var normal = result.get("normal")
+				Game.handle_collision(collider, normal, collision_point, self, weapon)
+
+				var instance = bullethole.instantiate()
+				collider.add_child(instance)
+				instance.global_position = collision_point
 				if normal == Vector3.UP or normal == Vector3.DOWN:
 					instance.rotation = Vector3.ZERO
 				else:
 					instance.look_at(instance.global_transform.origin + normal, Vector3.UP)
 					instance.rotate_object_local(Vector3.RIGHT, deg_to_rad(90))
-				
-				# await get_tree().create_timer(5).timeout	
-				# REMOVE: await get_tree().create_timer(2).timeout
 				var fade_tween: Tween = get_tree().create_tween()
 				fade_tween.tween_interval(30.0)
 				fade_tween.tween_property(instance, "modulate:a", 0, 2.0)
 				await fade_tween.finished
 				instance.queue_free()
-		else: # projectile based approach
+		else:
 			var barrel_pos = equipped_item_instance.get_node("MuzzleNode3D").global_position
 			var bullet_instance = bullet.instantiate()
 			bullet_instance.position = barrel_pos
@@ -273,7 +265,6 @@ func _ready():
 func _handle_primary_actions():
 	if Input.is_action_just_pressed("menu"):
 		%Menu.visible = !%Menu.visible
-		%ReticleCenterContainer.visible = !%Menu.visible
 		if %Menu.visible:
 			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 			AudioManager.play_sfx(AudioManager.sfx_menu_open)
@@ -311,10 +302,11 @@ func _handle_primary_actions():
 func _update_ui():
 	if Game.debug_mode:
 		%DebugLabel.text = "FPS: %f" % Engine.get_frames_per_second()
-		%DebugLabel.text += "\r\nmouse sensitivity: %f" % Game.mouse_sensitivity
+		%DebugLabel.text += "\r\nmouse sensitivity: %.2f" % Game.mouse_sensitivity
 		%DebugLabel.text += "\r\nplayer position: %s" % str(position)
 		%DebugLabel.text += "\r\ninput mouse mode: %s" % Input.mouse_mode
 		%DebugLabel.text += "\r\nis_crouching: %s" % is_crouching
+		%DebugLabel.text += "\r\nfov: %.0f" % Game.fov
 	else:
 		%DebugLabel.text = ""
 	%DebugMarginContainer.visible = Game.debug_mode
@@ -341,8 +333,8 @@ func _handle_items():
 				if melee_area.monitoring:
 					var overlaps = melee_area.get_overlapping_bodies()
 					for overlap in overlaps:
-						var swing_velocity = global_position.direction_to(overlap.global_position)
-						Game.handle_physics_collision(%InteractRayCast3D, self, overlap, swing_velocity, equipped_item_res)
+						#var swing_velocity = global_position.direction_to(overlap.global_position)
+						Game.handle_collision(overlap, %InteractRayCast3D.get_collision_normal(), %InteractRayCast3D.get_collision_point(), self, equipped_item_res)
 						melee_area.monitoring = false
 		if !%Menu.visible && Input.is_action_just_pressed("drop"):
 			_drop_item(equipped_item_res)
@@ -388,41 +380,51 @@ func _process(_delta):
 
 	_interaction_check()
 
+var current_focus: Interactable
+
 func _interaction_check():
 	if !%Menu.visible:
 		if %InteractRayCast3D.is_colliding():
 			var collider = %InteractRayCast3D.get_collider()
-			if collider != null and collider is not InteractButton:
-				collider = collider.get_parent()
+			if collider != null:
+				var parent = collider.get_parent()
+				if (parent is ItemPickup || parent is Door || parent is Trapdoor):
+					collider = collider.get_parent()
+			if current_focus != null && current_focus != collider:
+				current_focus.unfocus()
+				%InteractLabel.text = ""
+			if collider is Interactable:
+				current_focus = collider
+				collider.focus()
+				%InteractLabel.text = ""
+
 			if collider is ItemPickup:
 				%InteractLabel.text = "Press %s to pick up %s." % [%Menu.get_key_name_from_action("interact"), collider.item_res.name]
-				%ReticleCenterContainer.visible = false
 				if Input.is_action_just_pressed("interact"):
 					_pick_up_item(collider.item_res)
 					collider.queue_free()
+					%InteractLabel.text = ""
 			elif collider is Door:
 				if collider.locked:
-					%ReticleCenterContainer.visible = false
 					%InteractLabel.text = "Locked."
 				else:
-					%ReticleCenterContainer.visible = true
 					%InteractLabel.text = ""
 			elif collider is Trapdoor:
 				%InteractLabel.text = "Press %s to travel to %s." % [%Menu.get_key_name_from_action("interact"), collider.teleport_scene_name]
-				%ReticleCenterContainer.visible = false
 				if Input.is_action_just_pressed("interact"):
 					Game.change_scene("sewer")
-			elif collider is InteractButton:
+			elif collider is PushButton:
 				%InteractLabel.text = "Press %s to %s." % [%Menu.get_key_name_from_action("interact"), collider.action_display]
-				%ReticleCenterContainer.visible = false
 				if Input.is_action_just_pressed("interact"):
 					collider.start_press()
-		else:
+		elif current_focus != null:
+			current_focus.unfocus()
 			%InteractLabel.text = ""
-			%ReticleCenterContainer.visible = true
 	else:
+		if current_focus != null:
+			current_focus.unfocus()
 		%InteractLabel.text = ""
-		%ReticleCenterContainer.visible = false
+	%ReticleCenterContainer.visible = false if len(%InteractLabel.text) > 0 || %Menu.visible else true 
 
 func _input(event):
 	if event is InputEventMouseMotion and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
@@ -546,7 +548,7 @@ func _physics_process(delta):
 	
 	# FOV
 	var velocity_clamped = clamp(velocity.length(), 0.5, SPEED_SPRINT * 2.0)
-	var target_fov = FOV_BASE + FOV_CHANGE * velocity_clamped
+	var target_fov = Game.fov + FOV_CHANGE * velocity_clamped
 	current_cam.fov = lerp(current_cam.fov, target_fov, delta * SPEED_CAMERA)
 
 	move_and_slide()

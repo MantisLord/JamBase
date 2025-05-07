@@ -1,8 +1,6 @@
-[gd_resource type="Resource" script_class="Weapon" load_steps=5 format=3 uid="uid://cqa5s4mikctu0"]
+[gd_resource type="Resource" script_class="Weapon" load_steps=3 format=3 uid="uid://cqa5s4mikctu0"]
 
-[ext_resource type="Material" uid="uid://ujdxg8j6es1y" path="res://resource/sledge_surface0.tres" id="1_ahulb"]
 [ext_resource type="Script" uid="uid://ch6jewqlb58ly" path="res://script/weapon.gd" id="1_u7qhb"]
-[ext_resource type="Material" uid="uid://c06k82ysl0h0c" path="res://resource/sledge_surface1.tres" id="2_1bpyt"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_udq2r"]
 size = Vector3(0.194, 0.969, 0.025)
@@ -12,11 +10,12 @@ script = ExtResource("1_u7qhb")
 max_clip_size = 0
 left_in_clip = 0
 total_ammo = 0
+projectile_based = false
+projectile_speed = 40.0
 is_automatic = false
 fire_rate = 2.0
 clip_empty_sound = ""
 reload_sound = ""
-projectile_speed = 40.0
 damage_min = 5.0
 damage_max = 7.0
 physics_impulse_strength = 0.3
@@ -39,8 +38,6 @@ name = "Sledge"
 icon = "res://image/sledge.png"
 equip_rotation = Vector3(0, 90, 0)
 equip_position = Vector3(0, 0, 0)
-equip_shader_material0 = ExtResource("1_ahulb")
-equip_shader_material1 = ExtResource("2_1bpyt")
 scene_path = "res://scene/sledge.tscn"
 physics_box_shape = SubResource("BoxShape3D_udq2r")
 pickup_physics_box_position = Vector3(0, 0.485, 0)
