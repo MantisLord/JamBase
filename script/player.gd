@@ -197,6 +197,7 @@ func _shoot(weapon):
 			var end = origin + %FirstCamera3D.project_ray_normal(screen_center) * 1000
 			var query = PhysicsRayQueryParameters3D.create(origin, end)
 			query.collide_with_bodies = true
+			query.collision_mask = 1
 			var result = space_state.intersect_ray(query)
 			if result:
 				var collider = result.get("collider")
