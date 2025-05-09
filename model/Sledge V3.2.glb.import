@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://bo8b71668n54f"
-path="res://.godot/imported/Sledge V3.glb-5e74eb043bf7b2005cb357b0eea9a9e8.scn"
+uid="uid://d3300c6m1ypj0"
+path="res://.godot/imported/Sledge V3.2.glb-381d93cfefa0ac8b1a3e0c8023b4f035.scn"
 
 [deps]
 
-source_file="res://model/Sledge V3.glb"
-dest_files=["res://.godot/imported/Sledge V3.glb-5e74eb043bf7b2005cb357b0eea9a9e8.scn"]
+source_file="res://model/Sledge V3.2.glb"
+dest_files=["res://.godot/imported/Sledge V3.2.glb-381d93cfefa0ac8b1a3e0c8023b4f035.scn"]
 
 [params]
 

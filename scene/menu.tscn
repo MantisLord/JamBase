@@ -205,7 +205,7 @@ custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 size_flags_vertical = 4
 min_value = 1.0
-max_value = 180.0
+max_value = 179.0
 value = 75.0
 
 [node name="CamModeHBoxContainer" type="HBoxContainer" parent="OverallVBoxContainer/MainPanelContainer/MainVBoxContainer" groups=["options"]]

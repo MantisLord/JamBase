@@ -206,6 +206,7 @@ script = ExtResource("1_l0k36")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="RecoilWeaponControllerNode3D"]
 transform = Transform3D(-4.37114e-06, -100, -1.19209e-05, 6.21176e-20, -1.19209e-05, 100, -100, 4.37114e-06, 5.2108e-13, 0, 0, 0)
+cast_shadow = 0
 mesh = SubResource("ArrayMesh_6010w")
 skeleton = NodePath("")
 

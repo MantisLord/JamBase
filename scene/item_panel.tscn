@@ -1,8 +1,11 @@
-[gd_scene format=3 uid="uid://b0e5nh1ot07mm"]
+[gd_scene load_steps=2 format=3 uid="uid://b0e5nh1ot07mm"]
+
+[ext_resource type="Theme" uid="uid://dlsdo8yt3uv62" path="res://resource/debug_theme.tres" id="1_x2nlm"]
 
 [node name="ItemPanel" type="Panel"]
 clip_contents = true
 custom_minimum_size = Vector2(50, 50)
+theme = ExtResource("1_x2nlm")
 
 [node name="TextureRect" type="TextureRect" parent="."]
 layout_mode = 1
