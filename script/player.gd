@@ -47,6 +47,8 @@ var mouse_movement: Vector2
 
 var bullethole = preload("res://scene/bullethole.tscn")
 
+var interact_collision_dist: float = 9999
+
 func hit(damage, attacker):
 	current_health -= damage
 	Game.log_out("%s hit player for %d damage. Player has %d HP remaining." % [attacker.name, damage, current_health])
@@ -308,6 +310,11 @@ func _update_ui():
 		%DebugLabel.text += "\r\ninput mouse mode: %s" % Input.mouse_mode
 		%DebugLabel.text += "\r\nis_crouching: %s" % is_crouching
 		%DebugLabel.text += "\r\nfov: %.0f" % Game.fov
+		%DebugLabel.text += "\r\ninteract ray [colliding: "
+		if %InteractRayCast3D.is_colliding():
+			%DebugLabel.text += "true, dist: %.2f]" % interact_collision_dist
+		else:
+			%DebugLabel.text += "false]"
 	else:
 		%DebugLabel.text = ""
 	%DebugMarginContainer.visible = Game.debug_mode
@@ -385,9 +392,11 @@ var current_focus: Interactable
 
 func _interaction_check():
 	if !%Menu.visible:
+		interact_collision_dist = 9999
 		if %InteractRayCast3D.is_colliding():
 			var collider = %InteractRayCast3D.get_collider()
 			if collider != null:
+				interact_collision_dist = %InteractRayCast3D.global_position.distance_to(%InteractRayCast3D.get_collision_point())
 				var parent = collider.get_parent()
 				if (parent is ItemPickup || parent is Door || parent is Trapdoor):
 					collider = collider.get_parent()

@@ -13,11 +13,13 @@ extends Item
 @export var damage_min: float = 2.0
 @export var damage_max: float = 2.0
 @export var physics_impulse_strength: float = 0.02
+
+@export_subgroup("Muzzle Flash")
 @export var muzzle_flash_time: float = 0.05
 @export var muzzle_flash_color: Color = Color(0.92, 0.90, 0.47)
 @export var muzzle_flash_range: float = 6.5
 @export var muzzle_flash_energy: float = 3.0
-@export var muzzle_flash_position: Vector3 = Vector3.ZERO
+@export var muzzle_flash_offset: Vector3 = Vector3.ZERO
 
 @export_subgroup("Recoil")
 @export var recoil_camera_amount: Vector3 = Vector3(0.15, 0.05, 0.0)

@@ -66,14 +66,18 @@ func handle_collision(collider, collision_normal, collision_point, attacker, wea
 func set_fov(value) -> void:
 	Game.fov = value
 	RenderingServer.global_shader_parameter_set("viewmodel_fov", value)
-	var player = get_tree().current_scene.get_node_or_null("Player")
+	var player = get_player()
 	if player != null:
 		player.find_child("FirstCamera3D").fov = value
+
+func get_player() -> Player:
+	var player = get_tree().current_scene.get_node_or_null("Player")
+	return player
 
 func log_out(text) -> void:
 	if Game.debug_mode:
 		if get_tree().current_scene != null:
-			var player = get_tree().current_scene.get_node_or_null("Player")
+			var player = get_player()
 			if player != null:
 				var scroll_container = player.get_node("UI/DebugLogMarginContainer/DebugLogPanelContainer/DebugLogInnerMarginContainer/DebugLogScrollContainer")
 				scroll_container.get_node("DebugLogLabel").text += "\r\n%s" % text

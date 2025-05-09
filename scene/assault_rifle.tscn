@@ -199,7 +199,7 @@ libraries = {
 }
 
 [node name="MuzzleNode3D" parent="." instance=ExtResource("1_emf13")]
-transform = Transform3D(1, 0, 1.06581e-14, 0, 1, 0, -1.06581e-14, 0, 1, 1.66349e-07, 0.693328, -3.67693)
+transform = Transform3D(1, 0, 1.06581e-14, 0, 1, 0, -1.06581e-14, 0, 1, 1.7434e-07, 0.638364, -3.85975)
 
 [node name="RecoilWeaponControllerNode3D" type="Node3D" parent="."]
 script = ExtResource("1_l0k36")
