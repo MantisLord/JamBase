@@ -1,0 +1,151 @@
+[gd_scene load_steps=15 format=3 uid="uid://cuvw0ix3xcf5g"]
+
+[ext_resource type="Texture2D" uid="uid://3rs7rsyk3w0o" path="res://image/texture/texture_text_blackbox.png" id="2_iv87w"]
+[ext_resource type="Texture2D" uid="uid://dplvum3p8q41n" path="res://image/texture/texture_test_orangebox.png" id="3_oolw5"]
+[ext_resource type="PackedScene" uid="uid://b0gc43cqpyuuw" path="res://scene/push_button.tscn" id="4_6u722"]
+[ext_resource type="PackedScene" uid="uid://cq7jn8ibk56a" path="res://scene/player.tscn" id="5_jqsxq"]
+[ext_resource type="PackedScene" uid="uid://c0kjrmt0ol4ur" path="res://scene/item_pickup.tscn" id="5_xmft5"]
+[ext_resource type="Resource" uid="uid://d0ngofqqrc4mc" path="res://resource/pistol.tres" id="6_h2pm4"]
+[ext_resource type="FontFile" uid="uid://eyv71h06abyq" path="res://resource/COURIER.TTF" id="6_u308q"]
+[ext_resource type="Script" uid="uid://c3y3tgshbn3ji" path="res://script/stage_label.gd" id="6_vfe8e"]
+[ext_resource type="PackedScene" uid="uid://cytq7m77lul32" path="res://scene/torch.tscn" id="7_h2pm4"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_h2pm4"]
+
+[sub_resource type="Sky" id="Sky_vfe8e"]
+sky_material = SubResource("ProceduralSkyMaterial_h2pm4")
+
+[sub_resource type="Environment" id="Environment_h2pm4"]
+background_mode = 2
+sky = SubResource("Sky_vfe8e")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_j1br4"]
+albedo_texture = ExtResource("2_iv87w")
+uv1_triplanar = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nhbke"]
+albedo_texture = ExtResource("3_oolw5")
+uv1_triplanar = true
+
+[node name="Hub" type="Node3D"]
+
+[node name="Player" parent="." instance=ExtResource("5_jqsxq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_h2pm4")
+
+[node name="Torch" parent="." instance=ExtResource("7_h2pm4")]
+transform = Transform3D(1, 0, 0, 0, 0.707107, -0.707107, 0, 0.707107, 0.707107, -0.766924, 2.90589, -9.65998)
+
+[node name="ItemPickup" parent="." instance=ExtResource("5_xmft5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.31195, 4.95042, -6.36086)
+item_res = ExtResource("6_h2pm4")
+
+[node name="CSGBoxes" type="Node3D" parent="."]
+
+[node name="Floor" type="CSGBox3D" parent="CSGBoxes"]
+use_collision = true
+size = Vector3(20, 0.01, 20)
+material = SubResource("StandardMaterial3D_j1br4")
+
+[node name="Ceiling" type="CSGBox3D" parent="CSGBoxes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 20, 0)
+use_collision = true
+size = Vector3(20, 0.01, 20)
+material = SubResource("StandardMaterial3D_j1br4")
+
+[node name="Wall1" type="CSGBox3D" parent="CSGBoxes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 10, 0)
+use_collision = true
+size = Vector3(0.01, 20, 20)
+material = SubResource("StandardMaterial3D_nhbke")
+
+[node name="Wall2" type="CSGBox3D" parent="CSGBoxes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, 10)
+use_collision = true
+size = Vector3(20, 20, 0.01)
+material = SubResource("StandardMaterial3D_nhbke")
+
+[node name="Wall3" type="CSGBox3D" parent="CSGBoxes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, -10)
+use_collision = true
+size = Vector3(20, 20, 0.01)
+material = SubResource("StandardMaterial3D_nhbke")
+
+[node name="Wall4" type="CSGBox3D" parent="CSGBoxes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 10, 0)
+use_collision = true
+size = Vector3(0.01, 20, 20)
+material = SubResource("StandardMaterial3D_nhbke")
+
+[node name="SelectionMenu" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.766924, 1.90589, -9.99226)
+
+[node name="Stage0Label3D" type="Label3D" parent="SelectionMenu"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.206033, 0, 0)
+modulate = Color(0, 0, 0, 1)
+outline_modulate = Color(1, 1, 0, 1)
+text = "World"
+font = ExtResource("6_u308q")
+horizontal_alignment = 0
+script = ExtResource("6_vfe8e")
+stage = "world"
+
+[node name="Stage1Label3D" type="Label3D" parent="SelectionMenu"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.206033, -0.165463, 0)
+text = "Test Land"
+font = ExtResource("6_u308q")
+horizontal_alignment = 0
+script = ExtResource("6_vfe8e")
+stage = "test_land"
+
+[node name="Stage2Label3D" type="Label3D" parent="SelectionMenu"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.206033, -0.330926, 0)
+text = "Sewer"
+font = ExtResource("6_u308q")
+horizontal_alignment = 0
+script = ExtResource("6_vfe8e")
+stage = "sewer"
+
+[node name="Stage3Label3D" type="Label3D" parent="SelectionMenu"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.206033, -0.49639, 0)
+text = "Temp 1"
+font = ExtResource("6_u308q")
+horizontal_alignment = 0
+
+[node name="Stage4Label3D" type="Label3D" parent="SelectionMenu"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.206033, -0.661853, 0)
+text = "Temp 2"
+font = ExtResource("6_u308q")
+horizontal_alignment = 0
+
+[node name="Stage5Label3D" type="Label3D" parent="SelectionMenu"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.206033, -0.827316, 0)
+text = "Temp 3"
+font = ExtResource("6_u308q")
+horizontal_alignment = 0
+
+[node name="InfoLabelsNode3D" type="Node3D" parent="SelectionMenu"]
+
+[node name="StartLabel3D" type="Label3D" parent="SelectionMenu/InfoLabelsNode3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.26708, -0.171305, 0)
+text = "START"
+font = ExtResource("6_u308q")
+
+[node name="SelectLabel3D" type="Label3D" parent="SelectionMenu/InfoLabelsNode3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.732244, -0.174481, 0)
+text = "SELECT"
+font = ExtResource("6_u308q")
+
+[node name="SelectButton" parent="SelectionMenu" instance=ExtResource("4_6u722")]
+transform = Transform3D(0.25, 0, 0, 0, -1.09278e-08, -0.25, 0, 0.25, -1.09278e-08, -0.729469, -0.399904, 0.0230713)
+action_name = "SelectStage"
+action_display = "select stage"
+press_speed = 2.0
+
+[node name="StartButton" parent="SelectionMenu" instance=ExtResource("4_6u722")]
+transform = Transform3D(0.25, 0, 0, 0, -1.09278e-08, -0.25, 0, 0.25, -1.09278e-08, 1.27153, -0.403588, 0.0230713)
+action_name = "StartStage"
+action_display = "start"
+press_speed = 2.0

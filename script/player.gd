@@ -16,6 +16,7 @@ const HEAD_BOB_FREQ = 2.4
 const HEAD_BOB_AMP = 0.08
 const FOV_CHANGE = 1.5
 const PHYSICS_IMPULSE_STRENGTH: float = 0.5
+const HIT_STAGGER: float = 8.0
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
@@ -53,6 +54,9 @@ func hit(damage, attacker):
 	current_health -= damage
 	Game.log_out("%s hit player for %d damage. Player has %d HP remaining." % [attacker.name, damage, current_health])
 	AudioManager.play_sfx(AudioManager.sfx_take_damage)
+	var direction = attacker.global_position.direction_to(global_position)
+	await get_tree().create_timer(0.2).timeout
+	velocity += direction * HIT_STAGGER
 
 func _pick_up_item(item_res) -> void:
 	if !%InventoryPanelContainer.visible:
@@ -100,7 +104,7 @@ func _unequip_item() -> void:
 	if equipped_item_index != -1:
 		Game.log_out("unequipped %s" % inventory[equipped_item_index].name)
 		AudioManager.play_sfx_by_name(inventory[equipped_item_index].equip_sound)
-		%AnimationPlayer.play("lower")
+		%AnimationPlayer.play_backwards("raise")
 		await %AnimationPlayer.animation_finished
 		for child in %EquippedItemNode3D.get_children():
 			if child.name == "weapon_rot_tracker":
@@ -310,9 +314,11 @@ func _update_ui():
 		%DebugLabel.text += "\r\ninput mouse mode: %s" % Input.mouse_mode
 		%DebugLabel.text += "\r\nis_crouching: %s" % is_crouching
 		%DebugLabel.text += "\r\nfov: %.0f" % Game.fov
-		%DebugLabel.text += "\r\ninteract ray [colliding: "
+		%DebugLabel.text += "\r\ninteract ray: [collide: "
 		if %InteractRayCast3D.is_colliding():
-			%DebugLabel.text += "true, dist: %.2f]" % interact_collision_dist
+			var collider = %InteractRayCast3D.get_collider()
+			if collider:
+				%DebugLabel.text += "true, dist: %.2f, name: %s]" % [interact_collision_dist, collider.name]
 		else:
 			%DebugLabel.text += "false]"
 	else:

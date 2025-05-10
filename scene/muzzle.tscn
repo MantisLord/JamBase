@@ -85,6 +85,8 @@ mesh = SubResource("SphereMesh_rexc3")
 
 [node name="LightCheckArea3D" type="Area3D" parent="LightPosHelperMeshInstance3D"]
 unique_name_in_owner = true
+collision_layer = 4
+collision_mask = 4
 monitoring = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="LightPosHelperMeshInstance3D/LightCheckArea3D"]

@@ -175,13 +175,6 @@ tracks/1/keys = {
 [sub_resource type="Animation" id="Animation_l7vvt"]
 resource_name = "lower"
 length = 0.5
-tracks/0/type = "position_3d"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Head/RecoilCameraControllerNode3D/FirstCamera3D/EquippedItemNode3D")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = PackedFloat32Array(0, 1, 0.5, -0.5, -1, 0.5, 1, 2, -2, -1)
 
 [sub_resource type="Animation" id="Animation_2pcmr"]
 resource_name = "raise"
@@ -248,6 +241,7 @@ collide_with_areas = true
 
 [node name="MuzzleLightClipRayCast3D" type="RayCast3D" parent="Head/RecoilCameraControllerNode3D/FirstCamera3D"]
 target_position = Vector3(0, 0, -15)
+collision_mask = 5
 collide_with_areas = true
 
 [node name="AimRayEndNode3D" type="Node3D" parent="Head/RecoilCameraControllerNode3D/FirstCamera3D"]

@@ -52,7 +52,7 @@ func _initialize_settings_from_config():
 
 func _on_start_button_pressed():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-	Game.change_scene("world")
+	Game.change_scene("hub")
 
 func _on_button_down():
 	AudioManager.play_sfx(AudioManager.sfx_btn_down)

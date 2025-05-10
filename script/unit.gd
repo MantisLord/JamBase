@@ -30,7 +30,7 @@ var spawn_state
 
 func check_hit() -> void:
 	var detect = _detect_target()
-	if _target_in_range(1.0) && detect == chase_target:
+	if _target_in_range(0.5) && detect == chase_target:
 		chase_target.hit(randi_range(damage_dealt_min, damage_dealt_max), self)
 
 func attack_started() -> void:

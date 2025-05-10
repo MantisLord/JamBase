@@ -18,11 +18,14 @@ var debug_mode
 var cam_mode
 var fov
 
+var current_stage: String = "hub"
+var hub_selected_stage_index: int = 0
+
 func get_rand_str(string_array: Array[String]) -> String:
 	return string_array[int(randf() * string_array.size())]
 
-func change_scene(scene_name):
-	get_tree().change_scene_to_file("scene/%s.tscn" % scene_name)
+func change_scene(scene_name) -> Error:
+	return get_tree().change_scene_to_file("scene/%s.tscn" % scene_name)
 
 func toggle_fullscreen(toggled_on):
 	if toggled_on:
